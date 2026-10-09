@@ -1,0 +1,11 @@
+import { Client } from '@modelcontextprotocol/sdk/client/index.js';
+import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
+const t = new StdioClientTransport({ command: process.execPath, args: ['scripts/probes/hello-mcp.mjs'] });
+const c = new Client({ name: 'probe', version: '0' });
+const t0 = Date.now();
+await c.connect(t);
+const tools = await c.listTools();
+console.log(JSON.stringify(tools.tools[0].inputSchema));
+const r = await c.callTool({ name: 'hello', arguments: { name: 'Basam' } });
+console.log(r.content[0].text, `${Date.now()-t0}ms`);
+await c.close();

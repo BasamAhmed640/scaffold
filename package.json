@@ -1,0 +1,61 @@
+{
+  "name": "scaffold-tutor",
+  "version": "0.1.0",
+  "description": "Scaffold: a personal, evidence-based AI tutoring system. Deterministic learner model, CLI and MCP server; the LLM front-ends teach.",
+  "license": "MIT",
+  "author": "Basam Ahmed",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "bin": {
+    "scaffold": "dist/cli/index.js",
+    "scaffold-mcp": "dist/mcp/index.js"
+  },
+  "exports": {
+    ".": "./dist/core/index.js"
+  },
+  "files": [
+    "dist",
+    "vault-template",
+    "visual-kit",
+    "skills"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "coverage": "vitest run --coverage",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "build:adapters": "tsx scripts/build-adapters.ts",
+    "check:adapters": "tsx scripts/build-adapters.ts --check",
+    "build:mcpb": "tsx scripts/build-mcpb.ts",
+    "schemas": "tsx scripts/export-schemas.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "commander": "15.0.0",
+    "ts-fsrs": "5.4.2",
+    "yaml": "2.9.1",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "@anthropic-ai/mcpb": "2.1.2",
+    "@eslint/js": "10.0.1",
+    "@types/node": "22.20.5",
+    "@vitest/coverage-v8": "5.0.3",
+    "eslint": "10.12.0",
+    "fast-check": "4.10.2",
+    "prettier": "3.9.9",
+    "tsx": "4.23.15",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.71.1",
+    "vitest": "5.0.3"
+  },
+  "optionalDependencies": {
+    "playwright": "1.64.0"
+  }
+}

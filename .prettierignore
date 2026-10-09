@@ -1,0 +1,11 @@
+dist
+coverage
+node_modules
+skills
+CLAUDE.md
+AGENTS.md
+test/fixtures
+test/golden
+vault-template
+docs/VERIFICATION.md
+package-lock.json

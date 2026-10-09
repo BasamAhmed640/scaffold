@@ -1,0 +1,80 @@
+{
+  "status": "ok",
+  "focus": {
+    "subject": "si-pi",
+    "why": "named by learner"
+  },
+  "minutes_requested": 12,
+  "carryover": 2,
+  "minutes_planned": 12,
+  "steps": [
+    {
+      "step": "warmup",
+      "minutes": 2,
+      "items": [
+        {
+          "kc": "kc-si-transmission-coefficient",
+          "subject": "si-pi",
+          "why": "forgotten (missed 3+ days after the last success)",
+          "question_id": null
+        },
+        {
+          "kc": "kc-si-instantaneous-impedance",
+          "subject": "si-pi",
+          "why": "needs check (Anki lapse)",
+          "question_id": null
+        }
+      ]
+    },
+    {
+      "step": "repair",
+      "minutes": 5,
+      "items": [
+        {
+          "kc": "kc-si-reflection-coefficient",
+          "subject": "si-pi",
+          "why": "repair M-0001: \"A 50 Ω line never reflects, whatever terminates it\"",
+          "question_id": "Q-0002",
+          "misconception": "M-0001",
+          "qtype": "diagnose"
+        }
+      ]
+    },
+    {
+      "step": "exit",
+      "minutes": 5,
+      "items": [
+        {
+          "kc": "kc-si-reflection-coefficient",
+          "subject": "si-pi",
+          "why": "exit ticket: from today",
+          "question_id": null
+        },
+        {
+          "kc": "kc-si-transmission-coefficient",
+          "subject": "si-pi",
+          "why": "exit ticket: older item",
+          "question_id": null
+        },
+        {
+          "kc": "kc-si-characteristic-impedance",
+          "subject": "si-pi",
+          "why": "exit ticket: older item",
+          "question_id": null
+        }
+      ]
+    }
+  ],
+  "trimmed": [
+    "carry-over kc-mt-major-scale (music-theory)",
+    "carry-over kc-mt-intervals (music-theory)",
+    "new kc-si-termination-strategies",
+    "new kc-si-lattice-diagram",
+    "warm-up kc-si-propagation-delay",
+    "warm-up kc-si-voltage-current",
+    "warm-up kc-si-characteristic-impedance"
+  ],
+  "notes": [
+    "5 item(s) have no reviewed bank question: improvise and record question_text (QB-04)."
+  ]
+}

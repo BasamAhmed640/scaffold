@@ -1,0 +1,12 @@
+import { fsrs, createEmptyCard, Rating, FSRSVersion } from 'ts-fsrs';
+const f = fsrs({ request_retention: 0.85, enable_fuzz: false, enable_short_term: false });
+let card = createEmptyCard(new Date('2026-10-01T10:00:00Z'));
+const t0 = new Date('2026-10-01T10:00:00Z');
+const r1 = f.next(card, t0, Rating.Good);
+console.log('version', FSRSVersion);
+console.log('after Good', { s: r1.card.stability, d: r1.card.difficulty, due: r1.card.due.toISOString(), state: r1.card.state, sched: r1.card.scheduled_days });
+const t1 = r1.card.due;
+console.log('R at due', f.get_retrievability(r1.card, t1, false));
+const r2 = f.next(r1.card, t1, Rating.Again);
+console.log('after Again', { s: r2.card.stability, due: r2.card.due.toISOString(), state: r2.card.state, lapses: r2.card.lapses });
+console.log('R +30d', f.get_retrievability(r1.card, new Date(t1.getTime()+30*864e5), false));

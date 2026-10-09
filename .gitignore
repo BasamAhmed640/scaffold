@@ -1,0 +1,15 @@
+node_modules/
+dist/
+dist-check/
+coverage/
+*.mcpb
+*.log
+.tmp/
+# Never commit real vault data (C7)
+**/events.jsonl
+!test/fixtures/**/events.jsonl
+*.scaffold-tmp-*
+.obsidian/workspace*.json
+# local owner files
+local/
+scaffold-build-prompt.md
