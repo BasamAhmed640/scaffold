@@ -57,6 +57,12 @@ const SUITES: Suite[] = [
     ],
   },
   {
+    id: 'V-PED',
+    title:
+      'V-PED: the full run on Claude Code and Codex (11 scenarios each, 2026-10-10, owner-approved). The saved transcripts are re-scored by the checker; the transcripts themselves stay in local/ (C7)',
+    commands: ['npx tsx scripts/ped/run.ts --score local/ped/full-2026-10-10b'],
+  },
+  {
     id: 'V-ANKI',
     title: 'V-ANKI: the memory layer stays correct and bounded (mocked)',
     commands: ['npx vitest run test/anki --reporter=verbose'],

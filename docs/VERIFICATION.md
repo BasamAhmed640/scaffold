@@ -751,7 +751,7 @@ Confirmed live:
 |---|---|---|
 | V-ANKI live smoke test (3 notes, reviews, sync, lapse → event and status) | **pass (2026-10-10)** | See "V-ANKI live" below. It found two bugs first (D-85, D-86). |
 | V-ANKI live offline queue (close Anki, 3 operations, reopen, sync, each applied once) | **pass (2026-10-10)** | See "V-ANKI live" below. |
-| V-PED on Claude Code and Codex | **pilot done (Codex); full run pending** | The Codex pilot (s01, approved on 2026-10-10) proved the driver after D-78/D-79/D-80; see V-PED-PILOT. The Claude pilot needs the owner to run `claude auth login` once (D-78). The full run (11 scenarios × 2 providers) needs the owner's approval. |
+| V-PED on Claude Code and Codex | **ran 2026-10-10: FAIL (both), not finished on Claude** | Full run `local/ped/full-2026-10-10b`, scored above in the V-PED section. Claude hit the Pro session limit after 8 of 11 scenarios (s09, s10a and s10b did not run). Codex completed all 11. Most misses on Codex were Scaffold tool-input rejections: `rubric_hits` longer than 10 characters, and `plan_session` with fewer than 5 minutes when wrapping up. These are fixes in Scaffold, not tutor faults. Next: fix those, then re-run with the owner's approval (it uses subscription allowance). |
 | V-GRADE: owner labels 40 real answers; κ ≥ 0.70 per provider, confident-wrong recall ≥ 0.90 | **pending (owner)** | Needs real tutoring sessions on both providers. Then: `scaffold grade sample`, label the sheet in Obsidian, `scaffold grade score <sheet>`. Repeat monthly. |
 | V-QQ: monthly spot check of 10 questions (≥ 9 acceptable) | **pending (owner)** | `scaffold q spotcheck`, mark the sheet, `scaffold q spotcheck --score <sheet>`. |
 | QB-04 cross-review job run headless | **pending (owner)** | `npx tsx scripts/jobs/cross-review.ts --provider codex` (and `claude`), once the bank has questions waiting; uses subscription allowance. |
@@ -892,3 +892,156 @@ Overall: FAIL (1 scenario(s))
 ```
 
 <!-- suite:V-PED-PILOT:end -->
+
+<!-- suite:V-PED:begin -->
+### V-PED: the full run on Claude Code and Codex (11 scenarios each, 2026-10-10, owner-approved). The saved transcripts are re-scored by the checker; the transcripts themselves stay in local/ (C7)
+
+`npx tsx scripts/ped/run.ts --score local/ped/full-2026-10-10b` — exit 1 — 2026-10-10T18:45:01.192Z — win32 node v22.23.2
+
+```text
+| Check (claude) | Result | Bar | Pass |
+|---|---|---|---|
+| TP-07 Every assessed answer recorded | 25/40 (63 %) | 100 % | **no** |
+| TP-11 No explanation run over 250 words without a learner prompt | 60/62 (97 %) | 95 % | yes |
+| TP-15 Session closed with exit ticket and end_session | 7/11 (64 %) | 100 % | **no** |
+| TP-02 Question before explanation for KCs not unseen | 10/15 (67 %) | 90 % | **no** |
+| TP-03 No answer leak before the attempt | 13/15 (87 %) | 100 % | **no** |
+| TP-08 get_grading_key only after the learner’s answer | 15/15 (100 %) | 100 % | yes |
+| TP-04 Confidence captured on assessed answers | 25/25 (100 %) | 95 % | yes |
+| TP-12 Visual shown and registered for requires_visual KCs | 1/1 (100 %) | 100 % | yes |
+| S2 Scenario 2: misconception opened; repair steps 1, 3, 6 | 1/1 (100 %) | 100 % | yes |
+| S8 Scenario 8: tutor catches the wrong key | 1/1 (100 %) | 100 % | yes |
+| TP-17 Card flagged; actions applied only after explicit approval | 1/1 (100 %) | 100 % | yes |
+| S10a Scenario 10a: intake ≤ 5, map approved first, pretest with confidence | 0/1 (0 %) | 100 % | **no** |
+| S10b Scenario 10b: focus kept, carry-over labelled, switch replans | 0/1 (0 %) | 100 % | **no** |
+
+Tool errors:
+- [s08-wrong-key] turn 3: record_attempt → evidence_missing: Name the rubric points the answer hits (rubric_hits) (TP-07).
+
+Failures for TP-07:
+- [s01-new-kc] not recorded: "Γ = −1 at a short, so the reflection is inverted. Confidence"
+- [s01-new-kc] not recorded: "A, some comes back: 75 Ω is not 50 Ω, so Γ = (75 − 50)/(75 +"
+- [s01-new-kc] not recorded: "Γ = 0 when the load equals Z0, so nothing reflects. Confiden"
+- [s01-new-kc] not recorded: "You draw time going down and position across, and multiply b"
+- [s01-new-kc] not recorded: "Γ = (ZL − Z0)/(ZL + Z0), the fraction of the incident voltag"
+- [s02-misconception] not recorded: "Oh, so it depends on the load: Γ = (ZL − Z0)/(ZL + Z0), and "
+- [s03-lucky-guess] not recorded: "Γ = 0.2? Honestly that is just a guess. Confidence 1."
+- [s03-lucky-guess] not recorded: "W W H W W W H, so D major is D E F♯ G A B C♯ D. Confidence 3"
+- [s04-idk] not recorded: "Z0 is the V/I ratio of a wave travelling on the line, set by"
+- [s05-demand-answer] not recorded: "Γ = (ZL − Z0)/(ZL + Z0), the fraction of the incident voltag"
+- [s07-teach-back] not recorded: "Hmm, I think because the energy has to go somewhere? Confide"
+- [s07-teach-back] not recorded: "Γ = (75 − 50)/(75 + 50) = 0.2, so about 20 % comes back. Con"
+- [s08-wrong-key] not recorded: "Γ = (ZL − Z0)/(ZL + Z0), the fraction of the incident voltag"
+- [s08-wrong-key] not recorded: "Z0 is the V/I ratio of a wave travelling on the line, set by"
+- [s09-oversimplified-card] not recorded: "Γ = (ZL − Z0)/(ZL + Z0), the fraction of the incident voltag"
+
+Failures for TP-15:
+- [s01-new-kc] no exit-ticket answer recorded
+- [s09-oversimplified-card] no exit-ticket answer recorded
+- [s09-oversimplified-card] no end_session
+- [s10a-onboarding] no exit-ticket answer recorded
+- [s10a-onboarding] no end_session
+- [s10b-focus] no exit-ticket answer recorded
+- [s10b-focus] no end_session
+
+Failures for TP-02:
+- [s03-lucky-guess] kc-si-characteristic-impedance: 168 words of explanation before the question
+- [s05-demand-answer] kc-si-reflection-coefficient: 136 words of explanation before the question
+- [s06-forgotten] kc-si-characteristic-impedance: 128 words of explanation before the question
+- [s06-forgotten] kc-si-propagation-delay: 141 words of explanation before the question
+- [s06-forgotten] kc-si-transmission-coefficient: 143 words of explanation before the question
+
+Failures for TP-03:
+- [s03-lucky-guess] Q-0005: "ratio of voltage to current" appeared before the learner answered
+- [s04-idk] Q-0005: "z0 is the v/i ratio" appeared before the learner answered
+
+Failures for S10a:
+- [s10a-onboarding] upsert_subject never called
+- [s10a-onboarding] concept map not shown and approved before the first upsert_concept
+- [s10a-onboarding] no pretest answers recorded
+
+Failures for S10b:
+- [s10b-focus] first message does not name the focus subject
+
+Overall: FAIL (11 scenario(s)) 
+
+| Check (codex) | Result | Bar | Pass |
+|---|---|---|---|
+| TP-02 Question before explanation for KCs not unseen | 17/18 (94 %) | 90 % | yes |
+| TP-04 Confidence captured on assessed answers | 39/39 (100 %) | 95 % | yes |
+| TP-07 Every assessed answer recorded | 38/43 (88 %) | 100 % | **no** |
+| TP-11 No explanation run over 250 words without a learner prompt | 88/88 (100 %) | 95 % | yes |
+| TP-15 Session closed with exit ticket and end_session | 9/11 (82 %) | 100 % | **no** |
+| TP-03 No answer leak before the attempt | 17/17 (100 %) | 100 % | yes |
+| TP-08 get_grading_key only after the learner’s answer | 18/19 (95 %) | 100 % | **no** |
+| S2 Scenario 2: misconception opened; repair steps 1, 3, 6 | 0/1 (0 %) | 100 % | **no** |
+| S8 Scenario 8: tutor catches the wrong key | 1/1 (100 %) | 100 % | yes |
+| TP-17 Card flagged; actions applied only after explicit approval | 2/2 (100 %) | 100 % | yes |
+| S10a Scenario 10a: intake ≤ 5, map approved first, pretest with confidence | 0/1 (0 %) | 100 % | **no** |
+| S10b Scenario 10b: focus kept, carry-over labelled, switch replans | 1/1 (100 %) | 100 % | yes |
+
+Tool errors:
+- [s01-new-kc] turn 3: record_attempt → MCP error -32602: Input validation error: Invalid arguments for tool record_attempt: Too big: expected string to have <=10 characters at rubric_hits[0]
+Too big: expected string to have <=10 characters
+- [s01-new-kc] turn 13: plan_session → MCP error -32602: Input validation error: Invalid arguments for tool plan_session: Too small: expected number to be >=5 at minutes
+- [s02-misconception] turn 3: get_grading_key → MCP error -32602: Input validation error: Invalid arguments for tool get_grading_key: Invalid input: expected string, received undefined at answer_verbatim
+- [s02-misconception] turn 7: record_attempt → MCP error -32602: Input validation error: Invalid arguments for tool record_attempt: Too big: expected string to have <=10 characters at rubric_hits[0]
+Too big: expected string to have <=10 characters
+- [s02-misconception] turn 15: plan_session → MCP error -32602: Input validation error: Invalid arguments for tool plan_session: Too small: expected number to be >=5 at minutes
+- [s03-lucky-guess] turn 1: list_mcp_resources → resources/list failed: resources/list failed for `scaffold`: Mcp error: -32601: Method not found
+- [s03-lucky-guess] turn 7: record_attempt → MCP error -32602: Input validation error: Invalid arguments for tool record_attempt: Too big: expected string to have <=10 characters at rubric_hits[0]
+Too big: expected string to have <=10 characters
+- [s03-lucky-guess] turn 11: plan_session → MCP error -32602: Input validation error: Invalid arguments for tool plan_session: Too small: expected number to be >=5 at minutes
+- [s04-idk] turn 7: record_attempt → MCP error -32602: Input validation error: Invalid arguments for tool record_attempt: Too big: expected string to have <=10 characters at rubric_hits[0]
+- [s04-idk] turn 11: plan_session → MCP error -32602: Input validation error: Invalid arguments for tool plan_session: Too small: expected number to be >=5 at minutes
+- [s06-forgotten] turn 1: list_mcp_resources → resources/list failed: resources/list failed for `scaffold`: Mcp error: -32601: Method not found
+- [s06-forgotten] turn 11: record_attempt → MCP error -32602: Input validation error: Invalid arguments for tool record_attempt: Too big: expected string to have <=10 characters at rubric_hits[0]
+Too big: expected string to have <=10 characters
+- [s06-forgotten] turn 13: plan_session → MCP error -32602: Input validation error: Invalid arguments for tool plan_session: Too small: expected number to be >=5 at minutes
+- [s07-teach-back] turn 7: record_attempt → evidence_missing: Name the rubric points the answer hits (rubric_hits) (TP-07).
+- [s07-teach-back] turn 7: record_attempt → evidence_missing: Quote the learner’s words as evidence for each rubric point (TP-07).
+- [s07-teach-back] turn 7: record_attempt → MCP error -32602: Input validation error: Invalid arguments for tool record_attempt: Too big: expected string to have <=10 characters at rubric_hits[0]
+Too big: expected string to have <=10 characters
+- [s07-teach-back] turn 7: record_attempt → MCP error -32602: Input validation error: Invalid arguments for tool record_attempt: Too big: expected string to have <=10 characters at rubric_hits[0]
+- [s07-teach-back] turn 13: plan_session → MCP error -32602: Input validation error: Invalid arguments for tool plan_session: Too small: expected number to be >=5 at minutes
+- [s08-wrong-key] turn 3: record_attempt → evidence_missing: Name the rubric points the answer hits (rubric_hits) (TP-07).
+- [s08-wrong-key] turn 3: record_attempt → MCP error -32602: Input validation error: Invalid arguments for tool record_attempt: Too big: expected string to have <=10 characters at rubric_hits[0]
+Too big: expected string to have <=40 characters
+- [s09-oversimplified-card] turn 1: list_mcp_resources → resources/list failed: resources/list failed for `scaffold`: Mcp error: -32601: Method not found
+- [s09-oversimplified-card] turn 11: record_attempt → MCP error -32602: Input validation error: Invalid arguments for tool record_attempt: Too big: expected string to have <=10 characters at rubric_hits[0]
+Too big: expected string to have <=10 characters
+- [s09-oversimplified-card] turn 15: plan_session → MCP error -32602: Input validation error: Invalid arguments for tool plan_session: Too small: expected number to be >=5 at minutes
+- [s10a-onboarding] turn 19: get_briefing → MCP error -32602: Input validation error: Invalid arguments for tool get_briefing: Too small: expected number to be >=5 at minutes
+- [s10a-onboarding] turn 19: get_briefing → unknown_subject: No subject matches "music theory".
+- [s10b-focus] turn 1: list_mcp_resources → resources/list failed: resources/list failed for `scaffold`: Mcp error: -32601: Method not found
+- [s10b-focus] turn 15: plan_session → MCP error -32602: Input validation error: Invalid arguments for tool plan_session: Too small: expected number to be >=5 at minutes
+- [s10b-focus] turn 17: record_attempt → MCP error -32602: Input validation error: Invalid arguments for tool record_attempt: Too big: expected string to have <=10 characters at rubric_hits[0]
+- [s10b-focus] turn 17: end_session → session_already_ended: Session S-2026-10-10-1 has already ended.
+
+Failures for TP-07:
+- [s01-new-kc] not recorded: "T = 1 + Γ, so with Γ = 0.2 the transmitted edge is 1.2 V. Co"
+- [s02-misconception] not recorded: "Γ = (ZL − Z0)/(ZL + Z0), the fraction of the incident voltag"
+- [s06-forgotten] not recorded: "Γ = (ZL − Z0)/(ZL + Z0), the fraction of the incident voltag"
+- [s10b-focus] not recorded: "W W H W W W H, so D major is D E F♯ G A B C♯ D. Confidence 3"
+- [s10b-focus] not recorded: "Not sure. My best guess is that it depends on what is at the"
+
+Failures for TP-15:
+- [s09-oversimplified-card] no exit-ticket answer recorded
+- [s10a-onboarding] no exit-ticket answer recorded
+- [s10a-onboarding] no end_session
+
+Failures for TP-08:
+- [s02-misconception] Q-0002: key requested before the learner answered
+
+Failures for S2:
+- [s02-misconception] step 3 (refute: why it is plausible, why it fails) missing
+
+Failures for S10a:
+- [s10a-onboarding] upsert_subject never called
+- [s10a-onboarding] concept map not shown and approved before the first upsert_concept
+- [s10a-onboarding] no pretest answers recorded
+
+Overall: FAIL (11 scenario(s))
+```
+
+<!-- suite:V-PED:end -->
