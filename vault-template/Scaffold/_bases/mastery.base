@@ -1,0 +1,38 @@
+filters:
+  and:
+    - file.inFolder("Scaffold/Concepts")
+properties:
+  title:
+    displayName: Concept
+  subject:
+    displayName: Subject
+  status:
+    displayName: Status
+  mastery:
+    displayName: Mastery
+  last_assessed:
+    displayName: Last assessed
+views:
+  - type: table
+    name: Mastery by status
+    groupBy:
+      property: note.status
+      direction: ASC
+    order:
+      - file.name
+      - title
+      - subject
+      - status
+      - mastery
+      - last_assessed
+  - type: table
+    name: By subject
+    groupBy:
+      property: note.subject
+      direction: ASC
+    order:
+      - file.name
+      - title
+      - status
+      - mastery
+      - last_assessed

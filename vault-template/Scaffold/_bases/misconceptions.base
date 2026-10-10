@@ -1,0 +1,18 @@
+filters:
+  and:
+    - file.inFolder("Scaffold/Concepts")
+    - "misconception_active == true"
+properties:
+  title:
+    displayName: Concept
+views:
+  - type: table
+    name: Active misconceptions
+    groupBy:
+      property: note.subject
+      direction: ASC
+    order:
+      - file.name
+      - title
+      - status
+      - last_assessed

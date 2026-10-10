@@ -1,0 +1,29 @@
+/* Scaffold CSS snippet. Applies only to notes with `cssclasses: [scaffold]` (V-UI: affects only Scaffold notes).
+   Install: Obsidian → Settings → Appearance → CSS snippets → enable "scaffold". */
+.scaffold {
+  --scaffold-accent: #3c6fb0;
+}
+.theme-dark .scaffold {
+  --scaffold-accent: #8fb6ea;
+}
+.scaffold .markdown-preview-view h1,
+.scaffold.markdown-preview-view h1,
+.scaffold .cm-header-1 {
+  border-bottom: 1px solid var(--background-modifier-border);
+  padding-bottom: 0.2em;
+}
+.scaffold img[src$='.svg'],
+.scaffold .internal-embed img {
+  max-width: 100%;
+  background: transparent;
+}
+.scaffold .callout {
+  margin: 0.4em 0;
+}
+.scaffold-concept .mermaid,
+.scaffold-subject .mermaid {
+  text-align: center;
+}
+.scaffold table {
+  font-size: 0.92em;
+}

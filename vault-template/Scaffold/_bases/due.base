@@ -1,0 +1,24 @@
+filters:
+  and:
+    - file.inFolder("Scaffold/Concepts")
+    - "due == true"
+properties:
+  title:
+    displayName: Concept
+  needs_check:
+    displayName: Needs check
+  misconception_active:
+    displayName: Misconception
+views:
+  - type: table
+    name: Due today
+    groupBy:
+      property: note.subject
+      direction: ASC
+    order:
+      - file.name
+      - title
+      - status
+      - misconception_active
+      - needs_check
+      - last_assessed

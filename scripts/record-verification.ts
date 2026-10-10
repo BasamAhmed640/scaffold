@@ -18,14 +18,46 @@ const SUITES: Suite[] = [
       'npx vitest run test/core --coverage --coverage.include=src/core/model/status.ts --coverage.include=src/core/model/misconceptions.ts --coverage.include=src/core/model/derive.ts --coverage.include=src/core/planner/plan.ts --coverage.include=src/core/planner/focus.ts --coverage.include=src/core/planner/briefing.ts --coverage.reporter=text --coverage.reportsDirectory=.tmp/cov-core',
     ],
   },
-  { id: 'V-VAULT', title: 'V-VAULT: files are safe', commands: ['npx vitest run test/vault --reporter=verbose'] },
-  { id: 'V-CLI', title: 'V-CLI: CLI keeps its contracts', commands: ['npx vitest run test/cli --reporter=verbose'] },
-  { id: 'V-MCP', title: 'V-MCP: MCP server keeps its contracts', commands: ['npx vitest run test/mcp --reporter=verbose'] },
-  { id: 'V-PROTO', title: 'V-PROTO: the protocol files are complete', commands: ['npx vitest run test/proto --reporter=verbose'] },
-  { id: 'V-ANKI', title: 'V-ANKI: the memory layer stays correct and bounded (mocked)', commands: ['npx vitest run test/anki --reporter=verbose'] },
-  { id: 'V-VIS', title: 'V-VIS: visuals are correct and readable', commands: ['npx vitest run test/vis --reporter=verbose'] },
-  { id: 'V-QQ', title: 'V-QQ: questions are good (lint)', commands: ['npx vitest run test/qq --reporter=verbose'] },
-  { id: 'STATIC', title: 'Static checks: typecheck, lint, adapters', commands: ['npx tsc --noEmit', 'npx eslint .'] },
+  {
+    id: 'V-VAULT',
+    title: 'V-VAULT: files are safe',
+    commands: ['npx vitest run test/vault --reporter=verbose'],
+  },
+  {
+    id: 'V-CLI',
+    title: 'V-CLI: CLI keeps its contracts',
+    commands: ['npx vitest run test/cli --reporter=verbose'],
+  },
+  {
+    id: 'V-MCP',
+    title: 'V-MCP: MCP server keeps its contracts',
+    commands: ['npx vitest run test/mcp --reporter=verbose'],
+  },
+  {
+    id: 'V-PROTO',
+    title: 'V-PROTO: the protocol files are complete',
+    commands: ['npx vitest run test/proto --reporter=verbose'],
+  },
+  {
+    id: 'V-ANKI',
+    title: 'V-ANKI: the memory layer stays correct and bounded (mocked)',
+    commands: ['npx vitest run test/anki --reporter=verbose'],
+  },
+  {
+    id: 'V-VIS',
+    title: 'V-VIS: visuals are correct and readable',
+    commands: ['npx vitest run test/vis --reporter=verbose'],
+  },
+  {
+    id: 'V-QQ',
+    title: 'V-QQ: questions are good (lint)',
+    commands: ['npx vitest run test/qq --reporter=verbose'],
+  },
+  {
+    id: 'STATIC',
+    title: 'Static checks: typecheck, lint, adapters',
+    commands: ['npx tsc --noEmit', 'npx eslint .'],
+  },
 ];
 
 const FILE = 'docs/VERIFICATION.md';
@@ -33,7 +65,12 @@ const FILE = 'docs/VERIFICATION.md';
 const ANSI = /\x1b\[[0-9;]*[A-Za-z]/g;
 
 function run(cmd: string): { code: number; out: string } {
-  const r = spawnSync(cmd, { shell: true, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024, env: { ...process.env, FORCE_COLOR: '0', CI: '1' } });
+  const r = spawnSync(cmd, {
+    shell: true,
+    encoding: 'utf8',
+    maxBuffer: 64 * 1024 * 1024,
+    env: { ...process.env, FORCE_COLOR: '0', CI: '1' },
+  });
   const out = `${r.stdout ?? ''}${r.stderr ?? ''}`.replace(ANSI, '').replace(/\r\n/g, '\n').trimEnd();
   return { code: r.status ?? 1, out };
 }
@@ -43,7 +80,14 @@ function section(s: Suite): string {
   const when = new Date().toISOString();
   for (const cmd of s.commands) {
     const { code, out } = run(cmd);
-    parts.push(`\`${cmd}\` — exit ${code} — ${when} — ${process.platform} node ${process.version}`, '', '```text', out || '(no output)', '```', '');
+    parts.push(
+      `\`${cmd}\` — exit ${code} — ${when} — ${process.platform} node ${process.version}`,
+      '',
+      '```text',
+      out || '(no output)',
+      '```',
+      '',
+    );
   }
   parts.push(`<!-- suite:${s.id}:end -->`);
   return parts.join('\n');

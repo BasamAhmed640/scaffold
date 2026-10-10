@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "timezone": null,
+  "thresholds": {
+    "mastery_window_days": 60,
+    "mastery_min_correct": 3,
+    "mastery_min_confidence": 3,
+    "mastery_min_qtypes": 2,
+    "mastery_deep_qtypes": [
+      "explain",
+      "predict",
+      "apply",
+      "transfer",
+      "teach-back"
+    ],
+    "mastery_min_sessions": 2,
+    "session_gap_hours": 20,
+    "forgotten_after_days": 3,
+    "forgotten_retrievability": 0.7,
+    "misconception_open_confidence": 3,
+    "misconception_resolve_questions": 2,
+    "misconception_resolve_sessions": 2
+  },
+  "fsrs": {
+    "desired_retention": 0.85,
+    "maximum_interval_days": 36500
+  },
+  "planner": {
+    "session_minutes": 30,
+    "carryover": 2,
+    "pretest_max": 8,
+    "pretest_min_after_trim": 3,
+    "warmup_max": 5,
+    "warmup_min_after_trim": 2,
+    "new_max": 2,
+    "backlog_blocks_new": 8,
+    "exit_items": 3,
+    "minutes_pretest_item": 1,
+    "minutes_warmup_item": 1,
+    "minutes_carryover_item": 1,
+    "minutes_prerequisite_item": 1,
+    "minutes_repair": 5,
+    "minutes_new_kc": 6.5,
+    "minutes_exit": 5,
+    "open_session_resume_hours": 12
+  },
+  "briefing": {
+    "max_tokens": 600,
+    "backlog_warn": 8,
+    "stale_subject_days": 14,
+    "other_subjects_max": 3
+  },
+  "prefs": {
+    "session_minutes": 30,
+    "analogies": "sparing",
+    "level": "start below assumed level"
+  },
+  "anki": {
+    "url": "http://127.0.0.1:8765",
+    "timeout_ms": 2000,
+    "api_version": 6,
+    "minutes_per_day": 15,
+    "new_cards_per_day_total": 4,
+    "max_reviews_per_day": 9999,
+    "default_seconds_per_review": 8,
+    "card_lifetime_minutes": 5,
+    "max_cards_per_kc": 3,
+    "intake_warn_fraction": 0.8,
+    "overbudget_dormancy_days": 14,
+    "mature_interval_days": 90,
+    "volatile_review_months": 6,
+    "learning_reviews_per_day": 2
+  },
+  "visuals": {
+    "max_bytes": 600000,
+    "min_font_px": 11
+  }
+}

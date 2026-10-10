@@ -169,16 +169,60 @@ Lines        : 100% ( 416/416 )
 <!-- suite:STATIC:begin -->
 ### Static checks: typecheck, lint, adapters
 
-`npx tsc --noEmit` — exit 0 — 2026-10-09T23:41:03.317Z — win32 node v22.23.2
+`npx tsc --noEmit` — exit 0 — 2026-10-10T00:09:28.937Z — win32 node v22.23.2
 
 ```text
 (no output)
 ```
 
-`npx eslint .` — exit 0 — 2026-10-09T23:41:03.317Z — win32 node v22.23.2
+`npx eslint .` — exit 0 — 2026-10-10T00:09:28.937Z — win32 node v22.23.2
 
 ```text
 (no output)
 ```
 
 <!-- suite:STATIC:end -->
+
+<!-- suite:V-VAULT:begin -->
+### V-VAULT: files are safe
+
+`npx vitest run test/vault --reporter=verbose` — exit 0 — 2026-10-10T00:09:21.590Z — win32 node v22.23.2
+
+```text
+
+ RUN  v5.0.3 C:/Users/basam/src/scaffold
+
+ ✓ test/vault/vault.test.ts > VLT-04 init > creates the vault from the template and never overwrites on re-run 47ms
+ ✓ test/vault/vault.test.ts > VLT-04 init > the committed vault-template matches its generators (no drift) 1ms
+ ✓ test/vault/vault.test.ts > ARC-12 configuration order > flag > env SCAFFOLD_VAULT > user config 10ms
+ ✓ test/vault/vault.test.ts > IF-03 path confinement > rejects .., absolute paths outside the vault and link escapes 28ms
+ ✓ test/vault/vault.test.ts > VLT-02 atomic writes > a simulated crash mid-write leaves the old file intact and no truncated file 138ms
+ ✓ test/vault/vault.test.ts > VLT-02 atomic writes > a torn last line in events.jsonl (crash mid-append) is ignored, reported and repairable 95ms
+ ✓ test/vault/vault.test.ts > event log lock (REL-04) > takes over a stale lock and fails loudly on a live one 300ms
+ ✓ test/vault/vault.test.ts > Windows paths and line endings > handles spaces, Unicode, an apostrophe and long names (> 260 characters) 103ms
+ ✓ test/vault/frontmatter.test.ts > frontmatter splitting > round-trips BOM, CRLF and bodies byte for byte 4ms
+ ✓ test/vault/frontmatter.test.ts > frontmatter splitting > fails loudly on invalid YAML instead of writing 17ms
+ ✓ test/vault/frontmatter.test.ts > surgical key updates > replaces only derived keys and keeps comments, quoting and unknown keys 18ms
+ ✓ test/vault/frontmatter.test.ts > surgical key updates > adds the derived header once when derived keys are missing 4ms
+ ✓ test/vault/frontmatter.test.ts > surgical key updates > inserts learner-owned keys above the derived block and preserves CRLF 2ms
+ ✓ test/vault/frontmatter.test.ts > marker regions > replace only the inner text and report missing markers 1ms
+ ✓ test/vault/frontmatter.test.ts > marker regions > fills an empty section but never overwrites learner text 1ms
+ ✓ test/vault/frontmatter.test.ts > VLT-02 / LM-02: 200 random write cycles > leave learner-written text and unknown frontmatter keys byte-identical 1683ms
+ ✓ test/vault/vault.test.ts > Windows paths and line endings > tolerates CRLF notes edited by the learner and keeps their line endings 107ms
+ ✓ test/vault/vault.test.ts > LM-13 schema migration and backups > migrates a v0 log after taking a backup copy 132ms
+ ✓ test/vault/vault.test.ts > LM-13 schema migration and backups > keeps one dated backup per day with 14-day rotation 114ms
+ ✓ test/vault/vault.test.ts > generated fixture vault > rebuild --restore-missing recreates every note from events, with zero unresolved links 411ms
+ ✓ test/vault/vault.test.ts > generated fixture vault > rebuild is deterministic: a second run changes no file 478ms
+ ✓ test/vault/vault.test.ts > learner edits are folded into the event log > prerequisite, section and answer-key edits become events 165ms
+ ✓ test/vault/vault.test.ts > learner edits are folded into the event log > upsert_concept never overwrites learner text in Explanation 108ms
+ ✓ test/vault/vault.test.ts > learner edits are folded into the event log > rejects derived fields, dangling ids and cycles on input 112ms
+ ✓ test/vault/vault.test.ts > doctor and validate > report a healthy vault and specific problems 140ms
+ ✓ test/vault/vault.test.ts > doctor and validate > a missing vault fails loudly with a next step (REL-03) 6ms
+
+ Test Files  2 passed (2)
+      Tests  26 passed (26)
+   Start at  20:09:24
+   Duration  4.21s (tests 74%, import 16%, transform 9%)
+```
+
+<!-- suite:V-VAULT:end -->
