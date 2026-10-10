@@ -425,6 +425,14 @@ describe('doctor and validate', () => {
   it('report a healthy vault and specific problems', async () => {
     const v = makeVault({ obsidian: true });
     await seed(v.sc);
+    // D-94: the CSS snippet counts as healthy only once it is turned on in Obsidian
+    const appearance = path.join(v.root, '.obsidian', 'appearance.json');
+    expect(doctorVault(v.sc, new Warnings()).find((c) => c.id === 'css')).toMatchObject({
+      ok: false,
+      warn: true,
+      next_step: expect.stringMatching(/CSS snippets/),
+    });
+    writeFileSync(appearance, JSON.stringify({ enabledCssSnippets: ['other', 'scaffold'] }));
     const checks = doctorVault(v.sc, new Warnings());
     expect(checks.filter((c) => !c.ok)).toEqual([]);
     expect(validateVault(v.sc, new Warnings()).ok).toBe(true);

@@ -1,4 +1,4 @@
-import { existsSync, statSync } from 'node:fs';
+import { existsSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import type { Warnings } from '../../envelope.js';
 import { validateGraph } from '../../model/graph.js';
@@ -102,6 +102,18 @@ export interface DoctorCheck {
   warn?: boolean;
 }
 
+/** Obsidian lists the CSS snippets that are turned on in .obsidian/appearance.json. */
+function cssSnippetEnabled(obsidian: string): boolean {
+  try {
+    const a = JSON.parse(readFileSync(path.join(obsidian, 'appearance.json'), 'utf8')) as {
+      enabledCssSnippets?: unknown;
+    };
+    return Array.isArray(a.enabledCssSnippets) && a.enabledCssSnippets.includes('scaffold');
+  } catch {
+    return false;
+  }
+}
+
 /** Vault-side health checks; Anki checks are added by the Anki layer. Never blocks (REL-03). */
 export function doctorVault(sc: Scaffold, w: Warnings): DoctorCheck[] {
   const checks: DoctorCheck[] = [];
@@ -182,16 +194,20 @@ export function doctorVault(sc: Scaffold, w: Warnings): DoctorCheck[] {
   );
   const pending = queueFor(sc).count();
   add('queue', true, pending ? `${pending} Anki operation(s) queued.` : 'Anki queue is empty.');
-  const css = path.join(sc.vault.root, '.obsidian', 'snippets', 'scaffold.css');
-  if (existsSync(path.join(sc.vault.root, '.obsidian')))
-    add(
-      'css',
-      existsSync(css),
-      existsSync(css)
-        ? 'CSS snippet installed (enable it in Settings → Appearance).'
-        : 'CSS snippet not installed.',
-      'Run `scaffold init` again to copy it.',
-    );
+  const obsidian = path.join(sc.vault.root, '.obsidian');
+  if (existsSync(obsidian)) {
+    if (!existsSync(path.join(obsidian, 'snippets', 'scaffold.css')))
+      add('css', false, 'CSS snippet not installed.', 'Run `scaffold init` again to copy it.');
+    else if (cssSnippetEnabled(obsidian)) add('css', true, 'CSS snippet installed and enabled.');
+    else
+      checks.push({
+        id: 'css',
+        ok: false,
+        warn: true,
+        message: 'CSS snippet installed but not enabled.',
+        next_step: 'In Obsidian: Settings → Appearance → CSS snippets → turn on "scaffold".',
+      });
+  }
   const links = checkLinks(sc.vault.root);
   add(
     'links',

@@ -10,41 +10,53 @@ Scaffold keeps a model of what you know, have forgotten and misremember. It live
 
 The ChatGPT website and app cannot reach programs on your computer, so your ChatGPT plan reaches Scaffold through Codex. All front-ends share one vault, so whichever one you open picks up where the last one stopped.
 
-## One-time setup
+## Set up (once)
 
-Run the commands in a normal PowerShell window, from the repo folder. Don't run them from inside an AI app's tools: Claude Desktop is a packaged app, and files it writes into AppData can end up in a private copy (DECISIONS.md D-88).
-
-1. **Build** after cloning or updating:
+1. **Install** [Node.js](https://nodejs.org) 22 or later and [Git](https://git-scm.com). Then get Scaffold:
 
    ```powershell
-   npm install; npm run build; npm run build:mcpb; npm run build:adapters
+   git clone https://github.com/BasamAhmed640/scaffold; cd scaffold; npm install
    ```
 
-2. **Add Scaffold to your vault.** This only creates a `Scaffold/` folder and a CSS snippet; your existing notes are not touched:
+2. **Double-click `Update Scaffold.cmd`** in the scaffold folder. The first time, it asks where your Obsidian vault is. Then it:
+   - builds Scaffold and runs its tests;
+   - adds a `Scaffold/` folder to your vault (your own notes are not touched) and checks its health;
+   - creates a **Scaffold Tutor** folder for Codex and marks it trusted in Codex (it keeps a backup of your Codex settings);
+   - opens Claude Desktop's installer for the Scaffold extension, shows you the skill file, and waits while you do the next step.
 
-   ```powershell
-   node dist\cli\index.js init "C:\path\to\your vault" --set-default
-   ```
+3. **In Claude Desktop** (two clicks only you can make):
+   - **Extension:** click **Install**, and choose your vault folder when it asks for **Obsidian vault**.
+   - **Skill:** in Settings → Capabilities, turn on code execution. Then under Skills, choose Upload skill and pick `scaffold-tutor-skill.zip` (the update window shows you where it is).
 
-   In Obsidian, go to Settings → Appearance → CSS snippets and enable **scaffold**. Then open `Scaffold/Home.md`.
+   Press Enter in the update window after each one.
 
-3. **Claude Desktop.** UI labels may differ slightly between versions.
-   - **Extension:** double-click `dist\scaffold-mcp.mcpb`, or use Settings → Extensions → Advanced settings → Install extension. When it asks for **Obsidian vault**, choose your vault folder. Keep the extension enabled.
-   - **Skill:** in Settings → Capabilities, turn on code execution. Then under Skills, choose Upload skill and pick `dist\scaffold-tutor-skill.zip`.
+4. **In Obsidian:** Settings → Appearance → CSS snippets → turn on **scaffold**, then open `Scaffold/Home.md`. The health check tells you if the snippet is still off.
 
-4. **Codex.** This command creates a "Scaffold Tutor" folder in your user folder, with the skill and Scaffold's tools connected to that folder only. Your other Codex projects are unchanged.
+Optional extras:
 
-   ```powershell
-   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\setup\tutor-folder.ps1 -Vault "C:\path\to\your vault"
-   ```
+- **Anki:** with Anki closed, run `scripts\setup\install-ankiconnect.ps1`. Or in Anki, go to Tools → Add-ons → Get Add-ons and enter code `2055492159`. While you study, keep Anki open. Cards you approve are added straight away. While Anki is closed, they wait in a queue and go in at the next sync.
+- **Claude Code:** run `claude` in the Scaffold Tutor folder and approve the `scaffold` server once. If the CLI is not signed in, run `scripts\setup\claude-login.ps1`.
 
-   In the Codex app, open that folder as a project and trust it when asked. Codex only loads a folder's settings once you trust it. With the CLI: `cd "$HOME\Scaffold Tutor"` and then `codex`.
+Use `Update Scaffold.cmd` or a normal terminal rather than an AI app's built-in terminal. Claude Desktop is a packaged app, and files it writes into AppData can end up in a private copy (DECISIONS.md D-88).
 
-5. **Claude Code (optional).** The same folder works: run `claude` in it and approve the `scaffold` server once. If the CLI is not signed in, run `scripts\setup\claude-login.ps1`.
+## Turning Scaffold on and off
 
-6. **Anki (optional).**
-   - **Install AnkiConnect:** with Anki closed, run `scripts\setup\install-ankiconnect.ps1`. Or in Anki, go to Tools → Add-ons → Get Add-ons and enter code `2055492159`.
-   - **While you study:** keep Anki open. Cards you approve are added straight away. While Anki is closed, they wait in a queue and go in at the next sync.
+- **Claude Desktop:** Settings → Extensions → **Scaffold tutor** is the switch. When it is off, your chats are ordinary chats. The skill stays installed but keeps out of the way (D-93).
+- **Codex:** Scaffold exists only inside the Scaffold Tutor folder. Your other projects never see it.
+
+## After a change
+
+Double-click `Update Scaffold.cmd` again (or run `npm run update`). If a test fails, it stops before Codex or Claude change. Otherwise it brings everything up to date and only asks you for what changed:
+
+- Reinstall the Claude Desktop extension, if the server changed.
+- Re-upload the skill, if the skill changed.
+
+**Where to make changes:**
+
+- **How the tutor behaves:** the Markdown files in `protocol/`. Never edit `CLAUDE.md`, `AGENTS.md` or `skills/`; they are generated from `protocol/`.
+- **How Scaffold decides** (planner, scoring, tools): `src/core/`.
+
+Or ask Claude Code or Codex to make the change in this repo; `CLAUDE.md` and `AGENTS.md` tell them the rules.
 
 ## A tutoring session
 
@@ -66,7 +78,8 @@ Ask in the Scaffold Tutor folder (see `references/batch-jobs.md` in the skill):
 ## Where to look
 
 - **Obsidian:** `Scaffold/Home.md` (dashboard), concept notes (status, misconceptions, visuals, questions), `Scaffold/Sessions/` (logs) and `Scaffold/Visuals/`. Interactive visuals open from their note in your browser.
-- **Terminal (optional):** `node dist\cli\index.js doctor`, plus `briefing`, `report weekly` and `anki sync`.
+- **Health check:** `npm run doctor`.
+- **Terminal (optional):** `node dist\cli\index.js briefing`, `report weekly` and `anki sync`.
 - **Monthly checks:**
   - Grading: `grade sample`, label the sheet in Obsidian, then `grade score`.
   - Questions: `q spotcheck`, then `q spotcheck --score`.

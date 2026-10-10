@@ -84,6 +84,12 @@ const SUITES: Suite[] = [
     commands: ['npx vitest run test/qq --reporter=verbose'],
   },
   {
+    id: 'V-SETUP',
+    title:
+      '`npm run update` helpers (D-94): Scaffold Tutor folder, Codex trust entry, Claude Desktop extension check (temporary folders only)',
+    commands: ['npx vitest run test/setup --reporter=verbose'],
+  },
+  {
     id: 'STATIC',
     title: 'Static checks: typecheck, lint, format, adapters, theme',
     commands: [

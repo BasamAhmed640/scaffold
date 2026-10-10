@@ -22,6 +22,8 @@
     "skills"
   ],
   "scripts": {
+    "update": "tsx scripts/setup/update.ts",
+    "doctor": "node dist/cli/index.js doctor",
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",

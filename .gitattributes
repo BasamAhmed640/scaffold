@@ -2,3 +2,4 @@
 *.png binary
 *.mcpb binary
 *.zip binary
+*.cmd text eol=crlf

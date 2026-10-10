@@ -169,32 +169,32 @@ Lines        : 100% ( 416/416 )
 <!-- suite:STATIC:begin -->
 ### Static checks: typecheck, lint, format, adapters, theme
 
-`npx tsc --noEmit` — exit 0 — 2026-10-10T14:22:25.423Z — win32 node v22.23.2
+`npx tsc --noEmit` — exit 0 — 2026-10-10T22:52:48.312Z — win32 node v22.23.2
 
 ```text
 (no output)
 ```
 
-`npx eslint .` — exit 0 — 2026-10-10T14:22:25.423Z — win32 node v22.23.2
+`npx eslint .` — exit 0 — 2026-10-10T22:52:48.312Z — win32 node v22.23.2
 
 ```text
 (no output)
 ```
 
-`npx prettier --check .` — exit 0 — 2026-10-10T14:22:25.423Z — win32 node v22.23.2
+`npx prettier --check .` — exit 0 — 2026-10-10T22:52:48.312Z — win32 node v22.23.2
 
 ```text
 Checking formatting...
 All matched files use Prettier code style!
 ```
 
-`npx tsx scripts/build-adapters.ts --check` — exit 0 — 2026-10-10T14:22:25.423Z — win32 node v22.23.2
+`npx tsx scripts/build-adapters.ts --check` — exit 0 — 2026-10-10T22:52:48.312Z — win32 node v22.23.2
 
 ```text
 adapters are current
 ```
 
-`npx tsx scripts/build-theme.ts --check` — exit 0 — 2026-10-10T14:22:25.423Z — win32 node v22.23.2
+`npx tsx scripts/build-theme.ts --check` — exit 0 — 2026-10-10T22:52:48.312Z — win32 node v22.23.2
 
 ```text
 visual-kit/theme.css is current (16395 bytes)
@@ -1045,3 +1045,32 @@ Overall: FAIL (11 scenario(s))
 ```
 
 <!-- suite:V-PED:end -->
+
+<!-- suite:V-SETUP:begin -->
+### `npm run update` helpers (D-94): Scaffold Tutor folder, Codex trust entry, Claude Desktop extension check (temporary folders only)
+
+`npx vitest run test/setup --reporter=verbose` — exit 0 — 2026-10-10T22:52:40.734Z — win32 node v22.23.2
+
+```text
+
+ RUN  v5.0.3 C:/Users/basam/src/scaffold
+
+ ✓ test/setup/install.test.ts > D-91 the Scaffold Tutor folder > holds both adapters, the skill for both apps and both MCP configs, without a byte-order mark 95ms
+ ✓ test/setup/install.test.ts > D-91 the Scaffold Tutor folder > a refresh replaces the skill, so files removed from it disappear 51ms
+ ✓ test/setup/install.test.ts > D-94 Codex trust entry > without Codex nothing is written 2ms
+ ✓ test/setup/install.test.ts > D-94 Codex trust entry > adds the entry once, after a backup, keeping the rest of the file 17ms
+ ✓ test/setup/install.test.ts > D-94 Codex trust entry > a path with an apostrophe gets a quoted key that is found again 21ms
+ ✓ test/setup/install.test.ts > D-94 Codex trust entry > leaves the owner's own choice alone 6ms
+ ✓ test/setup/install.test.ts > D-94 Claude Desktop extension check > finds the installed copy, its server hash, vault and switch, and ignores other extensions 26ms
+ ✓ test/setup/install.test.ts > D-94 Claude Desktop extension check > a folder hash changes when any file in it changes 18ms
+ ✓ test/setup/install.test.ts > D-94 Claude Desktop extension check > remembers the confirmed skill upload under local/ 9ms
+ ✓ test/setup/install.test.ts > D-94 npm run update options > reads --vault, --folder, --skip-tests and --no-wait; rejects the rest 2ms
+ ✓ test/setup/install.test.ts > D-94 npm run update options > a pasted path loses the quotes that "Copy as path" adds 1ms
+
+ Test Files  1 passed (1)
+      Tests  11 passed (11)
+   Start at  18:52:44
+   Duration  4.04s (import 59%, transform 33%, tests 8%)
+```
+
+<!-- suite:V-SETUP:end -->
