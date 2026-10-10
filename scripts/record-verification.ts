@@ -39,6 +39,15 @@ const SUITES: Suite[] = [
     commands: ['npx vitest run test/proto --reporter=verbose'],
   },
   {
+    id: 'V-PED-HARNESS',
+    title:
+      'V-PED harness: checker, scripted learner, fixtures and run loop (no model calls). The stub tutor is a negative control: it must pass the mechanical checks (TP-03, TP-07, TP-08) and fail the pedagogy ones (S2, S8, S10a, S10b, TP-17), so its run reports FAIL',
+    commands: [
+      'npx vitest run test/ped --reporter=verbose',
+      'npx tsx scripts/ped/run.ts --provider stub --run verification-stub',
+    ],
+  },
+  {
     id: 'V-ANKI',
     title: 'V-ANKI: the memory layer stays correct and bounded (mocked)',
     commands: ['npx vitest run test/anki --reporter=verbose'],

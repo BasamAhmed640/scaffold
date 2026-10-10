@@ -11,3 +11,10 @@ docs/VERIFICATION.md
 package-lock.json
 build
 schemas
+# Normative protocol text is verbatim from the spec (D3); never reformat it.
+protocol
+docs
+scripts/probes
+eslint.config.js
+local
+.tmp

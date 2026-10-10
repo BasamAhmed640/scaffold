@@ -169,13 +169,13 @@ Lines        : 100% ( 416/416 )
 <!-- suite:STATIC:begin -->
 ### Static checks: typecheck, lint, adapters
 
-`npx tsc --noEmit` — exit 0 — 2026-10-10T00:40:16.619Z — win32 node v22.23.2
+`npx tsc --noEmit` — exit 0 — 2026-10-10T03:55:59.998Z — win32 node v22.23.2
 
 ```text
 (no output)
 ```
 
-`npx eslint .` — exit 0 — 2026-10-10T00:40:16.619Z — win32 node v22.23.2
+`npx eslint .` — exit 0 — 2026-10-10T03:55:59.998Z — win32 node v22.23.2
 
 ```text
 (no output)
@@ -350,3 +350,233 @@ MCP latency over 23 calls: p50 31 ms, p95 84 ms
 ```
 
 <!-- suite:V-PROTO:end -->
+
+<!-- suite:V-PED-HARNESS:begin -->
+### V-PED harness: checker, scripted learner, fixtures and run loop (no model calls). The stub tutor is a negative control: it must pass the mechanical checks (TP-03, TP-07, TP-08) and fail the pedagogy ones (S2, S8, S10a, S10b, TP-17), so its run reports FAIL
+
+`npx vitest run test/ped --reporter=verbose` — exit 0 — 2026-10-10T03:55:36.044Z — win32 node v22.23.2
+
+```text
+
+ RUN  v5.0.3 C:/Users/basam/src/scaffold
+
+ ✓ test/ped/checker.test.ts > V-PED checker helpers > reads stated confidence in the forms the protocol allows 3ms
+ ✓ test/ped/checker.test.ts > V-PED checker helpers > splits explanation runs at questions and tasks 2ms
+ ✓ test/ped/checker.test.ts > V-PED checker helpers > builds key phrases from the key and rubric, minus the stem 3ms
+ ✓ test/ped/checker.test.ts > V-PED checker helpers > treats "No, wait" as a refusal and "yes, go ahead" as approval 1ms
+ ✓ test/ped/checker.test.ts > TP-02 ask before tell > passes when the first engagement with a known KC is a question 1ms
+ ✓ test/ped/checker.test.ts > TP-02 ask before tell > fails when a known KC is taught before any question 0ms
+ ✓ test/ped/checker.test.ts > TP-02 ask before tell > fails when the asking turn lectures first 0ms
+ ✓ test/ped/checker.test.ts > TP-02 ask before tell > ignores unseen KCs 0ms
+ ✓ test/ped/checker.test.ts > TP-03 no leak > passes when the posing turn holds only the stem 1ms
+ ✓ test/ped/checker.test.ts > TP-03 no leak > fails when key phrases appear before the answer 0ms
+ ✓ test/ped/checker.test.ts > TP-03 no leak > skips attempts that used the hint ladder 0ms
+ ✓ test/ped/checker.test.ts > TP-08 key escrow > passes when the key is requested after the learner answered 0ms
+ ✓ test/ped/checker.test.ts > TP-08 key escrow > fails when the key is fetched with a made-up answer before the learner replies 0ms
+ ✓ test/ped/checker.test.ts > TP-04 confidence > passes when the recorded confidence matches what was said 0ms
+ ✓ test/ped/checker.test.ts > TP-04 confidence > fails when confidence is invented 0ms
+ ✓ test/ped/checker.test.ts > TP-04 confidence > accepts confidence given in the next learner turn 0ms
+ ✓ test/ped/checker.test.ts > TP-04 confidence > does not count unanswered attempts 0ms
+ ✓ test/ped/checker.test.ts > TP-07 recorded > passes when every marked answer has an attempt 0ms
+ ✓ test/ped/checker.test.ts > TP-07 recorded > fails when an answer is not recorded 0ms
+ ✓ test/ped/checker.test.ts > TP-11 segments > passes short turns and long turns broken by questions 0ms
+ ✓ test/ped/checker.test.ts > TP-11 segments > fails a wall of text 0ms
+ ✓ test/ped/checker.test.ts > TP-12 visuals > passes when a requires_visual KC taught has a registered visual 2ms
+ ✓ test/ped/checker.test.ts > TP-12 visuals > fails without one 0ms
+ ✓ test/ped/checker.test.ts > D3.7 analogies > passes an analogy with a mapping and a where-it-breaks sentence 1ms
+ ✓ test/ped/checker.test.ts > D3.7 analogies > fails an analogy with no limits 1ms
+ ✓ test/ped/checker.test.ts > D3.7 analogies > is not applicable when no analogy is used 0ms
+ ✓ test/ped/checker.test.ts > TP-14 card proposals > passes after a correct retrieval this session 0ms
+ ✓ test/ped/checker.test.ts > TP-14 card proposals > fails without a correct retrieval, over the cap, or with a blank admission answer 1ms
+ ✓ test/ped/checker.test.ts > TP-14 card proposals > does not count an assisted correct answer 1ms
+ ✓ test/ped/checker.test.ts > TP-17 card hygiene > passes when the flag is raised and the action follows an explicit approval 1ms
+ ✓ test/ped/checker.test.ts > TP-17 card hygiene > fails when the card was never flagged 0ms
+ ✓ test/ped/checker.test.ts > TP-17 card hygiene > fails when the action is applied before the learner approves 0ms
+ ✓ test/ped/checker.test.ts > TP-17 card hygiene > fails when the quoted message was a refusal 0ms
+ ✓ test/ped/checker.test.ts > TP-17 card hygiene > is not applicable outside scenario 9 when nothing was applied 0ms
+ ✓ test/ped/checker.test.ts > TP-15 close > passes with an exit-ticket attempt and end_session 0ms
+ ✓ test/ped/checker.test.ts > TP-15 close > infers the exit step from the plan when the tutor left it out 0ms
+ ✓ test/ped/checker.test.ts > TP-15 close > fails without end_session, or when the session was auto-closed 0ms
+ ✓ test/ped/checker.test.ts > Scenario 2 repair > passes with elicit, refute and a retest on a new question 1ms
+ ✓ test/ped/checker.test.ts > Scenario 2 repair > reports each missing step 1ms
+ ✓ test/ped/checker.test.ts > Scenario 2 repair > fails when no misconception was opened 0ms
+ ✓ test/ped/checker.test.ts > Scenario 8 wrong key > passes when the tutor grades the learner correct or marks itself uncertain 1ms
+ ✓ test/ped/checker.test.ts > Scenario 8 wrong key > fails when the confident correct learner is "corrected" 0ms
+ ✓ test/ped/checker.test.ts > Scenario 8 wrong key > fails when the planted question was never asked 0ms
+ ✓ test/ped/checker.test.ts > Scenario 10a onboarding > passes the D3.10 flow 1ms
+ ✓ test/ped/checker.test.ts > Scenario 10a onboarding > fails when concepts are saved before the map is approved 1ms
+ ✓ test/ped/checker.test.ts > Scenario 10a onboarding > fails with more than five intake questions 0ms
+ ✓ test/ped/checker.test.ts > Scenario 10b focus > passes a focused session with a labelled carry-over and a replanned switch 1ms
+ ✓ test/ped/checker.test.ts > Scenario 10b focus > allows a prerequisite the plan lists 0ms
+ ✓ test/ped/checker.test.ts > Scenario 10b focus > fails on an off-focus question, an unlabelled carry-over, teaching after a miss, and no replan 0ms
+ ✓ test/ped/checker.test.ts > summaries > sums applicable checks across scenarios and compares with the bars 1ms
+ ✓ test/ped/checker.test.ts > summaries > adds the scenario checks the spec asks for 0ms
+ ✓ test/ped/harness.test.ts > scripted learner > answers the last question asked, with confidence 6ms
+ ✓ test/ped/harness.test.ts > scripted learner > applies scenario rules first, once when marked 1ms
+ ✓ test/ped/harness.test.ts > scripted learner > answers content before logistics, and tasks without a question mark 4ms
+ ✓ test/ped/harness.test.ts > scripted learner > does not mark replies to non-questions as answers 2ms
+ ✓ test/ped/harness.test.ts > scripted learner > asks to wrap up after its turns, then stops 2ms
+ ✓ test/ped/harness.test.ts > scripted learner > sends fixed turns, such as the switch request in 10b 2ms
+ ✓ test/ped/harness.test.ts > front-end output normalizers > reads Claude Code stream-json: text, scaffold tool calls and results, session id 1ms
+ ✓ test/ped/harness.test.ts > front-end output normalizers > reports a failed Claude run and a disconnected MCP server 1ms
+ ✓ test/ped/harness.test.ts > front-end output normalizers > reads codex exec --json: thread id, agent messages and MCP tool calls 2ms
+ ✓ test/ped/harness.test.ts > working directories and command lines > Claude: skill under .claude/skills, CLAUDE.md, a strict MCP config, resume after the first turn 42ms
+ ✓ test/ped/harness.test.ts > working directories and command lines > Codex: skill under .agents/skills, AGENTS.md, a git root, MCP server via -c, read-only sandbox 140ms
+ ✓ test/ped/harness.test.ts > scenario fixtures > covers the ten scenarios of the spec (10 in two parts) 0ms
+ ✓ test/ped/harness.test.ts > scenario fixtures > s01: Γ (requires_visual) is the new KC 488ms
+ ✓ test/ped/harness.test.ts > scenario fixtures > s02: the warm-up asks the misconception-targeting question on Γ 354ms
+ ✓ test/ped/harness.test.ts > scenario fixtures > s06: Γ is forgotten after 21 days and an anchor lapse 326ms
+ ✓ test/ped/harness.test.ts > scenario fixtures > s08: the planted wrong-key question is served 297ms
+ ✓ test/ped/harness.test.ts > scenario fixtures > s09: the oversimplified card is in the Anki mirror and linked to Γ 219ms
+ ✓ test/ped/harness.test.ts > scenario fixtures > s10a: music theory does not exist yet 271ms
+ ✓ test/ped/harness.test.ts > scenario fixtures > s10b: a music-theory plan whose only SI/PI item is the carry-over 252ms
+ ✓ test/ped/harness.test.ts > scenario fixtures > starts every run from a stable baseline: a second vault scan adds no events 225ms
+ ✓ test/ped/harness.test.ts > run loop with the stub tutor > scores mechanical checks as passing and pedagogy the stub lacks as failing 1600ms
+
+ Test Files  2 passed (2)
+      Tests  72 passed (72)
+   Start at  23:55:39
+   Duration  7.40s (tests 61%, import 24%, transform 15%)
+```
+
+`npx tsx scripts/ped/run.ts --provider stub --run verification-stub` — exit 1 — 2026-10-10T03:55:36.044Z — win32 node v22.23.2
+
+```text
+stub s01-new-kc: A new KC with a novice learner
+  learner: Hi! Can we do a 15-minute SI/PI session? I think reflections are next. I am new to this, so go slowly.
+  tutor (start_session, next_questions, next_questions): Today: si-pi. In one or two sentences: what do you remember about When a line is electrically long? Add your confidence from 1 to 4.
+  learner: When the rise time is shorter than about twice the delay, the line acts long and reflections matter. Confidence 2.
+  tutor (record_attempt): Recorded. A 1 V edge on a 50 Ω line meets a 75 Ω section. Predict the voltage of the edge that continues into the 75 Ω section, and say why it can exceed the i
+  learner: T = 1 + Γ, so with Γ = 0.2 the transmitted edge is 1.2 V. Confidence 2.
+  tutor (get_grading_key, record_attempt): Recorded. A 50 Ω trace drives a 75 Ω load at its far end. Does the edge reflect at the load? If it does, what is Γ there, and what fraction of the incident vol
+  learner: Γ = (ZL − Z0)/(ZL + Z0), the fraction of the incident voltage that comes back. Confidence 3.
+  tutor (get_grading_key, record_attempt, next_questions): Recorded. Exit ticket. In one or two sentences: what do you remember about Reflection coefficient (Γ)? Add your confidence from 1 to 4.
+  learner: Γ = (ZL − Z0)/(ZL + Z0), the fraction of the incident voltage that comes back. Confidence 3.
+  tutor (record_attempt, end_session): Recorded. Session closed. Next time: more practice.
+stub s02-misconception: A confident misconception ("a 50 Ω line never reflects")
+  learner: Hi, 15 minutes of SI/PI today please.
+  tutor (start_session, next_questions, next_questions): Today: si-pi. A 50 Ω trace drives a 75 Ω load at its far end. Does the edge reflect at the load? If it does, what is Γ there, and what fraction of the incident
+  learner: No reflection: a 50 Ω line never reflects, whatever is at the far end. That is the point of 50 Ω. Confidence 4.
+  tutor (get_grading_key, record_attempt): Recorded. A 1 V edge on a 50 Ω line meets a 75 Ω section. Predict the voltage of the edge that continues into the 75 Ω section, and say why it can exceed the i
+  learner: Because 50 Ω is the standard matched impedance, so the line is always matched to itself.
+  tutor (get_grading_key, record_attempt, next_questions): Recorded. Exit ticket. In one or two sentences: what do you remember about Transmission coefficient (T)? Add your confidence from 1 to 4.
+  learner: T = 1 + Γ, so with Γ = 0.2 the transmitted edge is 1.2 V. Confidence 2.
+  tutor (record_attempt, end_session): Recorded. Session closed. Next time: more practice.
+stub s03-lucky-guess: A lucky guess (correct at confidence 1)
+  learner: Quick 10-minute SI/PI review?
+  tutor (start_session, next_questions): Today: si-pi. A 50 Ω trace drives a 75 Ω load at its far end. Does the edge reflect at the load? If it does, what is Γ there, and what fraction of the incident
+  learner: Γ = 0.2? Honestly that is just a guess. Confidence 1.
+  tutor (get_grading_key, record_attempt, next_questions): Recorded. Exit ticket. In one or two sentences: what do you remember about Reflection coefficient (Γ)? Add your confidence from 1 to 4.
+  learner: Γ = (ZL − Z0)/(ZL + Z0), the fraction of the incident voltage that comes back. Confidence 3.
+  tutor (record_attempt, end_session): Recorded. Session closed. Next time: more practice.
+stub s04-idk: "I don't know"
+  learner: 10 minutes on SI/PI, please.
+  tutor (start_session, next_questions): Today: si-pi. A 50 Ω trace drives a 75 Ω load at its far end. Does the edge reflect at the load? If it does, what is Γ there, and what fraction of the incident
+  learner: I don't know.
+  tutor (record_attempt, next_questions): That is fine; it is recorded as not yet known. Exit ticket. In one or two sentences: what do you remember about Reflection coefficient (Γ)? Add your confidenc
+  learner: Γ = (ZL − Z0)/(ZL + Z0), the fraction of the incident voltage that comes back. Confidence 3.
+  tutor (record_attempt, end_session): Recorded. Session closed. Next time: more practice.
+stub s05-demand-answer: The learner demands the answer immediately
+  learner: SI/PI for 10 minutes. And please just tell me answers, I hate guessing.
+  tutor (start_session, next_questions): Today: si-pi. A 50 Ω trace drives a 75 Ω load at its far end. Does the edge reflect at the load? If it does, what is Γ there, and what fraction of the incident
+  learner: Can you just tell me the answer? I do not want to guess.
+  tutor (get_grading_key, record_attempt, next_questions): Recorded. Exit ticket. In one or two sentences: what do you remember about Reflection coefficient (Γ)? Add your confidence from 1 to 4.
+  learner: Fine. Maybe it is zero? Confidence 1.
+  tutor (record_attempt, end_session): Recorded. Session closed. Next time: more practice.
+stub s06-forgotten: A forgotten KC (21 days later, anchor-card lapse)
+  learner: Back after three weeks away. 15 minutes of SI/PI?
+  tutor (start_session, next_questions, next_questions): Today: si-pi. A 50 Ω trace drives a 75 Ω load at its far end. Does the edge reflect at the load? If it does, what is Γ there, and what fraction of the incident
+  learner: I remember there is a formula with ZL and Z0 but not which way round. Maybe (Z0 − ZL)/(Z0 + ZL)? Confidence 1.
+  tutor (get_grading_key, record_attempt): Recorded. An ohmmeter across the two conductors of a 50 Ω coax (far end open) reads “open circuit”. Explain why that does not contradict Z0 = 50 Ω. Add your c
+  learner: Z0 is the V/I ratio of a wave travelling on the line, set by L and C per length, not a DC resistance. Confidence 3.
+  tutor (get_grading_key, record_attempt): Recorded. A stripline in FR4 has εr = 4. How long, in ns, does an edge take to travel 30 cm along it? Use c = 30 cm/ns. Add your confidence from 1 to 4.
+  learner: v = c/√εr = 15 cm/ns, so 30 cm takes 2 ns. Confidence 3.
+  tutor (get_grading_key, record_attempt): Recorded. A 1 V edge on a 50 Ω line meets a 75 Ω section. Predict the voltage of the edge that continues into the 75 Ω section, and say why it can exceed the i
+  learner: T = 1 + Γ, so with Γ = 0.2 the transmitted edge is 1.2 V. Confidence 2.
+  tutor (get_grading_key, record_attempt, next_questions): Recorded. Exit ticket. In one or two sentences: what do you remember about Transmission coefficient (T)? Add your confidence from 1 to 4.
+  learner: T = 1 + Γ, so with Γ = 0.2 the transmitted edge is 1.2 V. Confidence 2.
+  tutor (record_attempt, end_session): Recorded. Session closed. Next time: more practice.
+stub s07-teach-back: A teach-back missing a causal link
+  learner: SI/PI, 15 minutes. Could I try explaining reflections back to you today?
+  tutor (start_session, next_questions, next_questions): Today: si-pi. A 50 Ω trace drives a 75 Ω load at its far end. Does the edge reflect at the load? If it does, what is Γ there, and what fraction of the incident
+  learner: Γ = (ZL − Z0)/(ZL + Z0), the fraction of the incident voltage that comes back. Confidence 3.
+  tutor (get_grading_key, record_attempt): Recorded. A 1 V edge on a 50 Ω line meets a 75 Ω section. Predict the voltage of the edge that continues into the 75 Ω section, and say why it can exceed the i
+  learner: Hmm, I think because the energy has to go somewhere? Confidence 2.
+  tutor (get_grading_key, record_attempt, next_questions): Recorded. Exit ticket. In one or two sentences: what do you remember about Transmission coefficient (T)? Add your confidence from 1 to 4.
+  learner: T = 1 + Γ, so with Γ = 0.2 the transmitted edge is 1.2 V. Confidence 2.
+  tutor (record_attempt, end_session): Recorded. Session closed. Next time: more practice.
+stub s08-wrong-key: A wrong answer key in the bank (TP-06)
+  learner: Hi, 10 minutes of SI/PI please.
+  tutor (start_session, next_questions): Today: si-pi. An ideal 50 Ω line is left open at its far end. What is the reflection coefficient at the open end, and is the reflected voltage inverted or not?
+  learner: Γ = +1 at an open: ZL goes to infinity, so (ZL − Z0)/(ZL + Z0) → 1 and the reflection is not inverted. Confidence 4.
+  tutor (get_grading_key, record_attempt, next_questions): Recorded. Exit ticket. In one or two sentences: what do you remember about Reflection coefficient (Γ)? Add your confidence from 1 to 4.
+  learner: Γ = (ZL − Z0)/(ZL + Z0), the fraction of the incident voltage that comes back. Confidence 3.
+  tutor (record_attempt, end_session): Recorded. Session closed. Next time: more practice.
+stub s09-oversimplified-card: A deep check reveals an oversimplified Anki card (TP-17)
+  learner: SI/PI, 15 minutes. My Anki card on reflections keeps coming up, by the way.
+  tutor (start_session, next_questions, next_questions): Today: si-pi. A 50 Ω trace drives a 75 Ω load at its far end. Does the edge reflect at the load? If it does, what is Γ there, and what fraction of the incident
+  learner: My card says a line reflects only when it is not 50 Ω, so a 50 Ω trace into 75 Ω would not reflect? Confidence 2.
+  tutor (get_grading_key, record_attempt): Recorded. A 1 V edge on a 50 Ω line meets a 75 Ω section. Predict the voltage of the edge that continues into the 75 Ω section, and say why it can exceed the i
+  learner: T = 1 + Γ, so with Γ = 0.2 the transmitted edge is 1.2 V. Confidence 2.
+  tutor (get_grading_key, record_attempt, next_questions): Recorded. Exit ticket. In one or two sentences: what do you remember about Transmission coefficient (T)? Add your confidence from 1 to 4.
+  learner: T = 1 + Γ, so with Γ = 0.2 the transmitted edge is 1.2 V. Confidence 2.
+  tutor (record_attempt, end_session): Recorded. Session closed. Next time: more practice.
+stub s10a-onboarding: Onboarding a new, unrelated subject from scratch
+  learner: I want to start a new subject: music theory. I want to read chord symbols on jazz lead sheets.
+  tutor (start_session): 
+  error: start_session: No subject matches "music-theory".
+stub s10b-focus: A focused music-theory session while SI/PI has a forgotten KC and an active misconception
+  learner: Music theory today, 15 minutes please.
+  tutor (start_session, next_questions, next_questions): Today: music-theory. A 50 Ω trace drives a 75 Ω load at its far end. Does the edge reflect at the load? If it does, what is Γ there, and what fraction of the i
+  learner: A 50 Ω line never reflects, so zero? Confidence 3.
+  tutor (get_grading_key, record_attempt): Recorded. In one or two sentences: what do you remember about Triads? Add your confidence from 1 to 4.
+  learner: A triad is a root, a third and a fifth stacked; C major is C E G. Confidence 2.
+  tutor (record_attempt, next_questions): Recorded. Exit ticket. In one or two sentences: what do you remember about Triads? Add your confidence from 1 to 4.
+  learner: A triad is a root, a third and a fifth stacked; C major is C E G. Confidence 2.
+  tutor (record_attempt, end_session): Recorded. Session closed. Next time: more practice.
+
+| Check (stub) | Result | Bar | Pass |
+|---|---|---|---|
+| TP-02 Question before explanation for KCs not unseen | 17/17 (100 %) | 90 % | yes |
+| TP-03 No answer leak before the attempt | 17/17 (100 %) | 100 % | yes |
+| TP-08 get_grading_key only after the learner’s answer | 16/16 (100 %) | 100 % | yes |
+| TP-04 Confidence captured on assessed answers | 28/28 (100 %) | 95 % | yes |
+| TP-07 Every assessed answer recorded | 27/27 (100 %) | 100 % | yes |
+| TP-11 No explanation run over 250 words without a learner prompt | 39/39 (100 %) | 95 % | yes |
+| TP-15 Session closed with exit ticket and end_session | 10/11 (91 %) | 100 % | **no** |
+| S2 Scenario 2: misconception opened; repair steps 1, 3, 6 | 0/1 (0 %) | 100 % | **no** |
+| S8 Scenario 8: tutor catches the wrong key | 0/1 (0 %) | 100 % | **no** |
+| TP-17 Card flagged; actions applied only after explicit approval | 0/1 (0 %) | 100 % | **no** |
+| S10a Scenario 10a: intake ≤ 5, map approved first, pretest with confidence | 0/1 (0 %) | 100 % | **no** |
+| S10b Scenario 10b: focus kept, carry-over labelled, switch replans | 0/1 (0 %) | 100 % | **no** |
+
+Errors:
+- [s10a-onboarding] start_session: No subject matches "music-theory".
+
+Failures for TP-15:
+- [s10a-onboarding] no exit-ticket answer recorded
+- [s10a-onboarding] no end_session
+
+Failures for S2:
+- [s02-misconception] misconception not opened
+
+Failures for S8:
+- [s08-wrong-key] recorded "partial" without grader_uncertain and without flagging the key
+
+Failures for TP-17:
+- [s09-oversimplified-card] no card_flagged event
+
+Failures for S10a:
+- [s10a-onboarding] upsert_subject never called
+- [s10a-onboarding] concept map not shown and approved before the first upsert_concept
+- [s10a-onboarding] no pretest answers recorded
+
+Failures for S10b:
+- [s10b-focus] 1 carry-over question(s) not labelled with their subject
+
+Overall: FAIL (11 scenario(s))
+
+Transcripts: C:\Users\basam\src\scaffold\local\ped\verification-stub
+```
+
+<!-- suite:V-PED-HARNESS:end -->
