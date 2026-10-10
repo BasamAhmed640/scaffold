@@ -1,4 +1,5 @@
 import { runCli } from '../../src/cli/run.js';
+import { tempDir } from './vault.js';
 
 export interface CliResult {
   code: number;
@@ -19,8 +20,13 @@ export async function cli(
 ): Promise<CliResult> {
   const out: string[] = [];
   const err: string[] = [];
+  // A fresh user-config folder per call, so tests never read or write the owner's real
+  // %APPDATA%\scaffold\config.json (ARC-12; D-95).
+  const config = tempDir('scaffold-cfg-');
   const env = {
     ...process.env,
+    APPDATA: config,
+    XDG_CONFIG_HOME: config,
     SCAFFOLD_VAULT: vault,
     SCAFFOLD_NOW: opts.now ?? '2026-10-09T18:00:00-04:00',
     SCAFFOLD_TZ: 'America/New_York',

@@ -27,8 +27,7 @@
     "user_config": "<USER_CONFIG>",
     "next_steps": [
       "Open the folder as an Obsidian vault, then run `scaffold init` again to install the CSS snippet.",
-      "Run `scaffold doctor` to check Anki and the vault.",
-      "The default vault is still C:\\Users\\basam\\AppData\\Local\\Temp\\scaffold-test-P7xEUU\\New Vault; pass --vault or run `scaffold init --set-default`."
+      "Run `scaffold doctor` to check Anki and the vault."
     ]
   },
   "warnings": [],

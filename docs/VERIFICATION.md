@@ -249,34 +249,34 @@ visual-kit/theme.css is current (16395 bytes)
 <!-- suite:V-CLI:begin -->
 ### V-CLI: CLI keeps its contracts
 
-`npx vitest run test/cli --reporter=verbose` — exit 0 — 2026-10-10T14:20:26.540Z — win32 node v22.23.2
+`npx vitest run test/cli --reporter=verbose` — exit 0 — 2026-10-10T23:04:11.078Z — win32 node v22.23.2
 
 ```text
 
  RUN  v5.0.3 C:/Users/basam/src/scaffold
 
- ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > init 28ms
- ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > doctor 36ms
- ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > subject list / get / dashboard 152ms
- ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > kc get / list 19ms
- ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > briefing / plan, including a focus that does not exist and a paused one 206ms
- ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > mc list 13ms
- ✓ test/cli/bin.test.ts > scaffold binary > --version, doctor --json, and exit code 1 on failure 2361ms
- ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > a full session: start → next → hint → key → record → taught → teach-back → end 883ms
- ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > q add / get / lint / review (cross-model) / pending 237ms
- ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > numeric answers are graded by code (REL-02) 82ms
- ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > attempt override, mc open, validate, rebuild, report weekly, call 326ms
- ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > subject add / kc add / kc update 279ms
- ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > anki sync (offline) / status / stack / actions / flag / propose, scope set (D8 Anki rows) 95ms
- ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > grade sample / q audit / q spotcheck (+ --score) (M8: V-GRADE, V-QQ) 83ms
- ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > visual plot / add (file and --plot) / get / open, check with nothing to check (D5 rows) 194ms
- ✓ test/cli/cli.test.ts > human output > prints readable text by default and one line + next step on failure (REL-03) 72ms
+ ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > init 36ms
+ ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > doctor 39ms
+ ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > subject list / get / dashboard 154ms
+ ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > kc get / list 32ms
+ ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > briefing / plan, including a focus that does not exist and a paused one 163ms
+ ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > mc list 6ms
+ ✓ test/cli/bin.test.ts > scaffold binary > --version, doctor --json, and exit code 1 on failure 2694ms
+ ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > a full session: start → next → hint → key → record → taught → teach-back → end 696ms
+ ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > q add / get / lint / review (cross-model) / pending 247ms
+ ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > numeric answers are graded by code (REL-02) 81ms
+ ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > attempt override, mc open, validate, rebuild, report weekly, call 301ms
+ ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > subject add / kc add / kc update 332ms
+ ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > anki sync (offline) / status / stack / actions / flag / propose, scope set (D8 Anki rows) 100ms
+ ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > grade sample / q audit / q spotcheck (+ --score) (M8: V-GRADE, V-QQ) 115ms
+ ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > visual plot / add (file and --plot) / get / open, check with nothing to check (D5 rows) 308ms
+ ✓ test/cli/cli.test.ts > human output > prints readable text by default and one line + next step on failure (REL-03) 89ms
  ✓ test/cli/cli.test.ts > human output > a missing vault fails with a next step, never a hang 2ms
 
  Test Files  2 passed (2)
       Tests  17 passed (17)
-   Start at  10:20:29
-   Duration  5.46s (tests 64%, import 24%, transform 12%)
+   Start at  19:04:14
+   Duration  5.87s (tests 62%, import 25%, transform 13%)
 ```
 
 <!-- suite:V-CLI:end -->

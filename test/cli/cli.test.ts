@@ -34,8 +34,10 @@ describe('V-CLI golden JSON (IF-01, IF-02)', () => {
     const target = path.join(dir, 'New Vault');
     const r = await cli(vault, ['init', target]);
     expect(r.code).toBe(0);
-    const data = normalize(r.json, target) as { data: { created: string[] } };
+    const data = normalize(r.json, target) as { data: { created: string[]; user_config: string } };
     expect(data.data.created).toContain('Scaffold/Home.md');
+    // D-95: init remembers the vault in a throwaway config, never in the owner's real one
+    expect(path.basename(path.dirname(path.dirname(data.data.user_config)))).toMatch(/^scaffold-cfg-/);
     await expect(
       JSON.stringify({ ...data, data: { ...data.data, user_config: '<USER_CONFIG>' } }, null, 2),
     ).toMatchFileSnapshot(golden('init'));

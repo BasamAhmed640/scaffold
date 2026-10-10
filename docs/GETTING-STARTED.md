@@ -15,10 +15,10 @@ The ChatGPT website and app cannot reach programs on your computer, so your Chat
 1. **Install** [Node.js](https://nodejs.org) 22 or later and [Git](https://git-scm.com). Then get Scaffold:
 
    ```powershell
-   git clone https://github.com/BasamAhmed640/scaffold; cd scaffold; npm install
+   git clone https://github.com/BasamAhmed640/scaffold
    ```
 
-2. **Double-click `Update Scaffold.cmd`** in the scaffold folder. The first time, it asks where your Obsidian vault is. Then it:
+2. **Double-click `Update Scaffold.cmd`** in the scaffold folder. The first time, it installs Scaffold's dependencies and asks where your Obsidian vault is. Then it:
    - builds Scaffold and runs its tests;
    - adds a `Scaffold/` folder to your vault (your own notes are not touched) and checks its health;
    - creates a **Scaffold Tutor** folder for Codex and marks it trusted in Codex (it keeps a backup of your Codex settings);
@@ -37,7 +37,7 @@ Optional extras:
 - **Anki:** with Anki closed, run `scripts\setup\install-ankiconnect.ps1`. Or in Anki, go to Tools → Add-ons → Get Add-ons and enter code `2055492159`. While you study, keep Anki open. Cards you approve are added straight away. While Anki is closed, they wait in a queue and go in at the next sync.
 - **Claude Code:** run `claude` in the Scaffold Tutor folder and approve the `scaffold` server once. If the CLI is not signed in, run `scripts\setup\claude-login.ps1`.
 
-Use `Update Scaffold.cmd` or a normal terminal rather than an AI app's built-in terminal. Claude Desktop is a packaged app, and files it writes into AppData can end up in a private copy (DECISIONS.md D-88).
+Use `Update Scaffold.cmd` or a normal terminal rather than an AI app's built-in terminal. Claude Desktop is a packaged app, and files it writes into AppData can end up in a private copy (DECISIONS.md D-88). In PowerShell, type `npm.cmd` instead of `npm` (for example `npm.cmd run update`). Windows blocks `npm` there unless scripts are allowed, and the `.cmd` form avoids that without changing any security setting.
 
 ## Turning Scaffold on and off
 
@@ -46,7 +46,7 @@ Use `Update Scaffold.cmd` or a normal terminal rather than an AI app's built-in 
 
 ## After a change
 
-Double-click `Update Scaffold.cmd` again (or run `npm run update`). If a test fails, it stops before Codex or Claude change. Otherwise it brings everything up to date and only asks you for what changed:
+Double-click `Update Scaffold.cmd` again (or run `npm.cmd run update`). If a test fails, it stops before Codex or Claude change. Otherwise it brings everything up to date and only asks you for what changed:
 
 - Reinstall the Claude Desktop extension, if the server changed.
 - Re-upload the skill, if the skill changed.
@@ -78,7 +78,7 @@ Ask in the Scaffold Tutor folder (see `references/batch-jobs.md` in the skill):
 ## Where to look
 
 - **Obsidian:** `Scaffold/Home.md` (dashboard), concept notes (status, misconceptions, visuals, questions), `Scaffold/Sessions/` (logs) and `Scaffold/Visuals/`. Interactive visuals open from their note in your browser.
-- **Health check:** `npm run doctor`.
+- **Health check:** `npm.cmd run doctor`.
 - **Terminal (optional):** `node dist\cli\index.js briefing`, `report weekly` and `anki sync`.
 - **Monthly checks:**
   - Grading: `grade sample`, label the sheet in Obsidian, then `grade score`.

@@ -7,10 +7,10 @@ Scaffold itself never calls an AI and never goes online (except AnkiConnect on 1
 ## Quick start (Windows)
 
 ```powershell
-git clone https://github.com/BasamAhmed640/scaffold; cd scaffold; npm install
+git clone https://github.com/BasamAhmed640/scaffold
 ```
 
-Then double-click **`Update Scaffold.cmd`**. It asks for your vault once, then sets up your vault, Codex and Claude Desktop, and tells you the two clicks Claude Desktop needs from you. Run it again after any change. Full guide: [docs/GETTING-STARTED.md](docs/GETTING-STARTED.md).
+Then double-click **`Update Scaffold.cmd`** in the new `scaffold` folder (needs Node.js 22+). It installs what it needs, asks for your vault once, then sets up your vault, Codex and Claude Desktop, and tells you the two clicks Claude Desktop needs from you. Run it again after any change. Full guide: [docs/GETTING-STARTED.md](docs/GETTING-STARTED.md).
 
 ## What's inside
 
