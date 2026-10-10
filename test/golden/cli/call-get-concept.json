@@ -1,0 +1,48 @@
+{
+  "ok": true,
+  "data": {
+    "id": "kc-mt-intervals",
+    "title": "Intervals",
+    "subject": "music-theory",
+    "kind": "concept",
+    "prerequisites": [],
+    "confusable_with": [],
+    "requires_visual": false,
+    "volatility": "stable",
+    "review_by": null,
+    "anki_note_ids": [],
+    "visuals": [],
+    "sources": [],
+    "status": "forgotten",
+    "misconception_active": false,
+    "misconceptions": [],
+    "mastery": "0 of 3 conditions met",
+    "memory": {
+      "stability_days": 0.81,
+      "retrievability": 0.648,
+      "next_check": "2026-09-27"
+    },
+    "needs_check": false,
+    "recent_attempts": [
+      {
+        "date": "2026-09-10",
+        "qtype": "recall",
+        "grade": "correct",
+        "confidence": 3,
+        "assisted": false
+      },
+      {
+        "date": "2026-09-25",
+        "qtype": "recall",
+        "grade": "incorrect",
+        "confidence": 3,
+        "assisted": false
+      }
+    ],
+    "questions": [
+      "Q-0006"
+    ]
+  },
+  "warnings": [],
+  "errors": []
+}

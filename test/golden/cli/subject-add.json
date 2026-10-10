@@ -1,0 +1,31 @@
+{
+  "ok": true,
+  "data": {
+    "created": true,
+    "subject": {
+      "id": "linear-algebra",
+      "title": "Linear algebra",
+      "aliases": [
+        "linalg"
+      ],
+      "goals": [
+        "eigenvalues for S-parameters"
+      ],
+      "scope": "active",
+      "anki_minutes": "auto",
+      "anki_deck": "Scaffold::Linear algebra"
+    },
+    "note": "Scaffold/Subjects/linear-algebra.md",
+    "anki_deck": {
+      "name": "Scaffold::Linear algebra",
+      "status": "queued"
+    },
+    "reminders": [
+      "Set the daily new-card limit of \"Scaffold::Linear algebra\" in Anki (deck options → This deck) (ANK-01)."
+    ]
+  },
+  "warnings": [
+    "Anki deck \"Scaffold::Linear algebra\" queued; it is created on the next `anki sync` (ANK-09)."
+  ],
+  "errors": []
+}

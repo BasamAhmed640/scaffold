@@ -1,3 +1,4 @@
+import { keyHash } from '../../src/core/service/bank.js';
 import { LogBuilder } from '../helpers/builder.js';
 
 // Synthetic fixture: two unrelated active subjects (SI/PI, music theory) and one paused (Spanish).
@@ -15,23 +16,19 @@ export function questionEvent(
   stem: string,
   opts: { verdict?: 'ok' | 'pending' | 'fix'; misconception?: string; by?: string; reviewer?: string } = {},
 ): void {
-  b.push({
-    type: 'question_added',
-    question_id: id,
-    key_hash: `key-${id}`,
-    question: {
-      kc_ids: kc,
-      qtype,
-      format: 'free',
-      difficulty: 2,
-      stem,
-      answer_key: 'see rubric',
-      rubric: [{ id: 'R1', proposition: 'states the key relation' }],
-      hints: ['H1', 'H2', 'H3', 'H4'],
-      misconception_targets: opts.misconception ? [{ option_or_belief: BELIEF_50, misconception_id: opts.misconception }] : [],
-      created_by: opts.by ?? 'claude-desktop',
-    },
-  });
+  const question = {
+    kc_ids: kc,
+    qtype,
+    format: 'free',
+    difficulty: 2,
+    stem,
+    answer_key: 'see rubric',
+    rubric: [{ id: 'R1', proposition: 'states the key relation' }],
+    hints: ['H1', 'H2', 'H3', 'H4'],
+    misconception_targets: opts.misconception ? [{ option_or_belief: BELIEF_50, misconception_id: opts.misconception }] : [],
+    created_by: opts.by ?? 'claude-desktop',
+  };
+  b.push({ type: 'question_added', question_id: id, key_hash: keyHash(question), question });
   if ((opts.verdict ?? 'ok') !== 'pending') {
     b.push({
       type: 'question_reviewed',

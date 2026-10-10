@@ -1,0 +1,11 @@
+{
+  "ok": false,
+  "data": null,
+  "warnings": [],
+  "errors": [
+    {
+      "code": "unknown_attempt",
+      "message": "Unknown attempt A000000000000000."
+    }
+  ]
+}

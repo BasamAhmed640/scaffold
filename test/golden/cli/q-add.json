@@ -1,0 +1,15 @@
+{
+  "ok": true,
+  "data": {
+    "question_id": "Q-0008",
+    "note": "Scaffold/Questions/Q-0008.md",
+    "lint": {
+      "ok": true,
+      "errors": [],
+      "warnings": []
+    },
+    "review": "pending: needs a cross-model review (QB-04) before the planner serves it"
+  },
+  "warnings": [],
+  "errors": []
+}

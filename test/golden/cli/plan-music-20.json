@@ -1,0 +1,87 @@
+{
+  "ok": true,
+  "data": {
+    "session_id": null,
+    "change": "Plan: music-theory, 20 of 20 min.",
+    "plan": {
+      "status": "ok",
+      "focus": {
+        "subject": "music-theory",
+        "why": "named by learner"
+      },
+      "minutes_requested": 20,
+      "carryover": 1,
+      "minutes_planned": 20,
+      "steps": [
+        {
+          "step": "warmup",
+          "minutes": 2,
+          "items": [
+            {
+              "kc": "kc-mt-intervals",
+              "subject": "music-theory",
+              "why": "forgotten (missed 3+ days after the last success)",
+              "question_id": null
+            },
+            {
+              "kc": "kc-mt-major-scale",
+              "subject": "music-theory",
+              "why": "needs check (Anki leech)",
+              "question_id": null
+            }
+          ]
+        },
+        {
+          "step": "new",
+          "minutes": 13,
+          "items": [
+            {
+              "kc": "kc-mt-key-signatures",
+              "subject": "music-theory",
+              "why": "frontier",
+              "question_id": null
+            },
+            {
+              "kc": "kc-mt-triads",
+              "subject": "music-theory",
+              "why": "frontier",
+              "question_id": null
+            }
+          ]
+        },
+        {
+          "step": "exit",
+          "minutes": 5,
+          "items": [
+            {
+              "kc": "kc-mt-key-signatures",
+              "subject": "music-theory",
+              "why": "exit ticket: from today",
+              "question_id": null
+            },
+            {
+              "kc": "kc-mt-triads",
+              "subject": "music-theory",
+              "why": "exit ticket: from today",
+              "question_id": null
+            },
+            {
+              "kc": "kc-mt-intervals",
+              "subject": "music-theory",
+              "why": "exit ticket: older item",
+              "question_id": null
+            }
+          ]
+        }
+      ],
+      "trimmed": [
+        "carry-over kc-si-reflection-coefficient (si-pi)"
+      ],
+      "notes": [
+        "7 item(s) have no reviewed bank question: improvise and record question_text (QB-04)."
+      ]
+    }
+  },
+  "warnings": [],
+  "errors": []
+}

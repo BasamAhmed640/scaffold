@@ -1,5 +1,5 @@
 import {
-  appendFileSync,
+  fsyncSync,
   closeSync,
   copyFileSync,
   existsSync,
@@ -11,6 +11,7 @@ import {
   rmSync,
   statSync,
   writeFileSync,
+  writeSync,
 } from 'node:fs';
 import path from 'node:path';
 import { ScaffoldError } from '../envelope.js';
@@ -157,7 +158,14 @@ export class EventLog {
           }
         }
       }
-      appendFileSync(this.file, prefix + fresh.map((e) => JSON.stringify(e)).join('\n') + '\n', 'utf8');
+      // REL-01: the answer is on disk (fsync) before the call returns.
+      const fd = openSync(this.file, 'a');
+      try {
+        writeSync(fd, prefix + fresh.map((e) => JSON.stringify(e)).join('\n') + '\n', null, 'utf8');
+        fsyncSync(fd);
+      } finally {
+        closeSync(fd);
+      }
       this.cache = null;
       if (this.schemaVersion() === null) writeFileSync(this.versionFile, `${SCHEMA_VERSION}\n`);
       return fresh;

@@ -1,0 +1,91 @@
+{
+  "ok": true,
+  "data": {
+    "session_id": null,
+    "change": "Plan: linear-algebra, 15.5 of 30 min.",
+    "plan": {
+      "status": "ok",
+      "focus": {
+        "subject": "linear-algebra",
+        "why": "named by learner"
+      },
+      "minutes_requested": 30,
+      "carryover": 2,
+      "minutes_planned": 15.5,
+      "steps": [
+        {
+          "step": "pretest",
+          "minutes": 2,
+          "items": [
+            {
+              "kc": "kc-la-vectors",
+              "subject": "linear-algebra",
+              "why": "pretest (errors are expected and useful)",
+              "question_id": null
+            },
+            {
+              "kc": "kc-la-matrices",
+              "subject": "linear-algebra",
+              "why": "pretest (errors are expected and useful)",
+              "question_id": null
+            }
+          ]
+        },
+        {
+          "step": "carryover",
+          "minutes": 2,
+          "items": [
+            {
+              "kc": "kc-si-transmission-coefficient",
+              "subject": "si-pi",
+              "why": "carry-over from si-pi: forgotten (missed 3+ days after the last success)",
+              "question_id": null
+            },
+            {
+              "kc": "kc-mt-intervals",
+              "subject": "music-theory",
+              "why": "carry-over from music-theory: forgotten (missed 3+ days after the last success)",
+              "question_id": null
+            }
+          ]
+        },
+        {
+          "step": "new",
+          "minutes": 6.5,
+          "items": [
+            {
+              "kc": "kc-la-vectors",
+              "subject": "linear-algebra",
+              "why": "frontier",
+              "question_id": null
+            }
+          ]
+        },
+        {
+          "step": "exit",
+          "minutes": 5,
+          "items": [
+            {
+              "kc": "kc-la-vectors",
+              "subject": "linear-algebra",
+              "why": "exit ticket: from today",
+              "question_id": null
+            },
+            {
+              "kc": "kc-la-matrices",
+              "subject": "linear-algebra",
+              "why": "exit ticket: from today",
+              "question_id": null
+            }
+          ]
+        }
+      ],
+      "trimmed": [],
+      "notes": [
+        "7 item(s) have no reviewed bank question: improvise and record question_text (QB-04)."
+      ]
+    }
+  },
+  "warnings": [],
+  "errors": []
+}

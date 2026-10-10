@@ -1,0 +1,58 @@
+{
+  "ok": true,
+  "data": {
+    "subjects": [
+      {
+        "id": "music-theory",
+        "title": "Music theory",
+        "aliases": [
+          "music"
+        ],
+        "scope": "active",
+        "kcs": 4,
+        "due": 2,
+        "solid": 0,
+        "fragile": 1,
+        "forgotten": 1,
+        "misconceptions": 0,
+        "last_session": "2026-09-25",
+        "anki_deck": "Scaffold::Music theory"
+      },
+      {
+        "id": "si-pi",
+        "title": "SI/PI",
+        "aliases": [
+          "signal integrity",
+          "sipi"
+        ],
+        "scope": "active",
+        "kcs": 8,
+        "due": 4,
+        "solid": 2,
+        "fragile": 2,
+        "forgotten": 2,
+        "misconceptions": 1,
+        "last_session": "2026-09-20",
+        "anki_deck": "Scaffold::SI/PI"
+      },
+      {
+        "id": "spanish",
+        "title": "Spanish",
+        "aliases": [
+          "español"
+        ],
+        "scope": "paused",
+        "kcs": 2,
+        "due": 1,
+        "solid": 0,
+        "fragile": 0,
+        "forgotten": 1,
+        "misconceptions": 0,
+        "last_session": "2026-09-05",
+        "anki_deck": "Scaffold::Spanish"
+      }
+    ]
+  },
+  "warnings": [],
+  "errors": []
+}

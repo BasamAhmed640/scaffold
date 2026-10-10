@@ -1,0 +1,15 @@
+{
+  "ok": true,
+  "data": {
+    "pending": [
+      {
+        "id": "Q-0005",
+        "created_by": "claude-desktop",
+        "verdict": "pending",
+        "reviewer_family": "openai"
+      }
+    ]
+  },
+  "warnings": [],
+  "errors": []
+}

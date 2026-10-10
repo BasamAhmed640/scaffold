@@ -1,0 +1,53 @@
+{
+  "ok": true,
+  "data": {
+    "question": {
+      "kc_ids": [
+        "kc-si-propagation-delay"
+      ],
+      "qtype": "apply",
+      "format": "numeric",
+      "difficulty": 2,
+      "stem": "FR-4 has εr = 4. How long does an edge take to cross 12 inches of stripline?",
+      "answer_key": "About 2 ns (6 in/ns).",
+      "numeric": {
+        "value": 2,
+        "unit": "ns",
+        "tolerance": "5%"
+      },
+      "rubric": [
+        {
+          "id": "R1",
+          "proposition": "v = c/√εr ≈ 6 in/ns, so TD = 12 in ÷ 6 in/ns"
+        }
+      ],
+      "hints": [
+        "Which speed matters?",
+        "Recall v = c/√εr.",
+        "v ≈ 6 in/ns.",
+        "TD = 12 / 6 = 2 ns."
+      ],
+      "misconception_targets": [],
+      "created_by": "claude-desktop",
+      "id": "Q-0008",
+      "review": {
+        "by": null,
+        "verdict": "pending",
+        "notes": ""
+      },
+      "stats": {
+        "attempts": 0,
+        "correct_rate": null,
+        "last_used": null
+      }
+    },
+    "verdict": "pending",
+    "lint": {
+      "ok": true,
+      "errors": [],
+      "warnings": []
+    }
+  },
+  "warnings": [],
+  "errors": []
+}

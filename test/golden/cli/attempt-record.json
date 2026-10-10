@@ -1,0 +1,30 @@
+{
+  "ok": true,
+  "data": {
+    "attempt_id": "A8344dcef3ebd573",
+    "duplicate": false,
+    "grade": "correct",
+    "graded_by": "grader",
+    "assisted": false,
+    "status": {
+      "kc-si-reflection-coefficient": {
+        "before": "forgotten",
+        "after": "fragile"
+      }
+    },
+    "misconception": null,
+    "card_eligible": true,
+    "misconceptions_targeted": [
+      {
+        "id": "M-0001",
+        "state": "open",
+        "resolve_progress": {
+          "questions": 1,
+          "sessions": 1
+        }
+      }
+    ]
+  },
+  "warnings": [],
+  "errors": []
+}

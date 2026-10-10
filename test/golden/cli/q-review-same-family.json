@@ -1,0 +1,12 @@
+{
+  "ok": false,
+  "data": null,
+  "warnings": [],
+  "errors": [
+    {
+      "code": "same_model_review",
+      "message": "Q-0008 was written by claude-desktop; it must be reviewed by the other model family (QB-04).",
+      "next_step": "Review it in Codex (ChatGPT)."
+    }
+  ]
+}

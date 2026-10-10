@@ -1,0 +1,13 @@
+{
+  "ok": true,
+  "data": {
+    "events": 103,
+    "kcs": 14,
+    "subjects": 3,
+    "notes_written": 0,
+    "session_logs_written": 0,
+    "restored": 0
+  },
+  "warnings": [],
+  "errors": []
+}

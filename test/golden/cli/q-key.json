@@ -1,0 +1,22 @@
+{
+  "ok": true,
+  "data": {
+    "question_id": "Q-0002",
+    "format": "free",
+    "answer_key": "see rubric",
+    "rubric": [
+      {
+        "id": "R1",
+        "proposition": "states the key relation"
+      }
+    ],
+    "misconception_targets": [
+      {
+        "option_or_belief": "A 50 Ω line never reflects, whatever terminates it",
+        "misconception_id": "M-0001"
+      }
+    ]
+  },
+  "warnings": [],
+  "errors": []
+}

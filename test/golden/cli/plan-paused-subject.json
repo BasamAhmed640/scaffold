@@ -1,0 +1,12 @@
+{
+  "ok": false,
+  "data": null,
+  "warnings": [],
+  "errors": [
+    {
+      "code": "subject_not_active",
+      "message": "Subject spanish is paused.",
+      "next_step": "Ask the learner once whether to reopen it (set_subject_scope spanish active, ANK-07)."
+    }
+  ]
+}

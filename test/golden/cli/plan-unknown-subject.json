@@ -1,0 +1,12 @@
+{
+  "ok": false,
+  "data": null,
+  "warnings": [],
+  "errors": [
+    {
+      "code": "unknown_subject",
+      "message": "No subject matches \"chess\".",
+      "next_step": "Ask the learner once whether to start it as a new subject (onboarding, D3.10); use list_subjects to map loose names."
+    }
+  ]
+}

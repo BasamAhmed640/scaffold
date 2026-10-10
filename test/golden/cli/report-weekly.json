@@ -1,0 +1,12 @@
+{
+  "ok": true,
+  "data": {
+    "note": "Scaffold/Learner/Weekly/2026-10-09.md",
+    "chart": "Scaffold/Learner/Weekly/2026-10-09-calibration.svg",
+    "brier": 0.0325
+  },
+  "warnings": [
+    "Weekly report written: Scaffold/Learner/Weekly/2026-10-09.md"
+  ],
+  "errors": []
+}

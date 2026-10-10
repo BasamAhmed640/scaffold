@@ -1,0 +1,12 @@
+{
+  "ok": false,
+  "data": null,
+  "warnings": [],
+  "errors": [
+    {
+      "code": "unknown_subject",
+      "message": "No subject chess.",
+      "next_step": "Run `scaffold subject list`."
+    }
+  ]
+}

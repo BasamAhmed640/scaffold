@@ -1,0 +1,123 @@
+{
+  "ok": true,
+  "data": {
+    "session_id": "S-2026-10-09-1",
+    "resumed": false,
+    "briefing": {
+      "focus": {
+        "subject": "si-pi",
+        "why": "named by learner"
+      },
+      "prefs": {
+        "session_minutes": 30,
+        "analogies": "sparing",
+        "level": "start below assumed level"
+      },
+      "last_session": {
+        "date": "2026-09-20",
+        "summary": "Z0 vs. termination; Γ predicted wrong with high confidence.",
+        "open_threads": [
+          "believes a 50 Ω line never reflects"
+        ]
+      },
+      "due": [
+        {
+          "kc": "kc-si-reflection-coefficient",
+          "why": "forgotten (missed 3+ days after the las…",
+          "R": 0.62
+        },
+        {
+          "kc": "kc-si-transmission-coefficient",
+          "why": "forgotten (missed 3+ days after the las…",
+          "R": 0.62
+        },
+        {
+          "kc": "kc-si-instantaneous-impedance",
+          "why": "needs check (Anki lapse)",
+          "R": 0.96
+        },
+        {
+          "kc": "kc-si-characteristic-impedance",
+          "why": "R 0.84 < 0.85",
+          "R": 0.84
+        }
+      ],
+      "misconceptions": [
+        {
+          "id": "M-0001",
+          "belief": "A 50 Ω line never reflects, whatever terminates it",
+          "since": "2026-09-20"
+        }
+      ],
+      "frontier": [
+        "kc-si-lattice-diagram",
+        "kc-si-termination-strategies"
+      ],
+      "other_subjects": [
+        {
+          "subject": "music-theory",
+          "due": 2,
+          "forgotten": 1,
+          "last_session": "2026-09-25"
+        }
+      ],
+      "plan": [
+        {
+          "step": "warmup",
+          "minutes": 5,
+          "kcs": [
+            "kc-si-transmission-coefficient",
+            "kc-si-instantaneous-impedance",
+            "kc-si-characteristic-impedance",
+            "kc-si-voltage-current",
+            "kc-si-propagation-delay"
+          ],
+          "questions": [
+            "Q-0004"
+          ]
+        },
+        {
+          "step": "carryover",
+          "minutes": 2,
+          "kcs": [
+            "kc-mt-intervals",
+            "kc-mt-major-scale"
+          ]
+        },
+        {
+          "step": "repair",
+          "minutes": 5,
+          "kcs": [
+            "kc-si-reflection-coefficient"
+          ],
+          "questions": [
+            "Q-0002"
+          ],
+          "misconception": "M-0001"
+        },
+        {
+          "step": "new",
+          "minutes": 13,
+          "kcs": [
+            "kc-si-lattice-diagram",
+            "kc-si-termination-strategies"
+          ]
+        },
+        {
+          "step": "exit",
+          "minutes": 5,
+          "kcs": [
+            "kc-si-lattice-diagram",
+            "kc-si-termination-strategies",
+            "kc-si-transmission-coefficient"
+          ]
+        }
+      ],
+      "anki": null,
+      "warnings": [],
+      "session_id": "S-2026-10-09-1"
+    }
+  },
+  "warnings": [],
+  "errors": []
+}

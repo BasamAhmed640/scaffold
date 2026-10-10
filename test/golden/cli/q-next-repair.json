@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "data": {
+    "items": [
+      {
+        "kc": "kc-si-reflection-coefficient",
+        "kc_title": "Reflection coefficient (Γ)",
+        "subject": "si-pi",
+        "why": "repair M-0001: \"A 50 Ω line never reflects, whatever terminates it\"",
+        "step": "repair",
+        "question": {
+          "id": "Q-0002",
+          "kc_ids": [
+            "kc-si-reflection-coefficient"
+          ],
+          "qtype": "diagnose",
+          "format": "free",
+          "difficulty": 2,
+          "stem": "Find the error: \"a 50 Ω trace never reflects\"."
+        },
+        "misconception": "M-0001"
+      }
+    ]
+  },
+  "warnings": [],
+  "errors": []
+}

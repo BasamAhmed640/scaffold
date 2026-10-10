@@ -1,0 +1,20 @@
+{
+  "ok": true,
+  "data": {
+    "attempt_id": "A56bbd8b43f32de9",
+    "duplicate": false,
+    "grade": "unanswered",
+    "graded_by": "grader",
+    "assisted": false,
+    "status": {
+      "kc-si-lattice-diagram": {
+        "before": "unseen",
+        "after": "unseen"
+      }
+    },
+    "misconception": null,
+    "card_eligible": false
+  },
+  "warnings": [],
+  "errors": []
+}

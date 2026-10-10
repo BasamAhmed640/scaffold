@@ -1,0 +1,11 @@
+{
+  "ok": true,
+  "data": {
+    "total": 8,
+    "passing": 8,
+    "failing": [],
+    "unreadable": []
+  },
+  "warnings": [],
+  "errors": []
+}

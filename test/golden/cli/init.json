@@ -1,0 +1,36 @@
+{
+  "ok": true,
+  "data": {
+    "vault": "<VAULT>",
+    "created": [
+      "Scaffold/Home.md",
+      "Scaffold/Learner/Misconceptions.md",
+      "Scaffold/Learner/Profile.md",
+      "Scaffold/_bases/due.base",
+      "Scaffold/_bases/mastery.base",
+      "Scaffold/_bases/misconceptions.base",
+      "Scaffold/_system/config.json",
+      "Scaffold/_system/scaffold.css",
+      "Scaffold/_system/schema-version",
+      "Scaffold/_templates/Concept.md",
+      "Scaffold/_templates/Subject.md",
+      "Scaffold/_system/events.jsonl"
+    ],
+    "kept": [
+      "Scaffold/Home.md",
+      "Scaffold/Learner/Profile.md",
+      "Scaffold/Learner/Misconceptions.md",
+      "Scaffold/_templates/Concept.md",
+      "Scaffold/_templates/Subject.md"
+    ],
+    "css_snippet": null,
+    "user_config": "<USER_CONFIG>",
+    "next_steps": [
+      "Open the folder as an Obsidian vault, then run `scaffold init` again to install the CSS snippet.",
+      "Run `scaffold doctor` to check Anki and the vault.",
+      "The default vault is still C:\\Users\\basam\\AppData\\Local\\Temp\\scaffold-test-P7xEUU\\New Vault; pass --vault or run `scaffold init --set-default`."
+    ]
+  },
+  "warnings": [],
+  "errors": []
+}
