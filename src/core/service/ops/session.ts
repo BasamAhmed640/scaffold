@@ -18,7 +18,7 @@ import { maybeWeeklyReport } from './reports.js';
 
 export const PlanInput = z.object({
   focus: z.string().max(120).nullish(),
-  minutes: z.number().min(5).max(240).optional(),
+  minutes: z.number().min(1).max(240).optional(),
   carryover: z.number().int().min(0).max(2).optional(),
 });
 export type PlanInput = z.infer<typeof PlanInput>;

@@ -91,11 +91,12 @@
     },
     "rubric_hits": {
       "default": [],
+      "description": "Rubric ids (\"R1\"), or the rubric point text; text is matched to its id.",
       "maxItems": 10,
       "type": "array",
       "items": {
         "type": "string",
-        "maxLength": 10
+        "maxLength": 300
       }
     },
     "evidence_quotes": {

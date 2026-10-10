@@ -647,7 +647,7 @@
           "type": "array",
           "items": {
             "type": "string",
-            "maxLength": 10
+            "maxLength": 200
           }
         },
         "evidence_quotes": {

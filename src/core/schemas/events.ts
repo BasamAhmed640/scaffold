@@ -81,7 +81,7 @@ export const Attempt = z
     format: QFormat,
     answer_verbatim: MediumText,
     grade: Grade,
-    rubric_hits: z.array(z.string().max(10)).max(10),
+    rubric_hits: z.array(z.string().max(200)).max(10),
     evidence_quotes: z.array(z.string().max(500)).max(10),
     /** 1–4; null only when grade is `unanswered` (see DECISIONS.md D-07). */
     confidence: Confidence.nullable(),

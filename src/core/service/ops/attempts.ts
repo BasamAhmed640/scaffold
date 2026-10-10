@@ -24,7 +24,11 @@ export const RecordAttemptInput = z.object({
   format: QFormat.optional(),
   answer_verbatim: z.string().min(1).max(4000),
   grade: Grade.optional(),
-  rubric_hits: z.array(z.string().max(10)).max(10).default([]),
+  rubric_hits: z
+    .array(z.string().max(300))
+    .max(10)
+    .default([])
+    .describe('Rubric ids ("R1"), or the rubric point text; text is matched to its id.'),
   evidence_quotes: z.array(z.string().max(500)).max(10).default([]),
   confidence: z.number().int().min(1).max(4).nullish(),
   hints_used: z.number().int().min(0).max(4).default(0),
@@ -50,6 +54,29 @@ const norm = (s: string): string =>
     .normalize('NFKC')
     .replace(/[\s“”"'’]+/g, ' ')
     .trim();
+
+/** A rubric point named by id ("R1", "r1", "R1: …") or by its proposition text → its id. */
+export function rubricId(hit: string, q: Question): string {
+  const t = hit.trim();
+  const byId = q.rubric.find(
+    (r) =>
+      r.id.toLowerCase() === t.toLowerCase() ||
+      t.toLowerCase().startsWith(`${r.id.toLowerCase()}:`) ||
+      t.toLowerCase().startsWith(`${r.id.toLowerCase()} `),
+  );
+  if (byId) return byId.id;
+  const n = norm(t).replace(/[.;,]+$/, '');
+  const byText = q.rubric.find((r) => {
+    const p = norm(r.proposition).replace(/[.;,]+$/, '');
+    return p === n || (n.length >= 8 && (p.includes(n) || n.includes(p)));
+  });
+  if (byText) return byText.id;
+  throw new ScaffoldError(
+    'unknown_rubric_point',
+    `"${t.slice(0, 60)}" is not a rubric point of ${q.id}.`,
+    `Use its rubric ids: ${q.rubric.map((r) => r.id).join(', ')}.`,
+  );
+}
 
 export function recordAttempt(sc: Scaffold, raw: unknown, w: Warnings) {
   const input = RecordAttemptInput.parse(raw);
@@ -151,11 +178,11 @@ export function recordAttempt(sc: Scaffold, raw: unknown, w: Warnings) {
         'Quote the answer verbatim.',
       );
   }
-  if (q) {
-    const ids = new Set(q.rubric.map((r) => r.id));
-    for (const h of input.rubric_hits)
-      if (!ids.has(h)) throw new ScaffoldError('unknown_rubric_point', `${h} is not a rubric id of ${q.id}.`);
-  }
+  // Tutors name rubric points by id or by their text (seen in the V-PED runs); store ids for bank
+  // questions, and short text for improvised ones (D-92).
+  const rubricHits = q
+    ? [...new Set(input.rubric_hits.map((h) => rubricId(h, q!)))]
+    : input.rubric_hits.map((h) => h.trim().slice(0, 200));
 
   // Hints: H4 (the full answer) makes the attempt assisted (QB-01 item 7).
   let assisted = input.assisted;
@@ -217,7 +244,7 @@ export function recordAttempt(sc: Scaffold, raw: unknown, w: Warnings) {
     format,
     answer_verbatim: input.answer_verbatim,
     grade,
-    rubric_hits: input.rubric_hits,
+    rubric_hits: rubricHits,
     evidence_quotes: input.evidence_quotes,
     confidence: grade === 'unanswered' ? (input.confidence ?? null) : input.confidence!,
     hints_used: hints,
