@@ -1,0 +1,258 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "kc_ids": {
+      "minItems": 1,
+      "maxItems": 2,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 2,
+        "maxLength": 80,
+        "pattern": "^[a-z0-9][a-z0-9-]*[a-z0-9]$"
+      }
+    },
+    "qtype": {
+      "type": "string",
+      "enum": [
+        "recall",
+        "explain",
+        "predict",
+        "apply",
+        "discriminate",
+        "diagnose",
+        "transfer",
+        "teach-back",
+        "visual"
+      ]
+    },
+    "format": {
+      "type": "string",
+      "enum": [
+        "free",
+        "mc",
+        "numeric",
+        "visual"
+      ]
+    },
+    "difficulty": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "stem": {
+      "type": "string",
+      "maxLength": 4000
+    },
+    "options": {
+      "maxItems": 6,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 300
+      }
+    },
+    "answer_key": {
+      "type": "string",
+      "maxLength": 4000
+    },
+    "numeric": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "number"
+        },
+        "unit": {
+          "type": "string",
+          "maxLength": 30
+        },
+        "tolerance": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "string",
+              "pattern": "^\\d+(\\.\\d+)?%$"
+            }
+          ]
+        }
+      },
+      "required": [
+        "value",
+        "unit",
+        "tolerance"
+      ]
+    },
+    "rubric": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10
+          },
+          "proposition": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "id",
+          "proposition"
+        ]
+      }
+    },
+    "hints": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 2000
+      }
+    },
+    "misconception_targets": {
+      "default": [],
+      "maxItems": 8,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "option_or_belief": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "misconception_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^M-\\d{4,}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "option_or_belief",
+          "misconception_id"
+        ]
+      }
+    },
+    "visual_id": {
+      "type": "string",
+      "pattern": "^V-\\d{4,}$"
+    },
+    "source_ref": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "variant_of": {
+      "type": "string",
+      "pattern": "^Q-\\d{4,}$"
+    },
+    "created_by": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 40
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^Q-\\d{4,}$"
+    },
+    "review": {
+      "type": "object",
+      "properties": {
+        "by": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "verdict": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "ok",
+            "fix",
+            "reject"
+          ]
+        },
+        "notes": {
+          "default": "",
+          "type": "string",
+          "maxLength": 2000
+        }
+      },
+      "required": [
+        "by",
+        "verdict"
+      ]
+    },
+    "stats": {
+      "type": "object",
+      "properties": {
+        "attempts": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "correct_rate": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "last_used": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "attempts",
+        "correct_rate",
+        "last_used"
+      ]
+    }
+  },
+  "required": [
+    "kc_ids",
+    "qtype",
+    "format",
+    "difficulty",
+    "stem",
+    "answer_key",
+    "rubric",
+    "hints",
+    "created_by",
+    "id",
+    "review",
+    "stats"
+  ]
+}

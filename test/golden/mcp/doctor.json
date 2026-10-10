@@ -1,0 +1,49 @@
+{
+  "ok": true,
+  "data": {
+    "checks": [
+      {
+        "id": "vault",
+        "ok": true,
+        "message": "Vault: <VAULT>"
+      },
+      {
+        "id": "folders",
+        "ok": true,
+        "message": "All Scaffold folders exist and are writable."
+      },
+      {
+        "id": "schema",
+        "ok": true,
+        "message": "Event schema v1 (expected v1)."
+      },
+      {
+        "id": "config",
+        "ok": true,
+        "message": "config.json is valid."
+      },
+      {
+        "id": "events",
+        "ok": true,
+        "message": "events.jsonl: 74 valid events."
+      },
+      {
+        "id": "graph",
+        "ok": true,
+        "message": "Concept graph: 14 KCs, no cycles or dangling ids."
+      },
+      {
+        "id": "queue",
+        "ok": true,
+        "message": "Anki queue is empty."
+      },
+      {
+        "id": "links",
+        "ok": true,
+        "message": "No unresolved links in Scaffold notes."
+      }
+    ]
+  },
+  "warnings": [],
+  "errors": []
+}

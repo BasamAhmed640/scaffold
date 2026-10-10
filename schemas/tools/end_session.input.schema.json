@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "session_id": {
+      "type": "string",
+      "maxLength": 40
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 4000
+    },
+    "open_threads": {
+      "default": [],
+      "maxItems": 10,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 500
+      }
+    },
+    "next_preview": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 500
+    }
+  },
+  "required": [
+    "summary",
+    "next_preview"
+  ]
+}

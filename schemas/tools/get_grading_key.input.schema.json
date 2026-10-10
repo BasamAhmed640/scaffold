@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "question_id": {
+      "type": "string",
+      "pattern": "^Q-\\d{4,}$"
+    },
+    "answer_verbatim": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4000
+    },
+    "session_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^S-\\d{4}-\\d{2}-\\d{2}-\\d+$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "question_id",
+    "answer_verbatim"
+  ]
+}

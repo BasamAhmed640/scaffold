@@ -1,0 +1,14 @@
+{
+  "ok": true,
+  "data": {
+    "question_id": "Q-0004",
+    "level": 2,
+    "name": "H2 principle",
+    "hint": "H2",
+    "assisted_if_used": false
+  },
+  "warnings": [
+    "Skipping from H0 to H2; the ladder works best one step at a time."
+  ],
+  "errors": []
+}

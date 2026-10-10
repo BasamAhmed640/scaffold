@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "concepts": {
+      "minItems": 1,
+      "maxItems": 40,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 80,
+            "description": "kc-<subject>-<slug>; never renamed"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "subject": {
+            "type": "string",
+            "maxLength": 80
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "fact",
+              "concept",
+              "principle",
+              "procedure"
+            ]
+          },
+          "prerequisites": {
+            "maxItems": 30,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 80
+            }
+          },
+          "confusable_with": {
+            "maxItems": 10,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 80
+            }
+          },
+          "requires_visual": {
+            "type": "boolean"
+          },
+          "volatility": {
+            "type": "string",
+            "enum": [
+              "stable",
+              "evolving",
+              "volatile"
+            ]
+          },
+          "review_by": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 10
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "sources": {
+            "maxItems": 30,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 500
+            }
+          },
+          "explanation": {
+            "description": "Written only if the section is empty (LM-02).",
+            "type": "string",
+            "maxLength": 20000
+          },
+          "worked_example": {
+            "type": "string",
+            "maxLength": 20000
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "subject"
+        ],
+        "additionalProperties": {}
+      }
+    }
+  },
+  "required": [
+    "concepts"
+  ]
+}

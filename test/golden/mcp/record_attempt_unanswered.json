@@ -1,0 +1,20 @@
+{
+  "ok": true,
+  "data": {
+    "attempt_id": "A69a2c0b74ba8f5e",
+    "duplicate": false,
+    "grade": "unanswered",
+    "graded_by": "grader",
+    "assisted": false,
+    "status": {
+      "kc-si-transmission-coefficient": {
+        "before": "forgotten",
+        "after": "forgotten"
+      }
+    },
+    "misconception": null,
+    "card_eligible": false
+  },
+  "warnings": [],
+  "errors": []
+}

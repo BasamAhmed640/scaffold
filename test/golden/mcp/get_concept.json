@@ -1,0 +1,58 @@
+{
+  "ok": true,
+  "data": {
+    "id": "kc-si-reflection-coefficient",
+    "title": "Reflection coefficient (Γ)",
+    "subject": "si-pi",
+    "kind": "principle",
+    "prerequisites": [
+      "kc-si-characteristic-impedance",
+      "kc-si-instantaneous-impedance"
+    ],
+    "confusable_with": [
+      "kc-si-transmission-coefficient"
+    ],
+    "requires_visual": true,
+    "volatility": "stable",
+    "review_by": null,
+    "anki_note_ids": [],
+    "visuals": [],
+    "sources": [],
+    "status": "forgotten",
+    "misconception_active": true,
+    "misconceptions": [
+      "M-0001"
+    ],
+    "mastery": "0 of 3 conditions met",
+    "memory": {
+      "stability_days": 0.83,
+      "retrievability": 0.619,
+      "next_check": "2026-09-22"
+    },
+    "needs_check": false,
+    "recent_attempts": [
+      {
+        "date": "2026-09-03",
+        "qtype": "recall",
+        "grade": "correct",
+        "confidence": 3,
+        "assisted": false
+      },
+      {
+        "date": "2026-09-20",
+        "qtype": "predict",
+        "grade": "incorrect",
+        "confidence": 4,
+        "assisted": false
+      }
+    ],
+    "questions": [
+      "Q-0002"
+    ],
+    "in_my_words": "",
+    "explanation": "",
+    "worked_example": ""
+  },
+  "warnings": [],
+  "errors": []
+}

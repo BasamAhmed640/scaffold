@@ -1,0 +1,29 @@
+{
+  "ok": true,
+  "data": {
+    "created": true,
+    "subject": {
+      "id": "jitter-and-ber",
+      "title": "Jitter and BER",
+      "aliases": [
+        "jitter"
+      ],
+      "goals": [],
+      "scope": "active",
+      "anki_minutes": "auto",
+      "anki_deck": "Scaffold::Jitter and BER"
+    },
+    "note": "Scaffold/Subjects/jitter-and-ber.md",
+    "anki_deck": {
+      "name": "Scaffold::Jitter and BER",
+      "status": "queued"
+    },
+    "reminders": [
+      "Set the daily new-card limit of \"Scaffold::Jitter and BER\" in Anki (deck options → This deck) (ANK-01)."
+    ]
+  },
+  "warnings": [
+    "Anki deck \"Scaffold::Jitter and BER\" queued; it is created on the next `anki sync` (ANK-09)."
+  ],
+  "errors": []
+}

@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "Stable slug; derived from the title if omitted.",
+      "type": "string",
+      "maxLength": 80
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "aliases": {
+      "maxItems": 20,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 80
+      }
+    },
+    "goals": {
+      "maxItems": 20,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 500
+      }
+    },
+    "scope": {
+      "description": "Only at creation; later use set_subject_scope.",
+      "type": "string",
+      "enum": [
+        "active",
+        "paused",
+        "closed"
+      ]
+    },
+    "anki_minutes": {
+      "anyOf": [
+        {
+          "type": "string",
+          "const": "auto"
+        },
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 240
+        }
+      ]
+    },
+    "anki_deck": {
+      "type": "string",
+      "maxLength": 200
+    }
+  },
+  "required": [
+    "title"
+  ],
+  "additionalProperties": {}
+}

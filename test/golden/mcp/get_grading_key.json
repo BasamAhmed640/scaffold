@@ -1,0 +1,17 @@
+{
+  "ok": true,
+  "data": {
+    "question_id": "Q-0004",
+    "format": "free",
+    "answer_key": "see rubric",
+    "rubric": [
+      {
+        "id": "R1",
+        "proposition": "states the key relation"
+      }
+    ],
+    "misconception_targets": []
+  },
+  "warnings": [],
+  "errors": []
+}

@@ -1,0 +1,235 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 6,
+      "maxLength": 40
+    },
+    "session_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^S-\\d{4}-\\d{2}-\\d{2}-\\d+$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "question_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^Q-\\d{4,}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "question_text": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 4000
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "kc_ids": {
+      "minItems": 1,
+      "maxItems": 2,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 2,
+        "maxLength": 80,
+        "pattern": "^[a-z0-9][a-z0-9-]*[a-z0-9]$"
+      }
+    },
+    "qtype": {
+      "type": "string",
+      "enum": [
+        "recall",
+        "explain",
+        "predict",
+        "apply",
+        "discriminate",
+        "diagnose",
+        "transfer",
+        "teach-back",
+        "visual"
+      ]
+    },
+    "format": {
+      "type": "string",
+      "enum": [
+        "free",
+        "mc",
+        "numeric",
+        "visual"
+      ]
+    },
+    "answer_verbatim": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4000
+    },
+    "grade": {
+      "type": "string",
+      "enum": [
+        "correct",
+        "partial",
+        "incorrect",
+        "unanswered"
+      ]
+    },
+    "rubric_hits": {
+      "default": [],
+      "maxItems": 10,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 10
+      }
+    },
+    "evidence_quotes": {
+      "default": [],
+      "maxItems": 10,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 500
+      }
+    },
+    "confidence": {
+      "anyOf": [
+        {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "hints_used": {
+      "default": 0,
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4
+    },
+    "assisted": {
+      "default": false,
+      "type": "boolean"
+    },
+    "grader": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 40
+    },
+    "grader_uncertain": {
+      "default": false,
+      "type": "boolean"
+    },
+    "misconception_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^M-\\d{4,}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "misconception_belief": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 500
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "step": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "pretest",
+            "warmup",
+            "carryover",
+            "repair",
+            "new",
+            "exit",
+            "other"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "improvised_key": {
+      "type": "object",
+      "properties": {
+        "numeric": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": "number"
+            },
+            "unit": {
+              "type": "string",
+              "maxLength": 30
+            },
+            "tolerance": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0
+                },
+                {
+                  "type": "string",
+                  "pattern": "^\\d+(\\.\\d+)?%$"
+                }
+              ]
+            }
+          },
+          "required": [
+            "value",
+            "unit",
+            "tolerance"
+          ]
+        },
+        "options": {
+          "maxItems": 6,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300
+          }
+        },
+        "mc_answer": {
+          "type": "string",
+          "maxLength": 300
+        }
+      }
+    }
+  },
+  "required": [
+    "answer_verbatim",
+    "grader"
+  ]
+}

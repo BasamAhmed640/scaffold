@@ -1,0 +1,362 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "default": 1,
+      "type": "integer",
+      "minimum": -9007199254740991,
+      "maximum": 9007199254740991
+    },
+    "timezone": {
+      "default": null,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "thresholds": {
+      "default": {},
+      "type": "object",
+      "properties": {
+        "mastery_window_days": {
+          "default": 60,
+          "type": "number"
+        },
+        "mastery_min_correct": {
+          "default": 3,
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "mastery_min_confidence": {
+          "default": 3,
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4
+        },
+        "mastery_min_qtypes": {
+          "default": 2,
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "mastery_deep_qtypes": {
+          "default": [
+            "explain",
+            "predict",
+            "apply",
+            "transfer",
+            "teach-back"
+          ],
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "recall",
+              "explain",
+              "predict",
+              "apply",
+              "discriminate",
+              "diagnose",
+              "transfer",
+              "teach-back",
+              "visual"
+            ]
+          }
+        },
+        "mastery_min_sessions": {
+          "default": 2,
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "session_gap_hours": {
+          "default": 20,
+          "type": "number"
+        },
+        "forgotten_after_days": {
+          "default": 3,
+          "type": "number"
+        },
+        "forgotten_retrievability": {
+          "default": 0.7,
+          "type": "number"
+        },
+        "misconception_open_confidence": {
+          "default": 3,
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "misconception_resolve_questions": {
+          "default": 2,
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "misconception_resolve_sessions": {
+          "default": 2,
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        }
+      }
+    },
+    "fsrs": {
+      "default": {},
+      "type": "object",
+      "properties": {
+        "desired_retention": {
+          "default": 0.85,
+          "type": "number",
+          "minimum": 0.5,
+          "maximum": 0.99
+        },
+        "maximum_interval_days": {
+          "default": 36500,
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        }
+      }
+    },
+    "planner": {
+      "default": {},
+      "type": "object",
+      "properties": {
+        "session_minutes": {
+          "default": 30,
+          "type": "number"
+        },
+        "carryover": {
+          "default": 2,
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2
+        },
+        "pretest_max": {
+          "default": 8,
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "pretest_min_after_trim": {
+          "default": 3,
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "warmup_max": {
+          "default": 5,
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "warmup_min_after_trim": {
+          "default": 2,
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "new_max": {
+          "default": 2,
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "backlog_blocks_new": {
+          "default": 8,
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "exit_items": {
+          "default": 3,
+          "type": "integer",
+          "minimum": 2,
+          "maximum": 3
+        },
+        "minutes_pretest_item": {
+          "default": 1,
+          "type": "number"
+        },
+        "minutes_warmup_item": {
+          "default": 1,
+          "type": "number"
+        },
+        "minutes_carryover_item": {
+          "default": 1,
+          "type": "number"
+        },
+        "minutes_prerequisite_item": {
+          "default": 1,
+          "type": "number"
+        },
+        "minutes_repair": {
+          "default": 5,
+          "type": "number"
+        },
+        "minutes_new_kc": {
+          "default": 6.5,
+          "type": "number"
+        },
+        "minutes_exit": {
+          "default": 5,
+          "type": "number"
+        },
+        "open_session_resume_hours": {
+          "default": 12,
+          "type": "number"
+        }
+      }
+    },
+    "briefing": {
+      "default": {},
+      "type": "object",
+      "properties": {
+        "max_tokens": {
+          "default": 600,
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "backlog_warn": {
+          "default": 8,
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "stale_subject_days": {
+          "default": 14,
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "other_subjects_max": {
+          "default": 3,
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        }
+      }
+    },
+    "prefs": {
+      "default": {},
+      "type": "object",
+      "properties": {
+        "session_minutes": {
+          "default": 30,
+          "type": "number"
+        },
+        "analogies": {
+          "default": "sparing",
+          "type": "string",
+          "enum": [
+            "off",
+            "sparing",
+            "on"
+          ]
+        },
+        "level": {
+          "default": "start below assumed level",
+          "type": "string"
+        }
+      }
+    },
+    "anki": {
+      "default": {},
+      "type": "object",
+      "properties": {
+        "url": {
+          "default": "http://127.0.0.1:8765",
+          "type": "string"
+        },
+        "timeout_ms": {
+          "default": 2000,
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "api_version": {
+          "default": 6,
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "minutes_per_day": {
+          "default": 15,
+          "type": "number"
+        },
+        "new_cards_per_day_total": {
+          "default": 4,
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "max_reviews_per_day": {
+          "default": 9999,
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "default_seconds_per_review": {
+          "default": 8,
+          "type": "number"
+        },
+        "card_lifetime_minutes": {
+          "default": 5,
+          "type": "number"
+        },
+        "max_cards_per_kc": {
+          "default": 3,
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "intake_warn_fraction": {
+          "default": 0.8,
+          "type": "number"
+        },
+        "overbudget_dormancy_days": {
+          "default": 14,
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "mature_interval_days": {
+          "default": 90,
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "volatile_review_months": {
+          "default": 6,
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "learning_reviews_per_day": {
+          "default": 2,
+          "type": "number"
+        }
+      }
+    },
+    "visuals": {
+      "default": {},
+      "type": "object",
+      "properties": {
+        "max_bytes": {
+          "default": 600000,
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "min_font_px": {
+          "default": 11,
+          "type": "number"
+        }
+      }
+    }
+  }
+}

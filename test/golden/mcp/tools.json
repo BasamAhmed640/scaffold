@@ -1,0 +1,86 @@
+[
+  {
+    "name": "doctor",
+    "readOnly": true
+  },
+  {
+    "name": "get_briefing",
+    "readOnly": true
+  },
+  {
+    "name": "plan_session",
+    "readOnly": false
+  },
+  {
+    "name": "start_session",
+    "readOnly": false
+  },
+  {
+    "name": "end_session",
+    "readOnly": false
+  },
+  {
+    "name": "upsert_subject",
+    "readOnly": false
+  },
+  {
+    "name": "list_subjects",
+    "readOnly": true
+  },
+  {
+    "name": "get_concept",
+    "readOnly": true
+  },
+  {
+    "name": "upsert_concept",
+    "readOnly": false
+  },
+  {
+    "name": "next_questions",
+    "readOnly": true
+  },
+  {
+    "name": "add_question",
+    "readOnly": false
+  },
+  {
+    "name": "review_question",
+    "readOnly": false
+  },
+  {
+    "name": "get_grading_key",
+    "readOnly": false
+  },
+  {
+    "name": "get_hint",
+    "readOnly": false
+  },
+  {
+    "name": "record_attempt",
+    "readOnly": false
+  },
+  {
+    "name": "mark_taught",
+    "readOnly": false
+  },
+  {
+    "name": "save_teach_back",
+    "readOnly": false
+  },
+  {
+    "name": "override_grade",
+    "readOnly": false
+  },
+  {
+    "name": "list_misconceptions",
+    "readOnly": true
+  },
+  {
+    "name": "open_misconception",
+    "readOnly": false
+  },
+  {
+    "name": "validate",
+    "readOnly": true
+  }
+]

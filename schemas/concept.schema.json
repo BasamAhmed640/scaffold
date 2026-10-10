@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 80,
+      "pattern": "^[a-z0-9][a-z0-9-]*[a-z0-9]$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "subject": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 80,
+      "pattern": "^[a-z0-9][a-z0-9-]*[a-z0-9]$"
+    },
+    "kind": {
+      "default": "concept",
+      "type": "string",
+      "enum": [
+        "fact",
+        "concept",
+        "principle",
+        "procedure"
+      ]
+    },
+    "prerequisites": {
+      "default": [],
+      "maxItems": 30,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 2,
+        "maxLength": 80,
+        "pattern": "^[a-z0-9][a-z0-9-]*[a-z0-9]$"
+      }
+    },
+    "confusable_with": {
+      "default": [],
+      "maxItems": 10,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 2,
+        "maxLength": 80,
+        "pattern": "^[a-z0-9][a-z0-9-]*[a-z0-9]$"
+      }
+    },
+    "requires_visual": {
+      "default": false,
+      "type": "boolean"
+    },
+    "volatility": {
+      "default": "stable",
+      "type": "string",
+      "enum": [
+        "stable",
+        "evolving",
+        "volatile"
+      ]
+    },
+    "review_by": {
+      "default": null,
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "anki_note_ids": {
+      "default": [],
+      "maxItems": 50,
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "exclusiveMinimum": 0,
+        "maximum": 9007199254740991
+      }
+    },
+    "visuals": {
+      "default": [],
+      "maxItems": 50,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^V-\\d{4,}$"
+      }
+    },
+    "sources": {
+      "default": [],
+      "maxItems": 30,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 500
+      }
+    }
+  },
+  "required": [
+    "id",
+    "title",
+    "subject"
+  ]
+}

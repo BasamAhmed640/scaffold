@@ -1,0 +1,16 @@
+{
+  "ok": true,
+  "data": {
+    "session_id": "S-2026-10-09-1",
+    "log": "Scaffold/Sessions/S-2026-10-09-1.md",
+    "calibration": "Confident and right: 1. Confident and wrong: 1, on Reflection coefficient (Γ). Unsure but right: 0.",
+    "answers_recorded": 3,
+    "next_preview": "Intervals from scratch.",
+    "weekly_report": "Scaffold/Learner/Weekly/2026-10-09.md"
+  },
+  "warnings": [
+    "No exit-ticket answer was recorded this session (TP-15).",
+    "Weekly report written: Scaffold/Learner/Weekly/2026-10-09.md"
+  ],
+  "errors": []
+}

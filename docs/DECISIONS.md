@@ -87,3 +87,13 @@ Every DEFAULT value, every SHOULD that was not done, and every change from the b
 | D-40 | The CLI accepts hidden `--now <iso>` / `SCAFFOLD_NOW` and `--tz` / `SCAFFOLD_TZ` for deterministic tests and fixtures. | Golden files must not depend on the wall clock. |
 | D-41 | "I don't know" detection (`I don't know`, `idk`, `no idea`, `skip`, `pass`, curly or straight apostrophes) makes the grade `unanswered` even when a grader passes another grade. | LM-07 is a hard rule, not a grader choice. |
 | D-42 | Numeric grading: the number after the last "=" (else the first number), simple fractions (−1/3), scientific notation; SI prefixes and common units (Ω, V, A, s, Hz, m, in, mil, ft, F, H, W, S, dB, %) with "/" or "per". Right value with the unit missing → `partial`; wrong dimension → `incorrect`. | REL-02 needs a deterministic, documented grader. |
+
+## MCP server and bundle (M4)
+
+| ID | Decision | Reason |
+|---|---|---|
+| D-43 | The `.mcpb` contains one esbuild bundle of the stdio server (`server/index.mjs`, ~1.8 MB unpacked, ~350 KB packed) instead of `node_modules`. Playwright is not bundled (render checks are CLI-only, VIS-05). | Keeps the Desktop Extension small and its install reliable. |
+| D-44 | The manifest takes one required `user_config.vault` (directory). The server also accepts `SCAFFOLD_VAULT` or the user config, and treats an unexpanded `${user_config.vault}` as "not given". | ARC-12 order; a misconfigured install must still load (REL-03). |
+| D-45 | Schema violations are rejected by the MCP SDK before the handler runs (plain-text error, `isError: true`). Semantic errors use the IF-02 envelope. A total input over 1.2 MB is rejected with `input_too_large`. | The SDK validates zod input schemas itself; the size cap protects the server. |
+| D-46 | MCP server instructions point at the scaffold-tutor skill and restate the four escrow/recording rules in one paragraph. | Gives the model the essentials even before the skill loads. |
+| D-47 | `doctor` over MCP returns its checks even when the vault cannot be opened. | V-MCP / REL-03: failure is one line plus a next step. |

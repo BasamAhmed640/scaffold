@@ -1,0 +1,20 @@
+{
+  "ok": true,
+  "data": {
+    "attempt_id": "Aa37429d78bd2815",
+    "duplicate": false,
+    "grade": "correct",
+    "graded_by": "grader",
+    "assisted": false,
+    "status": {
+      "kc-si-propagation-delay": {
+        "before": "solid",
+        "after": "solid"
+      }
+    },
+    "misconception": null,
+    "card_eligible": true
+  },
+  "warnings": [],
+  "errors": []
+}

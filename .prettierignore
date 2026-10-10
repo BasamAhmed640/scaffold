@@ -9,3 +9,5 @@ test/golden
 vault-template
 docs/VERIFICATION.md
 package-lock.json
+build
+schemas

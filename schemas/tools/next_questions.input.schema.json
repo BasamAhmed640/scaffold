@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "step": {
+      "type": "string",
+      "enum": [
+        "pretest",
+        "warmup",
+        "carryover",
+        "repair",
+        "new",
+        "exit"
+      ]
+    },
+    "kc_ids": {
+      "maxItems": 10,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 2,
+        "maxLength": 80,
+        "pattern": "^[a-z0-9][a-z0-9-]*[a-z0-9]$"
+      }
+    },
+    "question_ids": {
+      "maxItems": 20,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^Q-\\d{4,}$"
+      }
+    },
+    "limit": {
+      "default": 5,
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 20
+    }
+  }
+}

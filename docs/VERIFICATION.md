@@ -169,13 +169,13 @@ Lines        : 100% ( 416/416 )
 <!-- suite:STATIC:begin -->
 ### Static checks: typecheck, lint, adapters
 
-`npx tsc --noEmit` — exit 0 — 2026-10-10T00:26:43.103Z — win32 node v22.23.2
+`npx tsc --noEmit` — exit 0 — 2026-10-10T00:33:03.207Z — win32 node v22.23.2
 
 ```text
 (no output)
 ```
 
-`npx eslint .` — exit 0 — 2026-10-10T00:26:43.103Z — win32 node v22.23.2
+`npx eslint .` — exit 0 — 2026-10-10T00:33:03.207Z — win32 node v22.23.2
 
 ```text
 (no output)
@@ -292,3 +292,34 @@ Lines        : 100% ( 416/416 )
 ```
 
 <!-- suite:V-QQ:end -->
+
+<!-- suite:V-MCP:begin -->
+### V-MCP: MCP server keeps its contracts
+
+`npx vitest run test/mcp --reporter=verbose` — exit 0 — 2026-10-10T00:32:57.402Z — win32 node v22.23.2
+
+```text
+
+ RUN  v5.0.3 C:/Users/basam/src/scaffold
+
+ ✓ test/mcp/mcpb.test.ts > MCPB bundle > builds, validates and stays small 1378ms
+ ✓ test/mcp/mcpb.test.ts > MCPB bundle > exported JSON Schemas are current (IF-02) 406ms
+ ✓ test/mcp/mcp.test.ts > V-MCP tool list > lists the tools with valid JSON Schemas 91ms
+ ✓ test/mcp/mcp.test.ts > V-MCP every tool through a real client > reads: doctor, list_subjects, get_concept, get_briefing, list_misconceptions, validate 225ms
+ ✓ test/mcp/mcp.test.ts > V-MCP every tool through a real client > a session: start, next_questions, get_hint, get_grading_key, record_attempt, mark_taught, plan_session, end_session 507ms
+stdout | test/mcp/mcp.test.ts > V-MCP rejections (IF-03) > p95 latency is under 500 ms on the fixture vault
+MCP latency over 23 calls: p50 31 ms, p95 84 ms
+
+ ✓ test/mcp/mcp.test.ts > V-MCP every tool through a real client > writes: upsert_subject, upsert_concept, add_question, review_question, open_misconception, save_teach_back, override_grade 183ms
+ ✓ test/mcp/mcp.test.ts > V-MCP rejections (IF-03) > path traversal in ids is rejected 3ms
+ ✓ test/mcp/mcp.test.ts > V-MCP rejections (IF-03) > oversized inputs are rejected 10ms
+ ✓ test/mcp/mcp.test.ts > V-MCP rejections (IF-03) > p95 latency is under 500 ms on the fixture vault 1ms
+ ✓ test/mcp/mcp.test.ts > V-MCP never fails on load (REL-03) > starts without a vault and answers with a next step 562ms
+
+ Test Files  2 passed (2)
+      Tests  10 passed (10)
+   Start at  20:32:59
+   Duration  3.81s (tests 77%, import 14%, transform 8%)
+```
+
+<!-- suite:V-MCP:end -->

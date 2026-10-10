@@ -1,0 +1,74 @@
+{
+  "ok": true,
+  "data": {
+    "items": [
+      {
+        "kc": "kc-si-transmission-coefficient",
+        "kc_title": "Transmission coefficient (T)",
+        "subject": "si-pi",
+        "why": "forgotten (missed 3+ days after the last success)",
+        "step": "warmup",
+        "question": null,
+        "improvise": {
+          "qtype": "recall",
+          "instruction": "Improvise one question for this KC: production by default, unambiguous, answerable in one message, worded unlike its Anki cards (QB-01). Record it with record_attempt and question_text."
+        }
+      },
+      {
+        "kc": "kc-si-instantaneous-impedance",
+        "kc_title": "Instantaneous impedance",
+        "subject": "si-pi",
+        "why": "needs check (Anki lapse)",
+        "step": "warmup",
+        "question": null,
+        "improvise": {
+          "qtype": "recall",
+          "instruction": "Improvise one question for this KC: production by default, unambiguous, answerable in one message, worded unlike its Anki cards (QB-01). Record it with record_attempt and question_text."
+        }
+      },
+      {
+        "kc": "kc-si-characteristic-impedance",
+        "kc_title": "Characteristic impedance (Z0)",
+        "subject": "si-pi",
+        "why": "R 0.84 < 0.85",
+        "step": "warmup",
+        "question": null,
+        "improvise": {
+          "qtype": "recall",
+          "instruction": "Improvise one question for this KC: production by default, unambiguous, answerable in one message, worded unlike its Anki cards (QB-01). Record it with record_attempt and question_text."
+        }
+      },
+      {
+        "kc": "kc-si-voltage-current",
+        "kc_title": "Voltage and current on a line",
+        "subject": "si-pi",
+        "why": "solid, never tested with transfer",
+        "step": "warmup",
+        "question": null,
+        "improvise": {
+          "qtype": "transfer",
+          "instruction": "Improvise one question for this KC: production by default, unambiguous, answerable in one message, worded unlike its Anki cards (QB-01). Record it with record_attempt and question_text."
+        }
+      },
+      {
+        "kc": "kc-si-propagation-delay",
+        "kc_title": "Propagation delay (TD)",
+        "subject": "si-pi",
+        "why": "solid, never tested with transfer",
+        "step": "warmup",
+        "question": {
+          "id": "Q-0004",
+          "kc_ids": [
+            "kc-si-propagation-delay"
+          ],
+          "qtype": "transfer",
+          "format": "free",
+          "difficulty": 2,
+          "stem": "Estimate TD for a 30 cm coax cable with εr = 2.3."
+        }
+      }
+    ]
+  },
+  "warnings": [],
+  "errors": []
+}

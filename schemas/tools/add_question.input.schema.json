@@ -1,0 +1,173 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "kc_ids": {
+      "minItems": 1,
+      "maxItems": 2,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 80
+      }
+    },
+    "qtype": {
+      "type": "string",
+      "enum": [
+        "recall",
+        "explain",
+        "predict",
+        "apply",
+        "discriminate",
+        "diagnose",
+        "transfer",
+        "teach-back",
+        "visual"
+      ]
+    },
+    "format": {
+      "type": "string",
+      "enum": [
+        "free",
+        "mc",
+        "numeric",
+        "visual"
+      ]
+    },
+    "difficulty": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "stem": {
+      "type": "string",
+      "maxLength": 4000
+    },
+    "options": {
+      "maxItems": 6,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 300
+      }
+    },
+    "answer_key": {
+      "type": "string",
+      "maxLength": 4000
+    },
+    "numeric": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "number"
+        },
+        "unit": {
+          "type": "string",
+          "maxLength": 30
+        },
+        "tolerance": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string",
+              "maxLength": 10
+            }
+          ]
+        }
+      },
+      "required": [
+        "value",
+        "unit",
+        "tolerance"
+      ]
+    },
+    "rubric": {
+      "maxItems": 4,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 10
+          },
+          "proposition": {
+            "type": "string",
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "id",
+          "proposition"
+        ]
+      }
+    },
+    "hints": {
+      "maxItems": 4,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 2000
+      }
+    },
+    "misconception_targets": {
+      "maxItems": 8,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "option_or_belief": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "misconception_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 10
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "option_or_belief",
+          "misconception_id"
+        ]
+      }
+    },
+    "visual_id": {
+      "type": "string",
+      "maxLength": 10
+    },
+    "source_ref": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "variant_of": {
+      "type": "string",
+      "maxLength": 10
+    },
+    "created_by": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 40,
+      "description": "Front-end that wrote it: claude-desktop, claude-code, codex…"
+    }
+  },
+  "required": [
+    "kc_ids",
+    "qtype",
+    "format",
+    "difficulty",
+    "stem",
+    "answer_key",
+    "rubric",
+    "hints",
+    "created_by"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "ok": true,
+  "data": {
+    "misconceptions": [
+      {
+        "id": "M-0001",
+        "belief": "A 50 Ω line never reflects, whatever terminates it",
+        "kc_ids": [
+          "kc-si-reflection-coefficient"
+        ],
+        "state": "open",
+        "since": "2026-09-20",
+        "resolve_progress": {
+          "questions": 0,
+          "sessions": 0
+        }
+      }
+    ]
+  },
+  "warnings": [],
+  "errors": []
+}

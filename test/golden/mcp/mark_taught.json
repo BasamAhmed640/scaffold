@@ -1,0 +1,15 @@
+{
+  "ok": true,
+  "data": {
+    "kc_ids": [
+      "kc-si-lattice-diagram"
+    ],
+    "status": {
+      "kc-si-lattice-diagram": "introduced"
+    }
+  },
+  "warnings": [
+    "kc-si-lattice-diagram require a visual (TP-12): show one and register it with register_visual."
+  ],
+  "errors": []
+}
