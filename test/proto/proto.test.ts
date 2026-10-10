@@ -13,20 +13,8 @@ const read = (p: string): string => readFileSync(p, 'utf8').replace(/\r\n/g, '\n
 const tp = JSON.parse(read('protocol/tp-rules.json')) as Record<string, string>;
 const d3 = JSON.parse(read('protocol/d3-canonical.json')) as Record<string, { title: string; body: string }>;
 
-/** Tools named in the protocol that later milestones add (Anki: M6, visuals: M7). Must end empty. */
-const PENDING_TOOLS = new Set<string>([
-  'register_visual',
-  'check_visual',
-  'get_visual',
-  'propose_cards',
-  'flag_card',
-  'propose_card_actions',
-  'apply_card_actions',
-  'set_subject_scope',
-  'anki_sync',
-  'get_anki_load',
-  'anki_stack',
-]);
+/** Tools named in the protocol that a later milestone adds (visuals: M7). Must end empty. */
+const PENDING_TOOLS = new Set<string>(['register_visual', 'check_visual', 'get_visual']);
 
 describe('V-PROTO skill', () => {
   it('has valid frontmatter (name, description)', () => {

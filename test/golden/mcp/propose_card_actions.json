@@ -1,0 +1,17 @@
+{
+  "ok": true,
+  "data": {
+    "actions": [
+      {
+        "action_id": "CA-0002",
+        "kind": "rewrite_reset",
+        "note_ids": [
+          1791547200007
+        ]
+      }
+    ],
+    "next_step": "Ask the learner to approve; then call apply_card_actions with their words."
+  },
+  "warnings": [],
+  "errors": []
+}

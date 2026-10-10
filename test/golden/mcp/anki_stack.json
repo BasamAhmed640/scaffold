@@ -1,0 +1,22 @@
+{
+  "ok": true,
+  "data": {
+    "name": "SI/PI review",
+    "search": "tag:scaffold -is:suspended deck:Scaffold::SI/PI",
+    "matching_cards": 2,
+    "sample": [
+      {
+        "note_id": 1791547200001,
+        "front": "What sets the Z0 of a uniform line?"
+      },
+      {
+        "note_id": 1791547200007,
+        "front": "Why does a mismatched load reflect?"
+      }
+    ],
+    "instructions": "In Anki: Tools → Create Filtered Deck, name it \"SI/PI review\", paste the search, and keep \"Reschedule cards based on my answers\" on. Emptying the deck returns every card to its subject deck.",
+    "create_supported": false
+  },
+  "warnings": [],
+  "errors": []
+}

@@ -32,8 +32,11 @@ function yamlish(v: unknown, indent = ''): string {
 
 const formatters: Record<string, (d: Data) => string> = {
   doctor: (d) =>
-    (d.checks as { ok: boolean; message: string; next_step?: string }[])
-      .map((c) => `${c.ok ? '✓' : '✗'} ${c.message}${!c.ok && c.next_step ? `\n    → ${c.next_step}` : ''}`)
+    (d.checks as { ok: boolean; message: string; next_step?: string; warn?: boolean }[])
+      .map(
+        (c) =>
+          `${c.ok ? '✓' : c.warn ? '!' : '✗'} ${c.message}${!c.ok && c.next_step ? `\n    → ${c.next_step}` : ''}`,
+      )
       .join('\n'),
   plan: (d) => formatPlan((d.plan ?? d) as Data) + (d.change ? `\n${String(d.change)}` : ''),
   briefing: (d) => formatBriefing(d),
@@ -78,6 +81,44 @@ const formatters: Record<string, (d: Data) => string> = {
         m.belief,
       ]),
     ),
+  'anki status': (d) => {
+    const rows = (d.subjects as Data[]).map((s) => [
+      s.subject,
+      s.scope,
+      `${String(s.measured_min_7d)}/${String(s.budget_min)}${s.over_budget ? ' !' : ''}`,
+      s.estimated_min,
+      s.active_cards,
+      `${String((s.intake as Data).used)}/${String((s.intake as Data).budget)}`,
+      s.recommended_new_per_day || '–',
+    ]);
+    const m = d.maintenance as Data;
+    const limits = Object.entries(d.deck_limits as Record<string, Data>).map(
+      ([deck, l]) =>
+        `  ${deck}: ${String(l.new_per_day ?? l.new_per_day_this_deck)} new/day${l.max_reviews_per_day ? `, ${String(l.max_reviews_per_day)} reviews/day` : ''}`,
+    );
+    return [
+      table(['subject', 'scope', 'min/day (7d)/budget', 'est', 'active', 'intake', 'new/day'], rows),
+      `Maintenance (paused/closed subjects): ${String(m.estimated_min)} min/day, ${String(m.active_cards)} active cards`,
+      `Total: ${String((d.total as Data).measured_min_7d)} of ${String(d.total_budget_min)} min/day · ${String(d.queued_operations)} queued · last sync ${String(d.synced_at ?? 'never')}`,
+      'Recommended Anki deck limits:',
+      ...limits,
+    ].join('\n');
+  },
+  'anki stack': (d) =>
+    `${String(d.search)}\n${String(d.matching_cards)} card(s) match now.\n${String(d.instructions)}`,
+  'anki actions list': (d) =>
+    (d.actions as Data[]).length
+      ? table(
+          ['id', 'kind', 'subject', 'notes', 'reason'],
+          (d.actions as Data[]).map((a) => [
+            a.action_id,
+            a.kind,
+            a.subject ?? '–',
+            (a.note_ids as number[]).length || '',
+            a.reason,
+          ]),
+        )
+      : 'No card actions waiting for approval.',
   'q lint': (d) =>
     `${String(d.passing)}/${String(d.total)} questions pass QB-03.` +
     (d.failing as { id: string; errors: string[] }[])

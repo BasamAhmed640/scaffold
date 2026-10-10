@@ -1,0 +1,14 @@
+{
+  "ok": true,
+  "data": {
+    "results": [
+      {
+        "action_id": "CA-0099",
+        "result": "skipped",
+        "detail": "unknown action"
+      }
+    ]
+  },
+  "warnings": [],
+  "errors": []
+}

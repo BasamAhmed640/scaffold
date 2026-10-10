@@ -1,0 +1,13 @@
+{
+  "ok": true,
+  "data": {
+    "name": "Reflections",
+    "search": "tag:scaffold -is:suspended deck:Scaffold::SI/PI (tag:kc::kc-si-characteristic-impedance OR tag:kc::kc-si-instantaneous-impedance OR tag:kc::kc-si-reflection-coefficient)",
+    "matching_cards": 0,
+    "sample": [],
+    "instructions": "In Anki: Tools → Create Filtered Deck, name it \"Reflections\", paste the search, and keep \"Reschedule cards based on my answers\" on. Emptying the deck returns every card to its subject deck.",
+    "create_supported": null
+  },
+  "warnings": [],
+  "errors": []
+}

@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "data": {
+    "proposals": [
+      {
+        "proposal_id": "P-0001",
+        "action_id": "CA-0001",
+        "kc_id": "kc-si-gamma",
+        "anchor": true,
+        "front": "Why does a mismatched load reflect?",
+        "back": "Γ = (ZL − Z0)/(ZL + Z0)",
+        "extra": ""
+      }
+    ],
+    "next_step": "Show each card to the learner. Apply only the ones they approve (or edit) with apply_card_actions and their words as approval."
+  },
+  "warnings": [],
+  "errors": []
+}

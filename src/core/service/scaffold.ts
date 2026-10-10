@@ -1,3 +1,4 @@
+import type { AnkiClient } from '../anki/client.js';
 import type { Config } from '../config.js';
 import { Warnings } from '../envelope.js';
 import { nextNumberedId } from '../ids.js';
@@ -15,8 +16,8 @@ import { FOLDERS, Vault, type VaultOptions } from '../vault/vault.js';
 export type EventDraft = { type: ScaffoldEvent['type']; id?: string; ts?: string } & Record<string, unknown>;
 
 export interface ScaffoldDeps {
-  /** AnkiConnect client (M6); absent in pure-core tests. */
-  anki?: unknown;
+  /** AnkiConnect client; when absent, one is made from the config (service/anki/context.ts). */
+  anki?: AnkiClient;
 }
 
 export class Scaffold {

@@ -1,0 +1,15 @@
+{
+  "ok": true,
+  "data": {
+    "subject": "music-theory",
+    "from": "active",
+    "to": "paused",
+    "changed": true,
+    "proposals": [],
+    "next_step": "No card changes are needed."
+  },
+  "warnings": [
+    "Music theory is paused; its Anki time goes back to the auto subjects (ANK-06)."
+  ],
+  "errors": []
+}

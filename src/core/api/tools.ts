@@ -35,7 +35,8 @@ import {
   OpenMisconceptionInput,
 } from '../service/ops/learner.js';
 import type { Scaffold } from '../service/scaffold.js';
-import { extraTools } from './extra-tools.js';
+import { ankiDoctor } from '../service/anki/ops.js';
+import { ANKI_TOOLS } from './anki-tools.js';
 
 // IF-01: CLI and MCP share one implementation. Each tool: MCP name, JSON input schema, handler.
 // IF-02: every call returns {ok, data, warnings[], errors[]}.
@@ -138,10 +139,10 @@ export const CORE_TOOLS: ToolDef[] = [
     name: 'doctor',
     title: 'Health check',
     description:
-      'Checks the vault, event log, config, concept graph, Anki queue and CSS snippet. Each failure has one next step.',
+      'Checks the vault, event log, config, concept graph, CSS snippet and Anki (AnkiConnect version, FSRS, deck structure, budgets, queue). Each failure has one next step.',
     input: Empty,
     readOnly: true,
-    handler: (sc, _i, w) => ({ checks: doctorVault(sc, w) }),
+    handler: async (sc, _i, w) => ({ checks: [...doctorVault(sc, w), ...(await ankiDoctor(sc))] }),
   },
   {
     name: 'get_briefing',
@@ -319,7 +320,7 @@ export const CORE_TOOLS: ToolDef[] = [
 ];
 
 export function allTools(): ToolDef[] {
-  return [...CORE_TOOLS, ...extraTools()];
+  return [...CORE_TOOLS, ...ANKI_TOOLS];
 }
 
 export function toolByName(name: string): ToolDef | undefined {

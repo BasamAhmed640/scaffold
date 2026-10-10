@@ -14,6 +14,8 @@ export interface AnkiBriefing {
   subject: { min_7d: number; budget_min: number; active_cards: number; intake_year: string } | null;
   total: { min_7d: number; budget_min: number };
   flagged: number;
+  /** Up to 3 flagged note ids (ANK-05). */
+  flagged_notes?: number[];
   pending_proposals: number;
 }
 

@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "data": {
+    "online": true,
+    "api_version": 6,
+    "replayed": {
+      "applied": 0,
+      "failed": 0,
+      "still_queued": 0
+    },
+    "created": {
+      "decks": [],
+      "note_types": [
+        "Scaffold Basic",
+        "Scaffold Cloze"
+      ]
+    },
+    "cards": 2,
+    "reviews_imported": 0,
+    "lapses": 0,
+    "flags": {
+      "leech": 0,
+      "check": 0,
+      "review_by": 1
+    },
+    "budget": {
+      "proposed": [],
+      "paused_new": 0
+    }
+  },
+  "warnings": [
+    "1 volatile KC card flag(s): review_by has passed (ANK-05)."
+  ],
+  "errors": []
+}

@@ -53,5 +53,5 @@ AnkiConnect is a primary M0 item. It is only needed from M6 on, so M1–M5 proce
 
 ## Manual checks (owner)
 
-1. **AnkiConnect**: install as above; then run `scaffold doctor`.
+1. **AnkiConnect**: install as above; then run `scaffold doctor`. Then the V-ANKI live smoke test (M6): in Anki, File → Switch Profile → Add a disposable profile named **Scaffold Smoke**, open it, and run `npx tsx scripts/anki-smoke.ts` (it refuses any other profile). It adds 3 notes through the proposal/approval path, reviews them, syncs, and checks that an anchor lapse produces an event and a status change; raw AnkiConnect responses go to `local/anki-smoke/` to confirm D-53, D-54 and D-66. Also: close Anki, run three operations (e.g. `scaffold subject add`, `scaffold anki flag`, an approved action), reopen Anki, `scaffold anki sync`, and check each was applied once (ANK-09).
 2. **Claude Desktop, same chat**: (a) add the hello server from `scripts/probes/hello-mcp.mjs` (or the Scaffold `.mcpb` after M4), (b) upload the skill ZIP after M5 (Customize → Skills; Code execution on), (c) ask for an inline visual. Record pass/fail here with a screenshot.

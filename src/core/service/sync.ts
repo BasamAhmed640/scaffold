@@ -1,4 +1,5 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
+import { flagStaleFromChanges, reviewByFlags } from './anki/stale.js';
 import path from 'node:path';
 import type { Warnings } from '../envelope.js';
 import { sha256 } from '../ids.js';
@@ -245,5 +246,8 @@ export function syncFromVault(sc: Scaffold, w: Warnings): SyncResult {
   }
 
   sc.emit(drafts);
+  // ANK-05: edits to explanations, keys and sources flag the linked cards; so does a passed review_by.
+  flagStaleFromChanges(sc, changes, w);
+  reviewByFlags(sc, w);
   return { changes, bank };
 }

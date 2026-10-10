@@ -1,0 +1,31 @@
+{
+  "ok": true,
+  "data": {
+    "online": false,
+    "api_version": null,
+    "replayed": {
+      "applied": 0,
+      "failed": 0,
+      "still_queued": 1
+    },
+    "created": {
+      "decks": [],
+      "note_types": []
+    },
+    "cards": 0,
+    "reviews_imported": 0,
+    "lapses": 0,
+    "flags": {
+      "leech": 0,
+      "check": 0,
+      "review_by": 0
+    },
+    "budget": {
+      "proposed": [],
+      "paused_new": 0
+    },
+    "next_step": "Anki is not answering at http://127.0.0.1:9/. Open Anki (with AnkiConnect, add-on 2055492159) and run `scaffold anki sync`; 1 operation(s) wait in the queue."
+  },
+  "warnings": [],
+  "errors": []
+}

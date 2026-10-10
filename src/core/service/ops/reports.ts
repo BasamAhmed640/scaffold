@@ -1,4 +1,5 @@
 import type { Warnings } from '../../envelope.js';
+import { ankiWeeklyLines } from '../anki/ops.js';
 import type { AttemptEvent } from '../../schemas/events.js';
 import { addDaysToDate, DAY_MS, localDate, ms } from '../../time.js';
 import { round } from '../../util.js';
@@ -147,9 +148,7 @@ export function weeklyReport(
       `| ${s.fields.title} | ${sess} | ${n('solid')} | ${n('fragile')} | ${n('forgotten')} | ${kcs.filter((k) => k.misconception_active).length} |`,
     );
   }
-  lines.push('', '## Anki', '', '_Anki metrics appear after the first `scaffold anki sync` (ANK-10)._', '');
-  const hook = (sc.deps as { weeklyAnki?: (sc: Scaffold) => string[] }).weeklyAnki;
-  if (hook) lines.splice(lines.length - 2, 1, ...hook(sc));
+  lines.push('', '## Anki', '', ...ankiWeeklyLines(sc));
   const rel = `${FOLDERS.weekly}/${date}.md`;
   sc.vault.writeText(rel, lines.join('\n'));
   w.add(`Weekly report written: ${rel}`);

@@ -1,0 +1,12 @@
+{
+  "ok": false,
+  "data": null,
+  "warnings": [],
+  "errors": [
+    {
+      "code": "no_open_session",
+      "message": "Cards are proposed during a session, after a correct retrieval of the KC (TP-14).",
+      "next_step": "Start or resume a session, retrieve the KC correctly, then propose."
+    }
+  ]
+}

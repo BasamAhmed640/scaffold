@@ -1,0 +1,76 @@
+{
+  "ok": true,
+  "data": {
+    "total_budget_min": 15,
+    "seconds_per_review": 8,
+    "maintenance": {
+      "estimated_min": 0,
+      "measured_min_7d": 0,
+      "active_cards": 0
+    },
+    "subjects": [
+      {
+        "subject": "si-pi",
+        "scope": "active",
+        "budget_min": 7.5,
+        "fixed": false,
+        "measured_min_7d": 0,
+        "estimated_min": 0.01,
+        "active_cards": 1,
+        "cards": 1,
+        "new_cards": 0,
+        "intake": {
+          "used": 1,
+          "budget": 547,
+          "remaining": 546,
+          "warn": false
+        },
+        "recommended_new_per_day": 2,
+        "over_budget": false
+      },
+      {
+        "subject": "music-theory",
+        "scope": "active",
+        "budget_min": 7.5,
+        "fixed": false,
+        "measured_min_7d": 0,
+        "estimated_min": 0,
+        "active_cards": 1,
+        "cards": 1,
+        "new_cards": 0,
+        "intake": {
+          "used": 1,
+          "budget": 547,
+          "remaining": 546,
+          "warn": false
+        },
+        "recommended_new_per_day": 2,
+        "over_budget": false
+      }
+    ],
+    "total": {
+      "measured_min_7d": 0,
+      "estimated_min": 0.02,
+      "active_cards": 2,
+      "cards": 2
+    },
+    "recommended_new_total": 4,
+    "warnings": [],
+    "synced_at": "2026-10-09T18:00:00-04:00",
+    "queued_operations": 0,
+    "deck_limits": {
+      "Scaffold": {
+        "new_per_day": 4,
+        "max_reviews_per_day": 9999
+      },
+      "Scaffold::SI/PI": {
+        "new_per_day_this_deck": 2
+      },
+      "Scaffold::Music theory": {
+        "new_per_day_this_deck": 2
+      }
+    }
+  },
+  "warnings": [],
+  "errors": []
+}

@@ -1,0 +1,8 @@
+{
+  "SI/PI all": "tag:scaffold -is:suspended deck:Scaffold::SI/PI",
+  "Check": "tag:scaffold -is:suspended tag:scaffold::check",
+  "Fragile SI/PI": "tag:scaffold -is:suspended deck:Scaffold::SI/PI (tag:kc::kc-si-gamma OR tag:kc::kc-si-td OR tag:kc::kc-si-z0)",
+  "Misconceptions": "tag:scaffold -is:suspended tag:kc::kc-si-open-short",
+  "Modes": "tag:scaffold -is:suspended tag:kc::kc-mt-scale tag:topic::modes",
+  "Music": "tag:scaffold -is:suspended \"deck:Scaffold::Music theory\""
+}

@@ -98,6 +98,8 @@ export interface DoctorCheck {
   ok: boolean;
   message: string;
   next_step?: string;
+  /** A failure that needs attention but does not make the vault unhealthy (Anki: work is queued, ANK-09). */
+  warn?: boolean;
 }
 
 /** Vault-side health checks; Anki checks are added by the Anki layer. Never blocks (REL-03). */

@@ -52,7 +52,7 @@ export const UpsertSubjectInput = z
   })
   .loose();
 
-export function upsertSubject(sc: Scaffold, raw: unknown, w: Warnings) {
+export async function upsertSubject(sc: Scaffold, raw: unknown, w: Warnings) {
   if (raw && typeof raw === 'object')
     rejectDerived(raw as Record<string, unknown>, DERIVED_SUBJECT_KEYS, 'upsert_subject');
   const input = UpsertSubjectInput.parse(raw);
@@ -73,7 +73,7 @@ export function upsertSubject(sc: Scaffold, raw: unknown, w: Warnings) {
     if (!sc.vault.createText(rel, subjectNote(subject)))
       w.add(`${rel} already existed; kept the file and recorded the subject.`);
     sc.emit([{ type: 'subject_created', subject }]);
-    const deck = ensureDeck(sc, subject.anki_deck!, w);
+    const deck = await ensureDeck(sc, subject.anki_deck!, w);
     return {
       created: true,
       subject,

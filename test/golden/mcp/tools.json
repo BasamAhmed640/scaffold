@@ -82,5 +82,41 @@
   {
     "name": "validate",
     "readOnly": true
+  },
+  {
+    "name": "anki_sync",
+    "readOnly": false
+  },
+  {
+    "name": "get_anki_load",
+    "readOnly": true
+  },
+  {
+    "name": "propose_cards",
+    "readOnly": false
+  },
+  {
+    "name": "propose_card_actions",
+    "readOnly": false
+  },
+  {
+    "name": "apply_card_actions",
+    "readOnly": false
+  },
+  {
+    "name": "list_card_actions",
+    "readOnly": true
+  },
+  {
+    "name": "flag_card",
+    "readOnly": false
+  },
+  {
+    "name": "set_subject_scope",
+    "readOnly": false
+  },
+  {
+    "name": "anki_stack",
+    "readOnly": true
   }
 ]

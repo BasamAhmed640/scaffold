@@ -1,0 +1,25 @@
+{
+  "ok": true,
+  "data": {
+    "actions": [
+      {
+        "action_id": "CA-0001",
+        "kind": "add",
+        "subject": "si-pi",
+        "kc_ids": [
+          "kc-si-gamma"
+        ],
+        "note_ids": [],
+        "reason": "new anchor card for kc-si-gamma",
+        "status": "pending",
+        "card": {
+          "front": "Why does a mismatched load reflect?",
+          "back": "Γ = (ZL − Z0)/(ZL + Z0)",
+          "anchor": true
+        }
+      }
+    ]
+  },
+  "warnings": [],
+  "errors": []
+}

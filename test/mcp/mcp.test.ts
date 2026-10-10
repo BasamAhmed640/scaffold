@@ -5,6 +5,8 @@ import { loadBank } from '../../src/core/service/bank.js';
 import { rebuildVault } from '../../src/core/service/ops/maintenance.js';
 import type { Scaffold } from '../../src/core/service/scaffold.js';
 import { normalize } from '../helpers/cli.js';
+import { MockAnki } from '../helpers/anki-mock.js';
+import { ADMISSION, ankiLog, seedCard } from '../helpers/anki-vault.js';
 import { connectMcp, type McpHandle } from '../helpers/mcp.js';
 import { cleanupAll, tempDir, vaultFromEvents } from '../helpers/vault.js';
 import { FIXTURE_NOW, standardFixture } from '../fixtures/standard.js';
@@ -20,6 +22,7 @@ const latencies: number[] = [];
 
 async function g(name: string, tool: string, args: Record<string, unknown> = {}) {
   const r = await mcp.call(tool, args);
+  called.add(tool);
   latencies.push(r.ms);
   expect(Object.keys(r.env).sort()).toEqual(['data', 'errors', 'ok', 'warnings']);
   expect(r.isError).toBe(!r.env.ok);
@@ -64,7 +67,19 @@ const EXPECTED_TOOLS = [
   'list_misconceptions',
   'open_misconception',
   'validate',
+  'anki_sync',
+  'get_anki_load',
+  'propose_cards',
+  'propose_card_actions',
+  'apply_card_actions',
+  'list_card_actions',
+  'flag_card',
+  'set_subject_scope',
+  'anki_stack',
 ];
+
+/** Every tool name called through a real client in this file (V-MCP: all of them). */
+const called = new Set<string>();
 
 describe('V-MCP tool list', () => {
   it('lists the tools with valid JSON Schemas', async () => {
@@ -225,6 +240,7 @@ describe('V-MCP rejections (IF-03)', () => {
       ['get_hint', { question_id: '../Q-0001', level: 1 }],
     ] as const) {
       const r = await mcp.call(tool, args as Record<string, unknown>);
+      called.add(tool);
       expect(r.env.ok, `${tool} ${JSON.stringify(args)}`).toBe(false);
       expect(r.isError).toBe(true);
     }
@@ -267,4 +283,112 @@ describe('V-MCP never fails on load (REL-03)', () => {
       await empty.close();
     }
   }, 60_000);
+});
+
+describe('V-MCP Anki tools against a mock AnkiConnect (ANK-01 … ANK-10)', () => {
+  let anki: McpHandle;
+  let mock: MockAnki;
+  let avault = '';
+  async function ga(name: string, tool: string, args: Record<string, unknown> = {}) {
+    const r = await anki.call(tool, args);
+    called.add(tool);
+    expect(Object.keys(r.env).sort()).toEqual(['data', 'errors', 'ok', 'warnings']);
+    expect(r.isError).toBe(!r.env.ok);
+    if (tool === 'anki_sync') expect(r.ms).toBeLessThan(5000); // sync is excluded from p95 but bounded
+    await expect(JSON.stringify(normalize(r.env, avault), null, 2)).toMatchFileSnapshot(
+      `../golden/mcp/${name}.json`,
+    );
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- tests read arbitrary tool output
+    return r.env as { ok: boolean; data: any; warnings: string[]; errors: { code: string }[] };
+  }
+
+  beforeAll(async () => {
+    mock = await new MockAnki().start();
+    for (const d of ['Scaffold', 'Scaffold::SI/PI', 'Scaffold::Music theory']) mock.decks.add(d);
+    seedCard(mock, {
+      kc: 'kc-si-z0',
+      anchor: true,
+      front: 'What sets the Z0 of a uniform line?',
+      back: 'Its L and C per length',
+      card: { type: 2, queue: 2, ivl: 12 },
+    });
+    seedCard(mock, {
+      kc: 'kc-mt-intervals',
+      anchor: true,
+      front: 'Semitones in a perfect fifth?',
+      back: '7',
+      card: { type: 2, queue: 2, ivl: 30 },
+    });
+    const v = vaultFromEvents(ankiLog(), '2026-10-09T18:00:00-04:00', { name: 'MCP Anki Vault' });
+    rebuildVault(v.sc, { restoreMissing: true }, new Warnings());
+    avault = v.root;
+    anki = await connectMcp({ vault: avault, env: { SCAFFOLD_ANKI_URL: mock.url } });
+  }, 60_000);
+
+  afterAll(async () => {
+    await anki?.close();
+    await mock?.stop();
+  });
+
+  it('sync, load, propose, approve, flag, rewrite, scope and stack through a real client', async () => {
+    const sync = await ga('anki_sync', 'anki_sync');
+    expect(sync.data).toMatchObject({
+      online: true,
+      cards: 2,
+      created: { note_types: ['Scaffold Basic', 'Scaffold Cloze'] },
+    });
+    await ga('get_anki_load', 'get_anki_load');
+    const prop = await ga('propose_cards', 'propose_cards', {
+      cards: [
+        {
+          kc_id: 'kc-si-gamma',
+          front: 'Why does a mismatched load reflect?',
+          back: 'Γ = (ZL − Z0)/(ZL + Z0)',
+          anchor: true,
+          admission: ADMISSION,
+        },
+      ],
+    });
+    const listed = await ga('list_card_actions', 'list_card_actions');
+    expect(listed.data.actions).toHaveLength(1);
+    const applied = await ga('apply_card_actions', 'apply_card_actions', {
+      action_ids: [prop.data.proposals[0].action_id],
+      approval: { learner_quote: 'Yes, add that card.' },
+    });
+    expect(applied.data.results[0].result).toBe('applied');
+    await anki.call('anki_sync');
+    const note = [...mock.notes.values()].find((n) => n.tags.includes('kc::kc-si-gamma'))!;
+    const flag = await ga('flag_card', 'flag_card', {
+      note_id: note.id,
+      detail: 'oversimplified',
+      proposed: 'rewrite',
+      by: 'claude-code',
+    });
+    expect(flag.data.tag).toBe('applied');
+    const rw = await ga('propose_card_actions', 'propose_card_actions', {
+      actions: [
+        {
+          kind: 'rewrite_reset',
+          note_ids: [note.id],
+          reason: 'answer corrected',
+          fields: { Back: 'Γ = (ZL − Z0)/(ZL + Z0), the fraction of the incident voltage that reflects' },
+        },
+      ],
+    });
+    await anki.call('apply_card_actions', {
+      action_ids: [rw.data.actions[0].action_id],
+      approval: { learner_quote: 'ok, rewrite and reset' },
+    });
+    expect(mock.requests.filter((r) => r.action === 'forgetCards')).toHaveLength(1);
+    await ga('set_subject_scope', 'set_subject_scope', { subject: 'music', scope: 'paused' });
+    await ga('anki_stack', 'anki_stack', { name: 'SI/PI review', subject: 'si-pi' });
+    expect(mock.actions().some((a) => /delete/i.test(a))).toBe(false);
+  });
+});
+
+describe('V-MCP coverage', () => {
+  it('every listed tool was called through a real client', async () => {
+    const { tools } = await mcp.client.listTools();
+    expect(tools.map((t) => t.name).filter((n) => !called.has(n))).toEqual([]);
+  });
 });

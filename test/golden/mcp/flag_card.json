@@ -1,0 +1,15 @@
+{
+  "ok": true,
+  "data": {
+    "flagged": [
+      1791547200007
+    ],
+    "kc_ids": [
+      "kc-si-gamma"
+    ],
+    "tag": "applied",
+    "next_step": "Propose retire, rewrite-and-reset or keep with propose_card_actions, and apply it only after the learner explicitly approves (TP-17)."
+  },
+  "warnings": [],
+  "errors": []
+}

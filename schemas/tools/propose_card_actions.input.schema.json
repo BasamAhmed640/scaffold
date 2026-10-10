@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "actions": {
+      "minItems": 1,
+      "maxItems": 20,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "rewrite",
+              "rewrite_reset",
+              "retire",
+              "dormant",
+              "unsuspend",
+              "pause_new",
+              "unpause_new",
+              "compress",
+              "keep"
+            ]
+          },
+          "note_ids": {
+            "default": [],
+            "maxItems": 2000,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            }
+          },
+          "subject": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 80
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 500
+          },
+          "fields": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string"
+            },
+            "additionalProperties": {
+              "type": "string",
+              "maxLength": 4000
+            }
+          },
+          "retire_reason": {
+            "type": "string",
+            "enum": [
+              "outdated",
+              "superseded",
+              "irrelevant",
+              "replaced",
+              "duplicate"
+            ]
+          }
+        },
+        "required": [
+          "kind",
+          "reason"
+        ]
+      }
+    },
+    "by": {
+      "default": "tutor",
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 40
+    }
+  },
+  "required": [
+    "actions"
+  ]
+}

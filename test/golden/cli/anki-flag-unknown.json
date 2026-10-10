@@ -1,0 +1,12 @@
+{
+  "ok": false,
+  "data": null,
+  "warnings": [],
+  "errors": [
+    {
+      "code": "unknown_note",
+      "message": "Note 123 is not in the Anki mirror.",
+      "next_step": "Run anki sync, or pass kc_ids."
+    }
+  ]
+}

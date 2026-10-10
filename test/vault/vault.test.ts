@@ -29,9 +29,9 @@ import { FIXTURE_NOW, standardFixture } from '../fixtures/standard.js';
 
 afterAll(() => cleanupAll());
 
-function seed(sc: Scaffold): void {
+async function seed(sc: Scaffold): Promise<void> {
   const w = new Warnings();
-  upsertSubject(sc, { title: 'SI/PI', id: 'si-pi', aliases: ['signal integrity'] }, w);
+  await upsertSubject(sc, { title: 'SI/PI', id: 'si-pi', aliases: ['signal integrity'] }, w);
   upsertConcepts(
     sc,
     {
@@ -145,7 +145,7 @@ describe('IF-03 path confinement', () => {
 });
 
 describe('VLT-02 atomic writes', () => {
-  it('a simulated crash mid-write leaves the old file intact and no truncated file', () => {
+  it('a simulated crash mid-write leaves the old file intact and no truncated file', async () => {
     let crash = false;
     const v = makeVault({
       hooks: {
@@ -154,7 +154,7 @@ describe('VLT-02 atomic writes', () => {
         },
       },
     });
-    seed(v.sc);
+    await seed(v.sc);
     const rel = conceptRel('kc-si-z0');
     const before = readFileSync(path.join(v.root, ...rel.split('/')), 'utf8');
     crash = true;
@@ -166,9 +166,9 @@ describe('VLT-02 atomic writes', () => {
     expect(leftovers).toEqual([]);
   });
 
-  it('a torn last line in events.jsonl (crash mid-append) is ignored, reported and repairable', () => {
+  it('a torn last line in events.jsonl (crash mid-append) is ignored, reported and repairable', async () => {
     const v = makeVault();
-    seed(v.sc);
+    await seed(v.sc);
     const file = path.join(v.root, 'Scaffold', '_system', 'events.jsonl');
     const good = v.sc.vault.log.read().events.length;
     writeFileSync(file, readFileSync(file, 'utf8') + '{"type":"attempt","id":"X');
@@ -190,9 +190,9 @@ describe('VLT-02 atomic writes', () => {
 });
 
 describe('event log lock (REL-04)', () => {
-  it('takes over a stale lock and fails loudly on a live one', () => {
+  it('takes over a stale lock and fails loudly on a live one', async () => {
     const v = makeVault();
-    seed(v.sc);
+    await seed(v.sc);
     const lock = path.join(v.root, 'Scaffold', '_system', 'events.lock');
     writeFileSync(lock, 'old pid');
     utimesSync(lock, new Date(Date.now() - 3_600_000), new Date(Date.now() - 3_600_000));
@@ -206,7 +206,7 @@ describe('event log lock (REL-04)', () => {
 });
 
 describe('Windows paths and line endings', () => {
-  it('handles spaces, Unicode, an apostrophe and long names (> 260 characters)', () => {
+  it('handles spaces, Unicode, an apostrophe and long names (> 260 characters)', async () => {
     const deep = [
       'Basam’s Vault with spaces',
       'ünïcödé 日本語 Γ',
@@ -216,15 +216,15 @@ describe('Windows paths and line endings', () => {
     ].join(path.sep);
     const v = makeVault({ name: deep });
     expect(v.root.length).toBeGreaterThan(260);
-    seed(v.sc);
+    await seed(v.sc);
     const note = v.sc.vault.readNote(conceptRel('kc-si-z0'))!;
     expect(note.data.title).toBe('Characteristic impedance (Z₀)');
     expect(rebuildVault(v.sc, {}, new Warnings()).kcs).toBe(2);
   });
 
-  it('tolerates CRLF notes edited by the learner and keeps their line endings', () => {
+  it('tolerates CRLF notes edited by the learner and keeps their line endings', async () => {
     const v = makeVault();
-    seed(v.sc);
+    await seed(v.sc);
     const abs = path.join(v.root, ...conceptRel('kc-si-gamma').split('/'));
     const crlf = readFileSync(abs, 'utf8')
       .replace(/\n/g, '\r\n')
@@ -243,10 +243,10 @@ describe('Windows paths and line endings', () => {
 });
 
 describe('LM-13 schema migration and backups', () => {
-  it('migrates a v0 log after taking a backup copy', () => {
+  it('migrates a v0 log after taking a backup copy', async () => {
     const v = makeVault();
     const sys = path.join(v.root, 'Scaffold', '_system');
-    seed(v.sc);
+    await seed(v.sc);
     const lines = readFileSync(path.join(sys, 'events.jsonl'), 'utf8').trim().split('\n');
     const v0 = JSON.stringify({
       type: 'taught',
@@ -268,9 +268,9 @@ describe('LM-13 schema migration and backups', () => {
     expect(taught?.type === 'taught' && taught.kc_ids).toEqual(['kc-si-z0']);
   });
 
-  it('keeps one dated backup per day with 14-day rotation', () => {
+  it('keeps one dated backup per day with 14-day rotation', async () => {
     const v = makeVault();
-    seed(v.sc);
+    await seed(v.sc);
     const dir = path.join(v.root, 'Scaffold', '_system', 'backups');
     mkdirSync(dir, { recursive: true });
     writeFileSync(path.join(dir, 'events-2026-09-01.jsonl'), 'old');
@@ -332,9 +332,9 @@ describe('generated fixture vault', () => {
 });
 
 describe('learner edits are folded into the event log', () => {
-  it('prerequisite, section and answer-key edits become events', () => {
+  it('prerequisite, section and answer-key edits become events', async () => {
     const v = makeVault();
-    seed(v.sc);
+    await seed(v.sc);
     const w = new Warnings();
     const q = addQuestion(
       v.sc,
@@ -381,9 +381,9 @@ describe('learner edits are folded into the event log', () => {
     expect(syncFromVault(v.sc, new Warnings()).changes).toEqual([]);
   });
 
-  it('upsert_concept never overwrites learner text in Explanation', () => {
+  it('upsert_concept never overwrites learner text in Explanation', async () => {
     const v = makeVault();
-    seed(v.sc);
+    await seed(v.sc);
     const w = new Warnings();
     upsertConcepts(
       v.sc,
@@ -400,9 +400,9 @@ describe('learner edits are folded into the event log', () => {
     expect(w.items.join(' ')).toMatch(/belongs to the learner/);
   });
 
-  it('rejects derived fields, dangling ids and cycles on input', () => {
+  it('rejects derived fields, dangling ids and cycles on input', async () => {
     const v = makeVault();
-    seed(v.sc);
+    await seed(v.sc);
     const w = new Warnings();
     expect(() =>
       upsertConcepts(v.sc, { id: 'kc-si-x', title: 'X', subject: 'si-pi', status: 'solid' }, w),
@@ -417,14 +417,14 @@ describe('learner edits are folded into the event log', () => {
         w,
       ),
     ).toThrow(/cycle/);
-    expect(() => upsertSubject(v.sc, { title: 'X', due: 3 }, w)).toThrow(/derived/);
+    await expect(upsertSubject(v.sc, { title: 'X', due: 3 }, w)).rejects.toThrow(/derived/);
   });
 });
 
 describe('doctor and validate', () => {
-  it('report a healthy vault and specific problems', () => {
+  it('report a healthy vault and specific problems', async () => {
     const v = makeVault({ obsidian: true });
-    seed(v.sc);
+    await seed(v.sc);
     const checks = doctorVault(v.sc, new Warnings());
     expect(checks.filter((c) => !c.ok)).toEqual([]);
     expect(validateVault(v.sc, new Warnings()).ok).toBe(true);

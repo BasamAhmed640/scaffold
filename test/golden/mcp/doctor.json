@@ -41,6 +41,23 @@
         "id": "links",
         "ok": true,
         "message": "No unresolved links in Scaffold notes."
+      },
+      {
+        "id": "anki",
+        "ok": false,
+        "message": "Anki is closed or AnkiConnect is missing: nothing answers at http://127.0.0.1:9/.",
+        "next_step": "Open Anki. If it is open, install AnkiConnect (Tools → Add-ons → Get Add-ons…, code 2055492159) and restart Anki. Until then, Anki operations are queued (ANK-09).",
+        "warn": true
+      },
+      {
+        "id": "anki_mirror",
+        "ok": true,
+        "message": "No Anki sync yet; run `scaffold anki sync` once Anki is open."
+      },
+      {
+        "id": "anki_budgets",
+        "ok": true,
+        "message": "Anki budgets fit in the daily total."
       }
     ]
   },

@@ -294,6 +294,52 @@ describe('V-CLI golden JSON (IF-01, IF-02)', () => {
     await g('kc-update', ['kc', 'update', 'kc-la-matrices', '--title', 'Matrices as linear maps']);
     await g('plan-pretest', ['plan', '--focus', 'linalg']);
   });
+
+  it('anki sync (offline) / status / stack / actions / flag / propose, scope set (D8 Anki rows)', async () => {
+    const sync = await g('anki-sync-offline', ['anki', 'sync']);
+    expect((sync.json!.data as { online: boolean }).online).toBe(false);
+    await g('anki-status', ['anki', 'status']);
+    await g('anki-stack', ['anki', 'stack', 'Reflections', '--subject', 'si-pi', '--status', 'fragile']);
+    await g('anki-actions-list', ['anki', 'actions', 'list']);
+    const flag = await g('anki-flag-unknown', [
+      'anki',
+      'flag',
+      '123',
+      '--detail',
+      'wrong sign',
+      '--propose',
+      'rewrite',
+    ]);
+    expect(flag.code).toBe(1);
+    const file = path.join(dir, 'cards.json');
+    writeFileSync(
+      file,
+      JSON.stringify({
+        cards: [
+          {
+            kc_id: 'kc-si-reflection-coefficient',
+            front: 'Why does a mismatched load reflect?',
+            back: 'Γ = (ZL − Z0)/(ZL + Z0)',
+            anchor: true,
+            admission: { rederive: 'not from Z0 alone', instant: 'every reflection problem', worth: 'yes' },
+          },
+        ],
+      }),
+    );
+    const propose = await g('anki-propose-no-session', ['anki', 'propose', '--file', file]);
+    expect(propose.code).toBe(1);
+    const apply = await g('anki-actions-apply-unknown', [
+      'anki',
+      'actions',
+      'apply',
+      'CA-0099',
+      '--approval',
+      'yes',
+    ]);
+    expect((apply.json!.data as { results: { result: string }[] }).results[0]!.result).toBe('skipped');
+    const scope = await g('scope-set', ['scope', 'set', 'spanish', 'active']);
+    expect(scope.json!.warnings.join(' ')).toContain('needs_check');
+  });
 });
 
 describe('human output', () => {

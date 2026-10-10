@@ -11,7 +11,7 @@ import { FakeClock, localDate, systemClock } from '../core/time.js';
 import { initVault } from '../core/vault/init.js';
 import { resolveVault } from '../core/vault/paths.js';
 import { formatHuman } from './format.js';
-import { cliExtensions } from './extensions.js';
+import { ankiCommands } from './anki.js';
 
 // The `scaffold` CLI (IF-01): the same functions as the MCP server. Human output by default,
 // `--json` for agents. Never prompts; every failure is one line plus a next step (REL-03).
@@ -152,7 +152,11 @@ export async function runCli(argv: string[], io: CliIO): Promise<number> {
         for (const f of fixed) io.stderr(`fixed: ${f}`);
       }
       const env = await callTool(sc, 'doctor', {});
-      if (env.ok && (env.data as { checks: { ok: boolean }[] }).checks.some((c) => !c.ok)) env.ok = false;
+      if (
+        env.ok &&
+        (env.data as { checks: { ok: boolean; warn?: boolean }[] }).checks.some((c) => !c.ok && !c.warn)
+      )
+        env.ok = false;
       ctx.emit('doctor', env);
     });
 
@@ -504,7 +508,7 @@ export async function runCli(argv: string[], io: CliIO): Promise<number> {
       ctx.run(`call ${tool}`, async (sc) => callTool(sc, tool, readJsonArg(o.file, o.input) ?? {})),
     );
 
-  for (const ext of cliExtensions()) ext(program, ctx);
+  ankiCommands(program, ctx);
 
   try {
     await program.parseAsync(argv, { from: 'user' });

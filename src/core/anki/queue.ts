@@ -49,6 +49,13 @@ export class OpQueue {
     renameSync(file, file.replace(/\.json$/, '.done'));
   }
 
+  /** Anki rejected the operation: keep it for the record, never replay it again. */
+  markFailed(file: string, error: string): void {
+    const op = JSON.parse(readFileSync(file, 'utf8')) as Record<string, unknown>;
+    writeFileSync(file, JSON.stringify({ ...op, error }, null, 2));
+    renameSync(file, file.replace(/\.json$/, '.failed'));
+  }
+
   count(): number {
     return this.pending().length;
   }

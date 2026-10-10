@@ -1,0 +1,17 @@
+{
+  "ok": true,
+  "data": {
+    "results": [
+      {
+        "action_id": "CA-0001",
+        "result": "applied",
+        "detail": "anchor card for kc-si-gamma",
+        "created_note_ids": [
+          1791547200007
+        ]
+      }
+    ]
+  },
+  "warnings": [],
+  "errors": []
+}

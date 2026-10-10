@@ -6,7 +6,7 @@ import type { QuestionInput } from '../../src/core/schemas/question.js';
 import { parseEvent, type ScaffoldEvent } from '../../src/core/schemas/events.js';
 import { keyHash } from '../../src/core/service/bank.js';
 import { rebuildVault } from '../../src/core/service/ops/maintenance.js';
-import type { AnkiMirror } from '../../src/core/service/ops/anki-hooks.js';
+import type { AnkiMirror } from '../../src/core/anki/mirror.js';
 import { Scaffold } from '../../src/core/service/scaffold.js';
 import { syncFromVault } from '../../src/core/service/sync.js';
 import { DAY_MS, HOUR_MS, localDate, systemClock, systemTimeZone } from '../../src/core/time.js';
@@ -599,8 +599,17 @@ export function oversimplifiedMirror(now = Date.now()): AnkiMirror {
         kc_ids: ['kc-si-reflection-coefficient'],
         anchor: false,
         tags: ['scaffold', 'kc::kc-si-reflection-coefficient'],
+        model: 'Scaffold Basic',
+        fields: {
+          Front: 'When does a signal reflect on a transmission line?',
+          Back: 'Only when the line is not 50 Ω.',
+          KC_ID: 'kc-si-reflection-coefficient',
+          Link: '',
+          Extra: '',
+        },
         front: 'When does a signal reflect on a transmission line?',
         back: 'Only when the line is not 50 Ω.',
+        note_mod: 1700000000,
         interval: 9,
         queue: 2,
         type: 2,
