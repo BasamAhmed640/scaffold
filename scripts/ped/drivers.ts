@@ -127,6 +127,17 @@ export interface ExecResult {
   timedOut: boolean;
 }
 
+/**
+ * The environment for a front-end under test: the parent's, minus every Claude, Anthropic and MCP
+ * host variable. A run launched from inside another agent (Claude Desktop, Claude Code) must not
+ * inherit its session, proxy URL or messaging token; each CLI uses its own stored login (ARC-01/02).
+ */
+export function cleanEnv(env: NodeJS.ProcessEnv = process.env): NodeJS.ProcessEnv {
+  const out: NodeJS.ProcessEnv = {};
+  for (const [k, v] of Object.entries(env)) if (!/^(CLAUDE|ANTHROPIC|MCP_)/i.test(k)) out[k] = v;
+  return out;
+}
+
 /** Runs a command with the message on stdin and a hard timeout (ARC-10: never hang). */
 export function exec(
   cmd: string,
@@ -260,6 +271,7 @@ export class ClaudeProvider implements Provider {
     const r = await exec(this.exe, this.args(), {
       cwd: this.wd.dir,
       input: message,
+      env: cleanEnv(),
       timeoutMs: TURN_TIMEOUT_MS,
     });
     this.started = true;
@@ -313,6 +325,7 @@ export class CodexProvider implements Provider {
     const r = await exec(this.exe, this.args(), {
       cwd: this.wd.dir,
       input: message,
+      env: cleanEnv(),
       timeoutMs: TURN_TIMEOUT_MS,
     });
     const parsed = parseCodexJson(r.stdout);

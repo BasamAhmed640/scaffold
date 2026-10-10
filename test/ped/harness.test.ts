@@ -6,6 +6,7 @@ import { Scaffold } from '../../src/core/service/scaffold.js';
 import { systemClock, systemTimeZone } from '../../src/core/time.js';
 import {
   ClaudeProvider,
+  cleanEnv,
   CodexProvider,
   parseClaudeStream,
   parseCodexJson,
@@ -233,6 +234,19 @@ describe('working directories and command lines', () => {
       'C:\\vault dir',
     ]);
     expect(args.at(-1)).toBe('-');
+  });
+
+  it('front-ends under test get a clean environment: no host Claude, Anthropic or MCP variables (ARC-02)', () => {
+    const env = cleanEnv({
+      PATH: 'p',
+      APPDATA: 'a',
+      CLAUDECODE: '1',
+      CLAUDE_CODE_SESSION_ID: 's',
+      CLAUDE_CODE_MESSAGING_TOKEN: 'secret',
+      ANTHROPIC_BASE_URL: 'http://127.0.0.1:1',
+      MCP_CONNECTION_NONBLOCKING: '1',
+    });
+    expect(env).toEqual({ PATH: 'p', APPDATA: 'a' });
   });
 });
 

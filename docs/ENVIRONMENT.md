@@ -19,6 +19,7 @@ Recorded on the owner's PC on 2026-10-09. Re-run the probes in `scripts/probes/`
 | Claude Desktop: local MCP "hello" tool, uploaded skill and inline visual in one chat | needs the owner; see "Manual checks" below | **pending (owner)** |
 | Claude Code | 2.1.295, bundled with Claude Desktop at `%APPDATA%\Claude\claude-code\2.1.295\…\claude.exe` (not on `PATH`) | pass |
 | Claude Code headless | `claude -p` (print mode), `--resume <session-id>`, `--continue`, `--output-format stream-json`, `--mcp-config` all listed in `--help` | pass (flags present) |
+| Claude Code login (standalone CLI) | `claude auth status`, run in a clean environment on 2026-10-10 → `loggedIn: false`. The Desktop Code tab is authenticated by the Desktop app, but the CLI on its own is not. Owner action: run `claude auth login` once in a terminal and sign in with the Claude Pro account (D-78). | **pending (owner)** |
 | Codex CLI | codex-cli 0.160.1 at `%LOCALAPPDATA%\OpenAI\Codex\bin\…\codex.exe` (not on `PATH`), `codex login status` → "Logged in using ChatGPT" | pass |
 | Codex headless | `codex exec`, `codex exec resume [SESSION_ID] [PROMPT]` / `--last`, `--json` | pass (flags present) |
 | Codex MCP | `codex mcp add <name> -- <command>` | pass (command present) |
