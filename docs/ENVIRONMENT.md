@@ -48,7 +48,7 @@ AnkiConnect is a primary M0 item. It is only needed from M6 on, so M1–M5 proce
 | vitest / @vitest/coverage-v8 | 5.0.3 | tests and coverage |
 | fast-check | 4.10.2 | property tests |
 | @anthropic-ai/mcpb | 2.1.2 | `mcpb init/validate/pack/info`; manifest_version 0.3 (spec in modelcontextprotocol/mcpb `MANIFEST.md`) |
-| playwright | 1.64.0 (optional dependency) | Render checker. Playwright 1.64.0 expects `chromium_headless_shell-1248`, but `%LOCALAPPDATA%\ms-playwright` holds build 1246 (from an older Playwright), so `chromium.launch()` fails. The checker then uses its one fallback, the installed Edge channel (`msedge 154.0.4258.62`, probed 2026-10-10). `npx playwright install chromium` (about 150 MB) fixes this; it is not run without the owner's approval (D-77). |
+| playwright | 1.64.0 (optional dependency) | Render checker. On 2026-10-10 `%LOCALAPPDATA%\ms-playwright` held only build 1246, and `chromium.launch()` failed, so checks used the Edge fallback (`msedge 154.0.4258.62`). With the owner's approval, `npx playwright install chromium` then installed `chromium_headless_shell-1248` (Chrome Headless Shell 156.0.8078.4, 118 MiB). Checks now run on that build, and Edge remains the fallback (D-77). |
 | eslint / typescript-eslint / prettier | 10.12.0 / 8.71.1 / 3.9.9 | lint and format |
 
 ## Manual checks (owner)

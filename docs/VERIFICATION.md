@@ -674,9 +674,9 @@ Transcripts: C:\Users\basam\src\scaffold\local\ped\verification-stub
 | V-VIS: a Claude Desktop inline widget rendered from the vault through the theme shim (VIS-04) | **pending (owner sign-off)** | docs/ENVIRONMENT.md, manual check 3: screenshot comparison in light and dark. |
 
 <!-- suite:V-VIS:begin -->
-### V-VIS: visuals are correct and readable (render checks use Playwright with the installed Edge channel)
+### V-VIS: visuals are correct and readable (Playwright Chromium; Edge is the fallback)
 
-`npx vitest run test/vis --reporter=verbose` — exit 0 — 2026-10-10T13:52:55.750Z — win32 node v22.23.2
+`npx vitest run test/vis --reporter=verbose` — exit 0 — 2026-10-10T13:58:18.101Z — win32 node v22.23.2
 
 ```text
 
@@ -687,48 +687,48 @@ Transcripts: C:\Users\basam\src\scaffold\local\ped\verification-stub
  ✓ test/vis/static.test.ts > VIS-05 fast static checks > clean templates pass 4ms
  ✓ test/vis/static.test.ts > VIS-05 fast static checks > well-formed XML: unclosed tags, mismatched ends, unquoted attributes, two roots 1ms
  ✓ test/vis/static.test.ts > VIS-05 fast static checks > title/desc or aria-label (missing title is an error, missing desc a warning) 1ms
- ✓ test/vis/static.test.ts > VIS-05 fast static checks > size limit 0ms
+ ✓ test/vis/static.test.ts > VIS-05 fast static checks > size limit 1ms
  ✓ test/vis/static.test.ts > VIS-05 fast static checks > no external network references (IF-04): attributes, CSS url(), @import, script fetch/import 1ms
- ✓ test/vis/static.test.ts > VIS-05 fast static checks > explicit fonts under 11 px 0ms
+ ✓ test/vis/static.test.ts > VIS-05 fast static checks > explicit fonts under 11 px 1ms
  ✓ test/vis/static.test.ts > VIS-05 fast static checks > a plot without a generator fails (VIS-02) 1ms
  ✓ test/vis/static.test.ts > VIS-05 fast static checks > prepareSvg adds the namespace and the shim after <title>/<desc>; stripShim removes it 1ms
  ✓ test/vis/static.test.ts > VIS-05 fast static checks > prepareHtml wraps a fragment in a self-contained page with the shim 1ms
- ✓ test/vis/static.test.ts > VIS-02 computed plots > the expression evaluator is safe: no globals, properties or unknown functions 3ms
+ ✓ test/vis/static.test.ts > VIS-02 computed plots > the expression evaluator is safe: no globals, properties or unknown functions 2ms
  ✓ test/vis/static.test.ts > VIS-02 computed plots > nice ticks 0ms
- ✓ test/vis/static.test.ts > VIS-02 computed plots > the template writes axis metadata, units, direct labels and its generator, and passes the static checks 8ms
+ ✓ test/vis/static.test.ts > VIS-02 computed plots > the template writes axis metadata, units, direct labels and its generator, and passes the static checks 7ms
  ✓ test/vis/static.test.ts > VIS-02 computed plots > rejects a spec without units fields, an inverted axis, or a series with neither expr nor points 1ms
- ✓ test/vis/registry.test.ts > VIS-03 storage > a clean SVG is stored with its spec note and embedded in the concept note 334ms
- ✓ test/vis/registry.test.ts > VIS-03 storage > an HTML widget fragment becomes a self-contained page; the concept note links to it 245ms
- ✓ test/vis/registry.test.ts > VIS-03 storage > a plot spec is computed by Scaffold and its spec is stored as the generator (VIS-02) 429ms
- ✓ test/vis/registry.test.ts > VIS-03 storage > get_visual returns the source without the shim, with purpose, notice and alt text 426ms
- ✓ test/vis/registry.test.ts > VIS-03 storage > rejects unknown KCs, unknown visual ids, and source with plot 428ms
- ✓ test/vis/registry.test.ts > VIS-05 one fix attempt, then accepted with warnings or dropped (ARC-10) > needs_fix stores nothing; the fixed source is accepted 383ms
- ✓ test/vis/registry.test.ts > VIS-05 one fix attempt, then accepted with warnings or dropped (ARC-10) > a non-fatal failure after the fix attempt is kept with warnings; a third call is refused 522ms
- ✓ test/vis/registry.test.ts > VIS-05 one fix attempt, then accepted with warnings or dropped (ARC-10) > an unusable visual (network reference) is dropped after the fix attempt 421ms
- ✓ test/vis/registry.test.ts > VIS-05 one fix attempt, then accepted with warnings or dropped (ARC-10) > a failed update of an accepted visual leaves the stored version in place 472ms
- ✓ test/vis/registry.test.ts > VIS-05 one fix attempt, then accepted with warnings or dropped (ARC-10) > the registry rebuilds identically from the event log (ARC-08) 645ms
- ✓ test/vis/registry.test.ts > check_visual and recorded render checks > before a render check: static results and a CLI next step 548ms
- ✓ test/vis/registry.test.ts > check_visual and recorded render checks > a recorded render check writes preview.png, embeds it for HTML, and goes stale on a hand edit 541ms
- ✓ test/vis/registry.test.ts > check_visual and recorded render checks > a failed render check asks for one fix, or keeping it with warnings 407ms
- ✓ test/vis/render.test.ts > V-VIS render check > adversarial fixtures are all caught: overlap, overflow, console error, missing title, 9 px font, network 7400ms
- ✓ test/vis/render.test.ts > V-VIS render check > a hand-drawn "plot" with no generator fails 1338ms
- ✓ test/vis/render.test.ts > V-VIS render check > clean fixtures pass in light and dark mode, with previews; low contrast is a warning 3533ms
- ✓ test/vis/render.test.ts > V-VIS render check > computed plot: 50 rendered points inverted through the axis mapping are within 1 % of the equation 2806ms
- ✓ test/vis/render.test.ts > V-VIS render check > registered visuals: check --pending records results and previews, then nothing is pending 3442ms
+ ✓ test/vis/registry.test.ts > VIS-03 storage > a clean SVG is stored with its spec note and embedded in the concept note 439ms
+ ✓ test/vis/registry.test.ts > VIS-03 storage > an HTML widget fragment becomes a self-contained page; the concept note links to it 428ms
+ ✓ test/vis/registry.test.ts > VIS-03 storage > a plot spec is computed by Scaffold and its spec is stored as the generator (VIS-02) 472ms
+ ✓ test/vis/registry.test.ts > VIS-03 storage > get_visual returns the source without the shim, with purpose, notice and alt text 495ms
+ ✓ test/vis/registry.test.ts > VIS-03 storage > rejects unknown KCs, unknown visual ids, and source with plot 542ms
+ ✓ test/vis/registry.test.ts > VIS-05 one fix attempt, then accepted with warnings or dropped (ARC-10) > needs_fix stores nothing; the fixed source is accepted 455ms
+ ✓ test/vis/registry.test.ts > VIS-05 one fix attempt, then accepted with warnings or dropped (ARC-10) > a non-fatal failure after the fix attempt is kept with warnings; a third call is refused 557ms
+ ✓ test/vis/registry.test.ts > VIS-05 one fix attempt, then accepted with warnings or dropped (ARC-10) > an unusable visual (network reference) is dropped after the fix attempt 426ms
+ ✓ test/vis/registry.test.ts > VIS-05 one fix attempt, then accepted with warnings or dropped (ARC-10) > a failed update of an accepted visual leaves the stored version in place 425ms
+ ✓ test/vis/registry.test.ts > VIS-05 one fix attempt, then accepted with warnings or dropped (ARC-10) > the registry rebuilds identically from the event log (ARC-08) 615ms
+ ✓ test/vis/registry.test.ts > check_visual and recorded render checks > before a render check: static results and a CLI next step 476ms
+ ✓ test/vis/registry.test.ts > check_visual and recorded render checks > a recorded render check writes preview.png, embeds it for HTML, and goes stale on a hand edit 495ms
+ ✓ test/vis/render.test.ts > V-VIS render check > adversarial fixtures are all caught: overlap, overflow, console error, missing title, 9 px font, network 5115ms
+ ✓ test/vis/render.test.ts > V-VIS render check > a hand-drawn "plot" with no generator fails 771ms
+ ✓ test/vis/registry.test.ts > check_visual and recorded render checks > a failed render check asks for one fix, or keeping it with warnings 476ms
+ ✓ test/vis/render.test.ts > V-VIS render check > clean fixtures pass in light and dark mode, with previews; low contrast is a warning 2307ms
+ ✓ test/vis/render.test.ts > V-VIS render check > computed plot: 50 rendered points inverted through the axis mapping are within 1 % of the equation 1803ms
+ ✓ test/vis/render.test.ts > V-VIS render check > registered visuals: check --pending records results and previews, then nothing is pending 2865ms
 
  Test Files  3 passed (3)
       Tests  33 passed (33)
-   Start at  09:52:58
-   Duration  23.08s (tests 79%, import 16%, transform 5%)
+   Start at  09:58:21
+   Duration  16.38s (tests 77%, import 16%, transform 8%)
 ```
 
-`npx tsx scripts/build-theme.ts --check` — exit 0 — 2026-10-10T13:52:55.750Z — win32 node v22.23.2
+`npx tsx scripts/build-theme.ts --check` — exit 0 — 2026-10-10T13:58:18.101Z — win32 node v22.23.2
 
 ```text
 visual-kit/theme.css is current (16395 bytes)
 ```
 
-`npx tsx src/cli/index.ts visual check --no-preview --file visual-kit/templates/diagram.svg --file visual-kit/templates/stepper.html` — exit 0 — 2026-10-10T13:52:55.750Z — win32 node v22.23.2
+`npx tsx src/cli/index.ts visual check --no-preview --file visual-kit/templates/diagram.svg --file visual-kit/templates/stepper.html` — exit 0 — 2026-10-10T13:58:18.101Z — win32 node v22.23.2
 
 ```text
 ✓ visual-kit/templates/diagram.svg
@@ -736,7 +736,7 @@ visual-kit/theme.css is current (16395 bytes)
 2/2 passed the render check.
 ```
 
-`npx tsx src/cli/index.ts visual check --no-preview --file test/fixtures/visuals/adv-overlap.svg --file test/fixtures/visuals/adv-font-scaled.svg --file test/fixtures/visuals/adv-dark-only.svg` — exit 1 — 2026-10-10T13:52:55.750Z — win32 node v22.23.2
+`npx tsx src/cli/index.ts visual check --no-preview --file test/fixtures/visuals/adv-overlap.svg --file test/fixtures/visuals/adv-font-scaled.svg --file test/fixtures/visuals/adv-dark-only.svg` — exit 1 — 2026-10-10T13:58:18.101Z — win32 node v22.23.2
 
 ```text
 ✗ test/fixtures/visuals/adv-overlap.svg: overlapping text: "incident wave" and "reflected wave"

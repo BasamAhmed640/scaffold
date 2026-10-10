@@ -54,8 +54,7 @@ const SUITES: Suite[] = [
   },
   {
     id: 'V-VIS',
-    title:
-      'V-VIS: visuals are correct and readable (render checks use Playwright with the installed Edge channel)',
+    title: 'V-VIS: visuals are correct and readable (Playwright Chromium; Edge is the fallback)',
     commands: [
       'npx vitest run test/vis --reporter=verbose',
       'npx tsx scripts/build-theme.ts --check',
