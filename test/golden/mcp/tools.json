@@ -118,5 +118,17 @@
   {
     "name": "anki_stack",
     "readOnly": true
+  },
+  {
+    "name": "register_visual",
+    "readOnly": false
+  },
+  {
+    "name": "check_visual",
+    "readOnly": true
+  },
+  {
+    "name": "get_visual",
+    "readOnly": true
   }
 ]

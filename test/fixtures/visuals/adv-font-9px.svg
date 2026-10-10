@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 680 120" role="img">
+<title>Adversarial: a 9 px label</title>
+<desc>Synthetic V-VIS fixture.</desc>
+<text x="40" y="60" font-size="9" style="fill: var(--text-primary, #0b0b0b)">this label is set in 9 px type</text>
+</svg>

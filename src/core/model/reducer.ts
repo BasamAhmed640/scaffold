@@ -259,12 +259,29 @@ export function applyEvent(facts: LearnerFacts, e: ScaffoldEvent): LearnerFacts 
       break;
     }
     case 'visual_registered': {
+      const prev = facts.visuals[e.visual_id];
+      const registrations = [
+        ...(prev?.registrations ?? []),
+        { ts: e.ts, session_id: e.session_id, status: e.status, attempt: e.attempt },
+      ];
+      // A failed fix of an accepted visual leaves the stored version in place (VIS-05).
+      if (prev && prev.status === 'accepted' && e.status !== 'accepted') {
+        prev.registrations = registrations;
+        break;
+      }
       facts.visuals[e.visual_id] = {
         id: e.visual_id,
         kc_ids: e.kc_ids,
         ts: e.ts,
         title: e.title,
         kind: e.kind,
+        format: e.format,
+        status: e.status,
+        has_generator: e.has_generator,
+        static_ok: e.static_ok,
+        warnings: e.warnings,
+        source_sha256: e.source_sha256,
+        registrations,
       };
       break;
     }

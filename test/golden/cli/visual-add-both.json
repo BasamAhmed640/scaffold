@@ -1,0 +1,11 @@
+{
+  "ok": false,
+  "data": null,
+  "warnings": [],
+  "errors": [
+    {
+      "code": "bad_input",
+      "message": "Pass a file or --plot <spec.json>, not both."
+    }
+  ]
+}

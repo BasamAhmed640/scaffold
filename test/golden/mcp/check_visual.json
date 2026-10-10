@@ -1,0 +1,16 @@
+{
+  "ok": true,
+  "data": {
+    "visual_id": "V-0001",
+    "status": "accepted",
+    "static": {
+      "ok": true,
+      "errors": [],
+      "warnings": []
+    },
+    "render": null,
+    "next_step": "Not rendered yet: the owner runs `scaffold visual check V-0001` (CLI)."
+  },
+  "warnings": [],
+  "errors": []
+}

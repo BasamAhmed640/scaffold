@@ -119,6 +119,29 @@ export interface CardFlagFacts {
   proposed: string;
 }
 
+export interface VisualRegistration {
+  ts: string;
+  session_id: string | null;
+  status: 'accepted' | 'needs_fix' | 'dropped';
+  attempt: number;
+}
+
+/** The stored version of a visual (VIS-03); failed fixes of an accepted visual only add a registration. */
+export interface VisualFacts {
+  id: string;
+  kc_ids: string[];
+  ts: string;
+  title: string;
+  kind: string;
+  format: 'svg' | 'html';
+  status: 'accepted' | 'needs_fix' | 'dropped';
+  has_generator: boolean;
+  static_ok: boolean;
+  warnings: string[];
+  source_sha256: string | null;
+  registrations: VisualRegistration[];
+}
+
 export interface LearnerFacts {
   version: 1;
   event_count: number;
@@ -130,7 +153,7 @@ export interface LearnerFacts {
   attempts: Record<string, AttemptFact>;
   misconceptions: Record<string, MisconceptionFacts>;
   questions: Record<string, QuestionFacts>;
-  visuals: Record<string, { id: string; kc_ids: string[]; ts: string; title: string; kind: string }>;
+  visuals: Record<string, VisualFacts>;
   card_proposals: Record<string, CardProposalFacts>;
   card_actions: Record<string, CardActionFacts>;
   card_flags: CardFlagFacts[];

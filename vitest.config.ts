@@ -6,7 +6,7 @@ export default defineConfig({
     testTimeout: 30_000,
     // Never talk to a real Anki from tests: nothing listens on the discard port. Tests that need
     // AnkiConnect start the mock server (test/helpers/anki-mock.ts) and inject its client.
-    env: { SCAFFOLD_ANKI_URL: 'http://127.0.0.1:9' },
+    env: { SCAFFOLD_ANKI_URL: 'http://127.0.0.1:9', SCAFFOLD_NO_OPEN: '1' },
     coverage: {
       provider: 'v8',
       include: ['src/**/*.ts'],

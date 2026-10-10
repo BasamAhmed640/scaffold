@@ -1,0 +1,21 @@
+{
+  "ok": true,
+  "data": {
+    "visual_id": "V-0001",
+    "status": "accepted",
+    "attempt": 1,
+    "format": "svg",
+    "static": {
+      "ok": true,
+      "errors": [],
+      "warnings": []
+    },
+    "files": [
+      "Scaffold/Visuals/V-0001/figure.svg",
+      "Scaffold/Visuals/V-0001/spec.md"
+    ],
+    "next_step": "Pass visual_ids [\"V-0001\"] to mark_taught. Terminal front-ends: `scaffold visual open V-0001`."
+  },
+  "warnings": [],
+  "errors": []
+}

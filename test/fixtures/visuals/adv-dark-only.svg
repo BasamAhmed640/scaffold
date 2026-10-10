@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 680 160" role="img">
+<title>Adversarial: labels that collide only in dark mode</title>
+<desc>Synthetic V-VIS fixture: a dark-mode rule moves one label onto the other.</desc>
+<style>@media (prefers-color-scheme: dark) { .shift { transform: translate(-150px, 0); } }</style>
+<text class="t" x="60" y="80" dominant-baseline="central">driver output</text>
+<text class="t shift" x="240" y="80" dominant-baseline="central">load input</text>
+</svg>

@@ -1,0 +1,22 @@
+{
+  "ok": true,
+  "data": {
+    "visual_id": "V-0001",
+    "title": "Signal path with a reflection",
+    "kind": "diagram",
+    "format": "svg",
+    "kc_ids": [
+      "kc-si-reflection-coefficient"
+    ],
+    "file": "Scaffold/Visuals/V-0001/figure.svg",
+    "source": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100%\" viewBox=\"0 0 680 270\" role=\"img\">\n<title>Signal path: driver, transmission line and load</title>\n<desc>Three labelled parts. A, the driver with a 50 ohm source resistance; B, the line with characteristic impedance Z0 of 50 ohms and delay TD; C, a 150 ohm load. Solid arrows carry the incident wave from A to C; the dashed arrow carries the reflection from C back to A.</desc>\n<defs>\n<marker id=\"arrow\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto-start-reverse\"><path d=\"M2 1L8 5L2 9\" fill=\"none\" stroke=\"context-stroke\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></marker>\n</defs>\n<g class=\"c-blue\">\n<rect x=\"40\" y=\"60\" width=\"150\" height=\"80\" rx=\"8\" stroke-width=\"0.5\"/>\n<text class=\"th\" x=\"115\" y=\"88\" text-anchor=\"middle\" dominant-baseline=\"central\">A · Driver</text>\n<text class=\"ts\" x=\"115\" y=\"112\" text-anchor=\"middle\" dominant-baseline=\"central\">Rs = 50 Ω</text>\n</g>\n<g class=\"c-teal\">\n<rect x=\"265\" y=\"60\" width=\"150\" height=\"80\" rx=\"8\" stroke-width=\"0.5\"/>\n<text class=\"th\" x=\"340\" y=\"88\" text-anchor=\"middle\" dominant-baseline=\"central\">B · Line</text>\n<text class=\"ts\" x=\"340\" y=\"112\" text-anchor=\"middle\" dominant-baseline=\"central\">Z0 = 50 Ω, delay TD</text>\n</g>\n<g class=\"c-coral\">\n<rect x=\"490\" y=\"60\" width=\"150\" height=\"80\" rx=\"8\" stroke-width=\"0.5\"/>\n<text class=\"th\" x=\"565\" y=\"88\" text-anchor=\"middle\" dominant-baseline=\"central\">C · Load</text>\n<text class=\"ts\" x=\"565\" y=\"112\" text-anchor=\"middle\" dominant-baseline=\"central\">RL = 150 Ω</text>\n</g>\n<line x1=\"192\" y1=\"100\" x2=\"261\" y2=\"100\" class=\"arr\" marker-end=\"url(#arrow)\"/>\n<line x1=\"417\" y1=\"100\" x2=\"486\" y2=\"100\" class=\"arr\" marker-end=\"url(#arrow)\"/>\n<text class=\"ts\" x=\"227\" y=\"86\" text-anchor=\"middle\" dominant-baseline=\"central\">incident</text>\n<path d=\"M565 142 Q565 196 500 196 L180 196 Q115 196 115 146\" class=\"arr\" stroke-dasharray=\"5 4\" marker-end=\"url(#arrow)\"/>\n<text class=\"ts\" x=\"340\" y=\"222\" text-anchor=\"middle\" dominant-baseline=\"central\">reflection: Γ = (RL − Z0) / (RL + Z0) = 0.5</text>\n<text class=\"ts\" x=\"340\" y=\"244\" text-anchor=\"middle\" dominant-baseline=\"central\">half of the incident step returns toward A after TD</text>\n</svg>\n",
+    "edited_since_registered": false,
+    "purpose": "Shows where the reflection comes from.",
+    "notice": "A launches the step; C reflects half of it back toward A.",
+    "alt": "Three boxes A, B, C joined by arrows, with a dashed arrow from C back to A.",
+    "generator": null,
+    "warnings": []
+  },
+  "warnings": [],
+  "errors": []
+}

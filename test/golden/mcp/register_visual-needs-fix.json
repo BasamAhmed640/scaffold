@@ -1,0 +1,22 @@
+{
+  "ok": true,
+  "data": {
+    "visual_id": "V-0001",
+    "status": "needs_fix",
+    "attempt": 1,
+    "format": "svg",
+    "static": {
+      "ok": false,
+      "errors": [
+        "missing <title> (or aria-label) on the root <svg>"
+      ],
+      "warnings": []
+    },
+    "files": [],
+    "next_step": "Fix these once and call register_visual again with visual_id \"V-0001\" (one fix attempt, ARC-10)."
+  },
+  "warnings": [
+    "V-0001: missing <title> (or aria-label) on the root <svg>"
+  ],
+  "errors": []
+}

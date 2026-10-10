@@ -119,6 +119,14 @@ const formatters: Record<string, (d: Data) => string> = {
           ]),
         )
       : 'No card actions waiting for approval.',
+  'visual check': (d) =>
+    (d.results as { visual_id: string; ok: boolean; errors: string[]; warnings: string[] }[])
+      .map(
+        (r) =>
+          `${r.ok ? '✓' : '✗'} ${r.visual_id}${r.errors.map((e) => `\n    ${e}`).join('')}${r.warnings.map((w) => `\n    ! ${w}`).join('')}`,
+      )
+      .concat(`${String(d.passed)}/${String(d.checked)} passed the render check.`)
+      .join('\n'),
   'q lint': (d) =>
     `${String(d.passing)}/${String(d.total)} questions pass QB-03.` +
     (d.failing as { id: string; errors: string[] }[])

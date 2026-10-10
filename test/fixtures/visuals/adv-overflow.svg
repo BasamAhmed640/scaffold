@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 680 160" role="img">
+<title>Adversarial: a label that runs past the right edge</title>
+<desc>Synthetic V-VIS fixture.</desc>
+<g class="c-teal"><rect x="420" y="40" width="200" height="70" rx="8" stroke-width="0.5"/></g>
+<text class="t" x="560" y="75" dominant-baseline="central">a label that runs far past the edge</text>
+</svg>

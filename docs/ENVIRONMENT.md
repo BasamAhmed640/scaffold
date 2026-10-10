@@ -48,10 +48,16 @@ AnkiConnect is a primary M0 item. It is only needed from M6 on, so M1–M5 proce
 | vitest / @vitest/coverage-v8 | 5.0.3 | tests and coverage |
 | fast-check | 4.10.2 | property tests |
 | @anthropic-ai/mcpb | 2.1.2 | `mcpb init/validate/pack/info`; manifest_version 0.3 (spec in modelcontextprotocol/mcpb `MANIFEST.md`) |
-| playwright | 1.64.0 (optional dependency) | render checker; browsers found in `%LOCALAPPDATA%\ms-playwright` (chromium-1246) and system Edge/Chrome as a fallback channel |
+| playwright | 1.64.0 (optional dependency) | Render checker. Playwright 1.64.0 expects `chromium_headless_shell-1248`, but `%LOCALAPPDATA%\ms-playwright` holds build 1246 (from an older Playwright), so `chromium.launch()` fails. The checker then uses its one fallback, the installed Edge channel (`msedge 154.0.4258.62`, probed 2026-10-10). `npx playwright install chromium` (about 150 MB) fixes this; it is not run without the owner's approval (D-77). |
 | eslint / typescript-eslint / prettier | 10.12.0 / 8.71.1 / 3.9.9 | lint and format |
 
 ## Manual checks (owner)
 
 1. **AnkiConnect**: install as above; then run `scaffold doctor`. Then the V-ANKI live smoke test (M6): in Anki, File → Switch Profile → Add a disposable profile named **Scaffold Smoke**, open it, and run `npx tsx scripts/anki-smoke.ts` (it refuses any other profile). It adds 3 notes through the proposal/approval path, reviews them, syncs, and checks that an anchor lapse produces an event and a status change; raw AnkiConnect responses go to `local/anki-smoke/` to confirm D-53, D-54 and D-66. Also: close Anki, run three operations (e.g. `scaffold subject add`, `scaffold anki flag`, an approved action), reopen Anki, `scaffold anki sync`, and check each was applied once (ANK-09).
 2. **Claude Desktop, same chat**: (a) add the hello server from `scripts/probes/hello-mcp.mjs` (or the Scaffold `.mcpb` after M4), (b) upload the skill ZIP after M5 (Customize → Skills; Code execution on), (c) ask for an inline visual. Record pass/fail here with a screenshot.
+3. **Inline visual through the theme shim (V-VIS, VIS-04)**:
+   - In Claude Desktop, ask for an inline diagram that uses the visualizer classes (`.c-<ramp>`, `.t`, `.ts`), and save its SVG.
+   - Register it with `scaffold visual add figure.svg …`, then run `scaffold visual check <id>`.
+   - Compare `preview.png` and the Obsidian embed with a screenshot of the chat, in light and dark mode.
+   - Add any variable or class that renders differently to `src/core/visuals/theme.ts` (D-68).
+   - Sign off here.

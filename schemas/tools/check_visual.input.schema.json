@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "visual_id": {
+      "type": "string",
+      "pattern": "^V-\\d{4,}$"
+    }
+  },
+  "required": [
+    "visual_id"
+  ]
+}

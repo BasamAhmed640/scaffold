@@ -1,6 +1,6 @@
 import type { Warnings } from '../envelope.js';
 import { derivedFrontmatter, type DerivedState, type KcState } from '../model/derive.js';
-import type { LearnerFacts } from '../model/facts.js';
+import type { LearnerFacts, VisualFacts } from '../model/facts.js';
 import { lastSessionOn } from '../planner/focus.js';
 import { backlogCount, reviewNeed } from '../planner/plan.js';
 import type { AttemptEvent } from '../schemas/events.js';
@@ -8,13 +8,22 @@ import { localDate, ms } from '../time.js';
 import { cmp } from '../util.js';
 import { conceptMap } from '../vault/mermaid.js';
 import { region } from '../vault/markers.js';
-import { conceptRel, FOLDERS, sessionRel, subjectRel } from '../vault/vault.js';
+import { conceptRel, FOLDERS, sessionRel, subjectRel, visualDirRel } from '../vault/vault.js';
 import type { BankLoad } from './bank.js';
 import type { Scaffold } from './scaffold.js';
 
 // Generated parts of notes. Only derived keys and marker regions are written (LM-02).
 
 const esc = (s: string): string => s.replace(/\|/g, '\\|').replace(/\r?\n/g, ' ');
+
+/** VIS-03: concept notes embed the SVG, or the preview, and link to the interactive HTML. */
+export function visualEmbed(sc: Scaffold, v: VisualFacts): string {
+  const dir = visualDirRel(v.id);
+  const link = `[[${dir}/spec|${v.id} · ${esc(v.title)}]]`;
+  if (v.format === 'svg') return `${link}\n\n![[${dir}/figure.svg]]`;
+  const preview = sc.vault.exists(`${dir}/preview.png`) ? `\n\n![[${dir}/preview.png]]` : '';
+  return `${link}${preview}\n\n[[${dir}/index.html|Open the interactive version]]`;
+}
 
 export function kcDerived(k: KcState, sc: Scaffold): Record<string, unknown> {
   const due = reviewNeed(k, sc.cfg());
@@ -40,11 +49,9 @@ export function writeConceptNote(
         .join('\n')
     : '_None recorded._';
   const visuals = Object.values(facts.visuals)
-    .filter((v) => v.kc_ids.includes(k.id))
+    .filter((v) => v.status === 'accepted' && v.kc_ids.includes(k.id))
     .sort((a, b) => cmp(a.id, b.id));
-  const visText = visuals.length
-    ? visuals.map((v) => `- [[Scaffold/Visuals/${v.id}/spec|${v.id} · ${esc(v.title)}]]`).join('\n')
-    : '_None yet._';
+  const visText = visuals.length ? visuals.map((v) => visualEmbed(sc, v)).join('\n\n') : '_None yet._';
   const qs = bank.entries.filter((e) => e.question.kc_ids.includes(k.id)).map((e) => e.question);
   const qText = qs.length
     ? qs

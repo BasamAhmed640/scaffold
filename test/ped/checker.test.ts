@@ -366,6 +366,26 @@ describe('TP-12 visuals', () => {
   it('fails without one', () => {
     expect(checkVisuals(new TB().ev(taught).build()).passed).toBe(0);
   });
+
+  it('a needs_fix or dropped registration does not count (D-69)', () => {
+    const reg = {
+      type: 'visual_registered',
+      visual_id: 'V-0001',
+      kc_ids: ['kc-gamma'],
+      kind: 'diagram',
+      title: 'Γ',
+      format: 'svg',
+      has_generator: false,
+      static_ok: false,
+      warnings: ['missing <title>'],
+    };
+    const t = new TB()
+      .ev(taught)
+      .ev({ ...reg, status: 'needs_fix', attempt: 1 })
+      .ev({ ...reg, status: 'dropped', attempt: 2 })
+      .build();
+    expect(checkVisuals(t).passed).toBe(0);
+  });
 });
 
 describe('D3.7 analogies', () => {

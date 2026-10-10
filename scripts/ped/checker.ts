@@ -388,7 +388,12 @@ export function checkVisuals(t: Transcript): CheckResult {
   const details: string[] = [];
   const taught = new Set(ofType(t, 'taught').flatMap((e) => e.kc_ids));
   const need = t.kcs.filter((k) => k.requires_visual && taught.has(k.id));
-  const registered = new Set(ofType(t, 'visual_registered').flatMap((v) => v.kc_ids));
+  // only stored visuals count: a needs_fix or dropped registration persisted nothing (D-69)
+  const registered = new Set(
+    ofType(t, 'visual_registered')
+      .filter((v) => v.status !== 'needs_fix' && v.status !== 'dropped')
+      .flatMap((v) => v.kc_ids),
+  );
   let pass = 0;
   for (const k of need) {
     if (registered.has(k.id)) pass++;

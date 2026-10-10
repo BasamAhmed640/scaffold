@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 680 200" role="img">
+<title>Adversarial: two labels drawn on top of each other</title>
+<desc>Synthetic V-VIS fixture.</desc>
+<g class="c-blue"><rect x="40" y="40" width="260" height="90" rx="8" stroke-width="0.5"/></g>
+<text class="t" x="60" y="80" dominant-baseline="central">incident wave</text>
+<text class="t" x="96" y="84" dominant-baseline="central">reflected wave</text>
+</svg>

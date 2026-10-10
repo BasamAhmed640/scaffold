@@ -37,6 +37,7 @@ import {
 import type { Scaffold } from '../service/scaffold.js';
 import { ankiDoctor } from '../service/anki/ops.js';
 import { ANKI_TOOLS } from './anki-tools.js';
+import { VISUAL_TOOLS } from './visual-tools.js';
 
 // IF-01: CLI and MCP share one implementation. Each tool: MCP name, JSON input schema, handler.
 // IF-02: every call returns {ok, data, warnings[], errors[]}.
@@ -320,7 +321,7 @@ export const CORE_TOOLS: ToolDef[] = [
 ];
 
 export function allTools(): ToolDef[] {
-  return [...CORE_TOOLS, ...ANKI_TOOLS];
+  return [...CORE_TOOLS, ...ANKI_TOOLS, ...VISUAL_TOOLS];
 }
 
 export function toolByName(name: string): ToolDef | undefined {

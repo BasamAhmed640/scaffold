@@ -1,0 +1,11 @@
+{
+  "title": "Step response of an RC load",
+  "desc": "The capacitor voltage rises toward 1 V as 1 − e^(−t/τ) with τ = 2 ns; the dashed line marks 63 %, reached at t = τ.",
+  "x": { "label": "time", "unit": "ns", "min": 0, "max": 10, "var": "t" },
+  "y": { "label": "voltage", "unit": "V", "min": 0, "max": 1.2 },
+  "params": { "tau": 2 },
+  "series": [
+    { "label": "v(t) = 1 − e^(−t/τ)", "expr": "1 - exp(-t / tau)" },
+    { "label": "63 % at t = τ", "expr": "1 - exp(-1)", "dash": true }
+  ]
+}

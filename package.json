@@ -33,7 +33,9 @@
     "build:adapters": "tsx scripts/build-adapters.ts",
     "check:adapters": "tsx scripts/build-adapters.ts --check",
     "build:mcpb": "tsx scripts/build-mcpb.ts",
-    "schemas": "tsx scripts/export-schemas.ts"
+    "schemas": "tsx scripts/export-schemas.ts",
+    "build:theme": "tsx scripts/build-theme.ts",
+    "check:theme": "tsx scripts/build-theme.ts --check"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.32.1",

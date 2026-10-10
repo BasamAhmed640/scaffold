@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 1100 200" role="img">
+<title>Adversarial: 14 px labels in a 1100-unit viewBox render at about 8.7 px</title>
+<desc>Synthetic V-VIS fixture: only the render check can see the effective size.</desc>
+<g class="c-purple"><rect x="60" y="50" width="300" height="90" rx="8" stroke-width="0.5"/></g>
+<text class="th" x="210" y="95" text-anchor="middle" dominant-baseline="central">scaled-down label</text>
+</svg>

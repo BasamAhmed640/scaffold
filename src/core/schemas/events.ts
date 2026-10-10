@@ -206,12 +206,22 @@ export const VisualRegistered = z.object({
   type: z.literal('visual_registered'),
   ...base,
   visual_id: VisualId,
+  session_id: SessionId.nullable().default(null),
   kc_ids: z.array(KcId).max(10),
   kind: z.string().max(40),
   title: z.string().max(200),
   format: z.enum(['svg', 'html']),
   has_generator: z.boolean(),
   static_ok: z.boolean(),
+  /** VIS-05: `needs_fix` stores nothing and allows one fix attempt; then accepted (with warnings) or dropped. */
+  status: z.enum(['accepted', 'needs_fix', 'dropped']).default('accepted'),
+  attempt: z.number().int().min(1).max(2).default(1),
+  /** sha256 of the stored figure, so a later check can tell a hand edit from the registered version. */
+  source_sha256: z
+    .string()
+    .regex(/^[0-9a-f]{64}$/)
+    .nullable()
+    .default(null),
   warnings: z.array(z.string().max(300)).max(20).default([]),
 });
 

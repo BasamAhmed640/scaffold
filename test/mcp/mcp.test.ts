@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { Ajv } from 'ajv';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { Warnings } from '../../src/core/envelope.js';
@@ -76,6 +77,9 @@ const EXPECTED_TOOLS = [
   'flag_card',
   'set_subject_scope',
   'anki_stack',
+  'register_visual',
+  'check_visual',
+  'get_visual',
 ];
 
 /** Every tool name called through a real client in this file (V-MCP: all of them). */
@@ -228,6 +232,30 @@ describe('V-MCP every tool through a real client', () => {
       grade: 'partial',
       reason: 'owner relabel (V-GRADE)',
     });
+  });
+
+  it('visuals: register_visual (needs_fix, then the fix attempt), get_visual, check_visual (VIS-03, VIS-05)', async () => {
+    const source = readFileSync('visual-kit/templates/diagram.svg', 'utf8');
+    const input = {
+      kc_ids: ['kc-si-reflection-coefficient'],
+      kind: 'diagram',
+      title: 'Signal path with a reflection',
+      format: 'svg',
+      purpose: 'Shows where the reflection comes from.',
+      notice: 'A launches the step; C reflects half of it back toward A.',
+      alt: 'Three boxes A, B, C joined by arrows, with a dashed arrow from C back to A.',
+    };
+    const first = await g('register_visual-needs-fix', 'register_visual', {
+      ...input,
+      source: source.replace(/<title>[^<]*<\/title>\s*<desc>[^<]*<\/desc>/, ''),
+    });
+    const id = (first.data as { visual_id: string; status: string }).visual_id;
+    expect(first.data).toMatchObject({ status: 'needs_fix', attempt: 1 });
+    const fixed = await g('register_visual', 'register_visual', { ...input, source, visual_id: id });
+    expect(fixed.data).toMatchObject({ visual_id: id, status: 'accepted', attempt: 2 });
+    const got = await g('get_visual', 'get_visual', { visual_id: id });
+    expect((got.data as { source: string }).source).toBe(source.trim() + '\n');
+    await g('check_visual', 'check_visual', { visual_id: id });
   });
 });
 

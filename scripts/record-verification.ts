@@ -54,8 +54,14 @@ const SUITES: Suite[] = [
   },
   {
     id: 'V-VIS',
-    title: 'V-VIS: visuals are correct and readable',
-    commands: ['npx vitest run test/vis --reporter=verbose'],
+    title:
+      'V-VIS: visuals are correct and readable (render checks use Playwright with the installed Edge channel)',
+    commands: [
+      'npx vitest run test/vis --reporter=verbose',
+      'npx tsx scripts/build-theme.ts --check',
+      'npx tsx src/cli/index.ts visual check --no-preview --file visual-kit/templates/diagram.svg --file visual-kit/templates/stepper.html',
+      'npx tsx src/cli/index.ts visual check --no-preview --file test/fixtures/visuals/adv-overlap.svg --file test/fixtures/visuals/adv-font-scaled.svg --file test/fixtures/visuals/adv-dark-only.svg',
+    ],
   },
   {
     id: 'V-QQ',
@@ -64,8 +70,14 @@ const SUITES: Suite[] = [
   },
   {
     id: 'STATIC',
-    title: 'Static checks: typecheck, lint, adapters',
-    commands: ['npx tsc --noEmit', 'npx eslint .'],
+    title: 'Static checks: typecheck, lint, format, adapters, theme',
+    commands: [
+      'npx tsc --noEmit',
+      'npx eslint .',
+      'npx prettier --check .',
+      'npx tsx scripts/build-adapters.ts --check',
+      'npx tsx scripts/build-theme.ts --check',
+    ],
   },
 ];
 

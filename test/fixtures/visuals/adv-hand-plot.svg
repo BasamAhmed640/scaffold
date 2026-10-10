@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 680 320" role="img">
+<title>Adversarial: a hand-drawn exponential with no generator</title>
+<desc>Synthetic V-VIS fixture: the curve was sketched, not computed.</desc>
+<line x1="70" y1="270" x2="620" y2="270" style="stroke: var(--baseline, #c3c2b7)"/>
+<line x1="70" y1="40" x2="70" y2="270" style="stroke: var(--baseline, #c3c2b7)"/>
+<path d="M70 270 C 150 120, 260 70, 610 60" fill="none" stroke="#378ADD" stroke-width="2"/>
+<text class="ts" x="345" y="300" text-anchor="middle" dominant-baseline="central">time (ns)</text>
+<text class="ts" x="70" y="24" dominant-baseline="central">voltage (V)</text>
+</svg>

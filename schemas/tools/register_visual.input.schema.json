@@ -1,0 +1,270 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "kc_ids": {
+      "minItems": 1,
+      "maxItems": 10,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 2,
+        "maxLength": 80,
+        "pattern": "^[a-z0-9][a-z0-9-]*[a-z0-9]$"
+      }
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "diagram",
+        "stepper",
+        "mechanism",
+        "plot",
+        "widget",
+        "comparison",
+        "dashboard"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 200
+    },
+    "format": {
+      "description": "Required with source; plot implies svg.",
+      "type": "string",
+      "enum": [
+        "svg",
+        "html"
+      ]
+    },
+    "source": {
+      "description": "SVG markup or HTML (a fragment is wrapped in a self-contained page with the theme shim).",
+      "type": "string",
+      "maxLength": 1100000
+    },
+    "plot": {
+      "description": "Instead of source: a plot spec; Scaffold computes every curve and stores the spec as the generator.",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 120
+        },
+        "desc": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 500
+        },
+        "x": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 60
+            },
+            "unit": {
+              "type": "string",
+              "maxLength": 20
+            },
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            },
+            "ticks": {
+              "maxItems": 12,
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            },
+            "var": {
+              "default": "x",
+              "type": "string",
+              "pattern": "^[A-Za-z_]\\w*$"
+            }
+          },
+          "required": [
+            "label",
+            "unit",
+            "min",
+            "max"
+          ]
+        },
+        "y": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 60
+            },
+            "unit": {
+              "type": "string",
+              "maxLength": 20
+            },
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            },
+            "ticks": {
+              "maxItems": 12,
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          },
+          "required": [
+            "label",
+            "unit",
+            "min",
+            "max"
+          ]
+        },
+        "params": {
+          "default": {},
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "number"
+          }
+        },
+        "series": {
+          "minItems": 1,
+          "maxItems": 6,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 30
+              },
+              "expr": {
+                "type": "string",
+                "maxLength": 400
+              },
+              "points": {
+                "maxItems": 5000,
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "prefixItems": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "number"
+                    }
+                  ],
+                  "items": false,
+                  "minItems": 2,
+                  "maxItems": 2
+                }
+              },
+              "ramp": {
+                "type": "string",
+                "enum": [
+                  "purple",
+                  "teal",
+                  "coral",
+                  "pink",
+                  "gray",
+                  "blue",
+                  "green",
+                  "amber",
+                  "red"
+                ]
+              },
+              "dash": {
+                "default": false,
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "label"
+            ]
+          }
+        },
+        "samples": {
+          "default": 240,
+          "type": "integer",
+          "minimum": 10,
+          "maximum": 2000
+        },
+        "height": {
+          "default": 380,
+          "type": "integer",
+          "minimum": 200,
+          "maximum": 800
+        }
+      },
+      "required": [
+        "title",
+        "desc",
+        "x",
+        "y",
+        "series"
+      ]
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 1000
+    },
+    "notice": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 1000,
+      "description": "What to notice, naming the labelled parts (A, B, ①)."
+    },
+    "alt": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 1000
+    },
+    "generator_code": {
+      "description": "Code that computed the curves (plots).",
+      "type": "string",
+      "maxLength": 100000
+    },
+    "provenance": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "visual_id": {
+      "description": "The id from a needs_fix result (the one fix attempt), or to update.",
+      "type": "string",
+      "pattern": "^V-\\d{4,}$"
+    },
+    "session_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^S-\\d{4}-\\d{2}-\\d{2}-\\d+$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "kc_ids",
+    "kind",
+    "title",
+    "purpose",
+    "notice",
+    "alt"
+  ]
+}

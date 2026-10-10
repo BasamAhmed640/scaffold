@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 680 120" role="img">
+<title>Adversarial: pale grey text on a light background</title>
+<desc>Synthetic V-VIS fixture (a contrast warning, WCAG AA).</desc>
+<text x="40" y="60" style="font-size: 14px; fill: #d6d6d0">hard to read in light mode</text>
+</svg>

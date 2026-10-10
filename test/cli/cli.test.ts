@@ -340,6 +340,55 @@ describe('V-CLI golden JSON (IF-01, IF-02)', () => {
     const scope = await g('scope-set', ['scope', 'set', 'spanish', 'active']);
     expect(scope.json!.warnings.join(' ')).toContain('needs_check');
   });
+
+  it('visual plot / add (file and --plot) / get / open, check with nothing to check (D5 rows)', async () => {
+    const spec = path.join(vault, 'plot-spec.json');
+    writeFileSync(spec, readFileSync('visual-kit/templates/plot.json'));
+    // paths in this envelope are platform-specific, so no golden
+    const plot = await cli(vault, ['visual', 'plot', spec, '--out', path.join(vault, 'plot.svg')]);
+    expect(plot.code).toBe(0);
+    expect(plot.json!.data).toMatchObject({ out: path.join(vault, 'plot.svg'), generator: spec });
+    expect(readFileSync(path.join(vault, 'plot.svg'), 'utf8')).toContain('data-scaffold-plot="1"');
+    const meta = [
+      '--kc',
+      'kc-si-reflection-coefficient',
+      '--title',
+      'Signal path with a reflection',
+      '--purpose',
+      'Shows where the reflection comes from.',
+      '--notice',
+      'A launches the step; C reflects half of it back toward A.',
+      '--alt',
+      'Three boxes A, B, C joined by arrows, with a dashed arrow back.',
+    ];
+    const add = await g('visual-add', [
+      'visual',
+      'add',
+      'visual-kit/templates/diagram.svg',
+      '--kind',
+      'diagram',
+      ...meta,
+    ]);
+    expect(add.json!.data).toMatchObject({ status: 'accepted' });
+    const id = (add.json!.data as { visual_id: string }).visual_id;
+    await g('visual-add-plot', ['visual', 'add', '--plot', spec, '--kind', 'plot', ...meta]);
+    const both = await g('visual-add-both', [
+      'visual',
+      'add',
+      'visual-kit/templates/diagram.svg',
+      '--plot',
+      spec,
+      '--kind',
+      'plot',
+      ...meta,
+    ]);
+    expect(both.code).toBe(1);
+    await g('visual-get', ['visual', 'get', id]);
+    const open = await g('visual-open', ['visual', 'open', id]);
+    expect(open.json!.data).toMatchObject({ opened: false, file: `Scaffold/Visuals/${id}/figure.svg` });
+    const none = await g('visual-check-nothing', ['visual', 'check']);
+    expect(none.code).toBe(1);
+  });
 });
 
 describe('human output', () => {

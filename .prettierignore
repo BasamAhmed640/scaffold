@@ -18,3 +18,5 @@ scripts/probes
 eslint.config.js
 local
 .tmp
+visual-kit/theme.css
+visual-kit/templates

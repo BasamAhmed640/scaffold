@@ -13,9 +13,6 @@ const read = (p: string): string => readFileSync(p, 'utf8').replace(/\r\n/g, '\n
 const tp = JSON.parse(read('protocol/tp-rules.json')) as Record<string, string>;
 const d3 = JSON.parse(read('protocol/d3-canonical.json')) as Record<string, { title: string; body: string }>;
 
-/** Tools named in the protocol that a later milestone adds (visuals: M7). Must end empty. */
-const PENDING_TOOLS = new Set<string>(['register_visual', 'check_visual', 'get_visual']);
-
 describe('V-PROTO skill', () => {
   it('has valid frontmatter (name, description)', () => {
     const n = splitNote(read(SKILL));
@@ -72,7 +69,7 @@ describe('V-PROTO skill', () => {
     });
   });
 
-  it('tools named in the protocol exist (or are pending a later milestone)', () => {
+  it('tools named in the protocol exist', () => {
     const names = new Set(allTools().map((t) => t.name));
     const text = [
       SKILL,
@@ -93,8 +90,7 @@ describe('V-PROTO skill', () => {
       for (const m of cell.matchAll(/`([a-z]+(?:_[a-z]+)+)/g)) mentioned.add(m[1]!);
     }
     expect(mentioned.size).toBeGreaterThan(15);
-    for (const m of mentioned) expect(names.has(m) || PENDING_TOOLS.has(m), `unknown tool "${m}"`).toBe(true);
-    for (const p of PENDING_TOOLS) if (names.has(p)) PENDING_TOOLS.delete(p);
+    for (const m of mentioned) expect(names.has(m), `unknown tool "${m}"`).toBe(true);
   });
 });
 

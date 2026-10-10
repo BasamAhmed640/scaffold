@@ -222,6 +222,21 @@ export function misconceptionsLedgerNote(): string {
   ].join(EOL);
 }
 
+/** The figure part of a visual's spec note: the SVG, or the preview (once rendered) and a link to the HTML. */
+export function visualFigure(id: string, format: 'svg' | 'html', hasPreview: boolean): string {
+  const dir = `Scaffold/Visuals/${id}`;
+  if (format === 'svg') return `![[${dir}/figure.svg]]`;
+  return [
+    hasPreview ? `![[${dir}/preview.png]]` : '_No preview yet: `scaffold visual check` renders one._',
+    '',
+    `[[${dir}/index.html|Open the interactive version]]`,
+  ].join(EOL);
+}
+
+/** A fence longer than any backtick run inside the code. */
+const fence = (code: string): string =>
+  '`'.repeat(Math.max(3, ...[...code.matchAll(/`+/g)].map((m) => m[0].length + 1)));
+
 export function visualSpecNote(v: {
   id: string;
   title: string;
@@ -234,6 +249,7 @@ export function visualSpecNote(v: {
   generator: string | null;
   provenance: string;
   checks: Record<string, unknown>;
+  has_preview?: boolean;
 }): string {
   const owned = {
     id: v.id,
@@ -244,14 +260,11 @@ export function visualSpecNote(v: {
     alt: v.alt,
     cssclasses: ['scaffold', 'scaffold-visual'],
   };
-  const embed =
-    v.format === 'svg'
-      ? `![[Scaffold/Visuals/${v.id}/figure.svg]]`
-      : `![[Scaffold/Visuals/${v.id}/preview.png]]\n\n[Open the interactive version](Scaffold/Visuals/${v.id}/index.html)`;
+  const gen = v.generator?.trim();
   const body = [
     `# ${v.id} · ${v.title}`,
     '',
-    embed,
+    region('figure', visualFigure(v.id, v.format, !!v.has_preview), EOL),
     '',
     '## Purpose',
     '',
@@ -261,13 +274,18 @@ export function visualSpecNote(v: {
     '',
     v.notice,
     '',
+    '## Alt text',
+    '',
+    v.alt,
+    '',
     '## Concepts',
     '',
     ...v.kc_ids.map((k) => `- [[Scaffold/Concepts/${k}]]`),
     '',
     '## Generator / provenance',
     '',
-    v.generator ? '```\n' + v.generator.trim() + '\n```' : v.provenance || '_Hand-authored; no generator._',
+    ...(gen ? [fence(gen), gen, fence(gen), ''] : []),
+    v.provenance || (gen ? 'Generator code above.' : '_Hand-authored; no generator._'),
     '',
   ].join(EOL);
   return fm(owned, { checks: v.checks }) + EOL + body;

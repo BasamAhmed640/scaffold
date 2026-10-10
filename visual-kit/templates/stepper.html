@@ -1,0 +1,44 @@
+<h2 class="sr-only">Stepper in three steps: a voltage step launched by the driver travels down the line, reflects from the 150 ohm load with Γ = 0.5, and returns to the driver.</h2>
+<style>
+  .stepper { display: flex; flex-direction: column; gap: 12px; }
+  .stepper .caption { margin: 0; min-height: 3.4em; font-size: 15px; color: var(--text-secondary, #52514e); }
+  .stepper .controls { display: flex; align-items: center; gap: 12px; }
+  .stepper .count { font-size: 14px; color: var(--text-secondary, #52514e); }
+  .stepper .wave { transition: transform 300ms ease; }
+</style>
+<div class="stepper">
+  <svg width="100%" viewBox="0 0 680 190" role="img" aria-label="The line from driver A to load C with the wavefront for the current step">
+    <g class="c-blue"><rect x="20" y="50" width="110" height="60" rx="8" stroke-width="0.5"/><text class="th" x="75" y="80" text-anchor="middle" dominant-baseline="central">A · Driver</text></g>
+    <g class="c-coral"><rect x="550" y="50" width="110" height="60" rx="8" stroke-width="0.5"/><text class="th" x="605" y="80" text-anchor="middle" dominant-baseline="central">C · Load</text></g>
+    <line x1="130" y1="80" x2="550" y2="80" style="stroke: var(--text-secondary, #52514e)" stroke-width="2"/>
+    <text class="ts" x="340" y="64" text-anchor="middle" dominant-baseline="central">B · Line (Z0 = 50 Ω)</text>
+    <g class="c-teal wave" id="wave"><rect x="134" y="92" width="8" height="36" rx="2" stroke-width="0.5"/></g>
+    <text class="t" id="level" x="340" y="160" text-anchor="middle" dominant-baseline="central">line voltage behind the front: 0.5 V</text>
+  </svg>
+  <p class="caption" id="caption"></p>
+  <div class="controls">
+    <button id="prev" type="button">Back</button>
+    <button id="next" type="button">Next</button>
+    <span class="count" id="count"></span>
+  </div>
+</div>
+<script>
+  const steps = [
+    { x: 0, level: 'line voltage behind the front: 0.5 V', text: '① t = 0: A launches a 0.5 V step; the source and the line split the 1 V drive equally.' },
+    { x: 412, level: 'front at C: incident 0.5 V + reflected 0.25 V', text: '② t = TD: the front reaches C. With Γ = 0.5, a 0.25 V reflection starts back toward A.' },
+    { x: 0, level: 'line settles at 0.75 V everywhere', text: '③ t = 2·TD: the reflection reaches A, which is matched, so nothing more returns.' },
+  ];
+  let i = 0;
+  const show = () => {
+    const s = steps[i];
+    document.getElementById('wave').style.transform = `translateX(${s.x}px)`;
+    document.getElementById('level').textContent = s.level;
+    document.getElementById('caption').textContent = s.text;
+    document.getElementById('count').textContent = `Step ${i + 1} of ${steps.length}`;
+    document.getElementById('prev').disabled = i === 0;
+    document.getElementById('next').disabled = i === steps.length - 1;
+  };
+  document.getElementById('prev').addEventListener('click', () => { i = Math.max(0, i - 1); show(); });
+  document.getElementById('next').addEventListener('click', () => { i = Math.min(steps.length - 1, i + 1); show(); });
+  show();
+</script>

@@ -1,0 +1,11 @@
+{
+  "ok": false,
+  "data": null,
+  "warnings": [],
+  "errors": [
+    {
+      "code": "nothing_to_check",
+      "message": "Name visual ids, --pending or --file."
+    }
+  ]
+}

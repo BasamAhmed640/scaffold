@@ -143,6 +143,10 @@ export class Vault {
     atomicWrite(this.abs(rel), text, this.hooks);
   }
 
+  writeBytes(rel: string, data: Buffer): void {
+    atomicWrite(this.abs(rel), data, this.hooks);
+  }
+
   /** Writes a new file; never overwrites an existing one. Returns false if it already existed. */
   createText(rel: string, text: string): boolean {
     if (this.exists(rel)) return false;

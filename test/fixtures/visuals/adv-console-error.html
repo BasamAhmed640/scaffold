@@ -1,0 +1,7 @@
+<h2 class="sr-only">Adversarial widget whose script fails.</h2>
+<p>Drag the slider to change the load.</p>
+<input type="range" id="load" min="10" max="200" value="50">
+<script>
+  console.error('widget failed to initialise');
+  document.getElementById('missing').addEventListener('input', () => {});
+</script>

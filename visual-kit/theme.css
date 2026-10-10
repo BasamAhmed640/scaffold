@@ -1,0 +1,205 @@
+/* Scaffold visual-kit theme shim (VIS-04). Generated from src/core/visuals/theme.ts; do not edit. */
+:root {
+  --font-sans: "Anthropic Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-voice: "Anthropic Serif", Georgia, "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", Consolas, "Courier New", monospace;
+  --radius: 8px;
+  --pad-sm: 4px;
+  --pad-md: 8px;
+  --pad-lg: 12px;
+  --pad-xl: 16px;
+  --gap-xs: 4px;
+  --gap-sm: 8px;
+  --gap-md: 12px;
+  --gap-lg: 16px;
+  --gap-xl: 24px;
+  --p: var(--text-primary);
+  --s: var(--text-secondary);
+  --t: var(--text-muted);
+  --bg2: var(--surface-1);
+  --b: var(--border);
+  --surface-0: #f5f4ef;
+  --surface-1: #fcfcfb;
+  --surface-2: #ffffff;
+  --surface-3: #ffffff;
+  --text-primary: #0b0b0b;
+  --text-secondary: #52514e;
+  --text-muted: #898781;
+  --text-disabled: rgba(11, 11, 11, 0.3);
+  --border: rgba(11, 11, 11, 0.10);
+  --border-strong: rgba(11, 11, 11, 0.20);
+  --border-stronger: rgba(11, 11, 11, 0.40);
+  --gridline: #e1e0d9;
+  --baseline: #c3c2b7;
+  --text-accent: #185FA5;
+  --bg-accent: #E6F1FB;
+  --border-accent: #85B7EB;
+  --text-danger: #A32D2D;
+  --bg-danger: #FCEBEB;
+  --border-danger: #F09595;
+  --text-success: #3B6D11;
+  --bg-success: #EAF3DE;
+  --border-success: #97C459;
+  --text-warning: #854F0B;
+  --bg-warning: #FAEEDA;
+  --border-warning: #EF9F27;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-mode="light"]) {
+    --surface-0: #0b0b0b;
+    --surface-1: #1a1a19;
+    --surface-2: #1f1f1e;
+    --surface-3: #262624;
+    --text-primary: #f0efec;
+    --text-secondary: #c3c2b7;
+    --text-muted: #898781;
+    --text-disabled: rgba(255, 255, 255, 0.3);
+    --border: rgba(255, 255, 255, 0.10);
+    --border-strong: rgba(255, 255, 255, 0.20);
+    --border-stronger: rgba(255, 255, 255, 0.40);
+    --gridline: #2c2c2a;
+    --baseline: #383835;
+    --text-accent: #85B7EB;
+    --bg-accent: #0C447C;
+    --border-accent: #185FA5;
+    --text-danger: #F09595;
+    --bg-danger: #791F1F;
+    --border-danger: #A32D2D;
+    --text-success: #97C459;
+    --bg-success: #27500A;
+    --border-success: #3B6D11;
+    --text-warning: #EF9F27;
+    --bg-warning: #633806;
+    --border-warning: #854F0B;
+  }
+}
+:root[data-mode="dark"] {
+  --surface-0: #0b0b0b;
+  --surface-1: #1a1a19;
+  --surface-2: #1f1f1e;
+  --surface-3: #262624;
+  --text-primary: #f0efec;
+  --text-secondary: #c3c2b7;
+  --text-muted: #898781;
+  --text-disabled: rgba(255, 255, 255, 0.3);
+  --border: rgba(255, 255, 255, 0.10);
+  --border-strong: rgba(255, 255, 255, 0.20);
+  --border-stronger: rgba(255, 255, 255, 0.40);
+  --gridline: #2c2c2a;
+  --baseline: #383835;
+  --text-accent: #85B7EB;
+  --bg-accent: #0C447C;
+  --border-accent: #185FA5;
+  --text-danger: #F09595;
+  --bg-danger: #791F1F;
+  --border-danger: #A32D2D;
+  --text-success: #97C459;
+  --bg-success: #27500A;
+  --border-success: #3B6D11;
+  --text-warning: #EF9F27;
+  --bg-warning: #633806;
+  --border-warning: #854F0B;
+}
+svg { overflow: visible; }
+.t, .ts, .th { font-family: var(--font-sans, system-ui, sans-serif); }
+.t { font-size: 14px; font-weight: 400; fill: var(--text-primary, #0b0b0b); }
+.ts { font-size: 12px; font-weight: 400; fill: var(--text-secondary, #52514e); }
+.th { font-size: 14px; font-weight: 500; fill: var(--text-primary, #0b0b0b); }
+.box { fill: var(--surface-1, #fcfcfb); stroke: var(--border-strong, rgba(11, 11, 11, 0.2)); }
+.node { cursor: pointer; }
+.node:hover { opacity: 0.85; }
+.arr { stroke: var(--text-secondary, #52514e); stroke-width: 1.5; fill: none; }
+.leader { stroke: var(--text-muted, #898781); stroke-width: 0.5; stroke-dasharray: 3 3; fill: none; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.c-purple > rect, .c-purple > circle, .c-purple > ellipse, .c-purple > polygon, rect.c-purple, circle.c-purple, ellipse.c-purple { fill: #EEEDFE; stroke: #534AB7; }
+.c-purple > .t, .c-purple > .th { fill: #3C3489; }
+.c-purple > .ts { fill: #534AB7; }
+.c-teal > rect, .c-teal > circle, .c-teal > ellipse, .c-teal > polygon, rect.c-teal, circle.c-teal, ellipse.c-teal { fill: #E1F5EE; stroke: #0F6E56; }
+.c-teal > .t, .c-teal > .th { fill: #085041; }
+.c-teal > .ts { fill: #0F6E56; }
+.c-coral > rect, .c-coral > circle, .c-coral > ellipse, .c-coral > polygon, rect.c-coral, circle.c-coral, ellipse.c-coral { fill: #FAECE7; stroke: #993C1D; }
+.c-coral > .t, .c-coral > .th { fill: #712B13; }
+.c-coral > .ts { fill: #993C1D; }
+.c-pink > rect, .c-pink > circle, .c-pink > ellipse, .c-pink > polygon, rect.c-pink, circle.c-pink, ellipse.c-pink { fill: #FBEAF0; stroke: #993556; }
+.c-pink > .t, .c-pink > .th { fill: #72243E; }
+.c-pink > .ts { fill: #993556; }
+.c-gray > rect, .c-gray > circle, .c-gray > ellipse, .c-gray > polygon, rect.c-gray, circle.c-gray, ellipse.c-gray { fill: #F1EFE8; stroke: #5F5E5A; }
+.c-gray > .t, .c-gray > .th { fill: #444441; }
+.c-gray > .ts { fill: #5F5E5A; }
+.c-blue > rect, .c-blue > circle, .c-blue > ellipse, .c-blue > polygon, rect.c-blue, circle.c-blue, ellipse.c-blue { fill: #E6F1FB; stroke: #185FA5; }
+.c-blue > .t, .c-blue > .th { fill: #0C447C; }
+.c-blue > .ts { fill: #185FA5; }
+.c-green > rect, .c-green > circle, .c-green > ellipse, .c-green > polygon, rect.c-green, circle.c-green, ellipse.c-green { fill: #EAF3DE; stroke: #3B6D11; }
+.c-green > .t, .c-green > .th { fill: #27500A; }
+.c-green > .ts { fill: #3B6D11; }
+.c-amber > rect, .c-amber > circle, .c-amber > ellipse, .c-amber > polygon, rect.c-amber, circle.c-amber, ellipse.c-amber { fill: #FAEEDA; stroke: #854F0B; }
+.c-amber > .t, .c-amber > .th { fill: #633806; }
+.c-amber > .ts { fill: #854F0B; }
+.c-red > rect, .c-red > circle, .c-red > ellipse, .c-red > polygon, rect.c-red, circle.c-red, ellipse.c-red { fill: #FCEBEB; stroke: #A32D2D; }
+.c-red > .t, .c-red > .th { fill: #791F1F; }
+.c-red > .ts { fill: #A32D2D; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-mode="light"]) .c-purple > rect, :root:not([data-mode="light"]) .c-purple > circle, :root:not([data-mode="light"]) .c-purple > ellipse, :root:not([data-mode="light"]) .c-purple > polygon, :root:not([data-mode="light"]) rect.c-purple, :root:not([data-mode="light"]) circle.c-purple, :root:not([data-mode="light"]) ellipse.c-purple { fill: #3C3489; stroke: #AFA9EC; }
+  :root:not([data-mode="light"]) .c-purple > .t, :root:not([data-mode="light"]) .c-purple > .th { fill: #CECBF6; }
+  :root:not([data-mode="light"]) .c-purple > .ts { fill: #AFA9EC; }
+  :root:not([data-mode="light"]) .c-teal > rect, :root:not([data-mode="light"]) .c-teal > circle, :root:not([data-mode="light"]) .c-teal > ellipse, :root:not([data-mode="light"]) .c-teal > polygon, :root:not([data-mode="light"]) rect.c-teal, :root:not([data-mode="light"]) circle.c-teal, :root:not([data-mode="light"]) ellipse.c-teal { fill: #085041; stroke: #5DCAA5; }
+  :root:not([data-mode="light"]) .c-teal > .t, :root:not([data-mode="light"]) .c-teal > .th { fill: #9FE1CB; }
+  :root:not([data-mode="light"]) .c-teal > .ts { fill: #5DCAA5; }
+  :root:not([data-mode="light"]) .c-coral > rect, :root:not([data-mode="light"]) .c-coral > circle, :root:not([data-mode="light"]) .c-coral > ellipse, :root:not([data-mode="light"]) .c-coral > polygon, :root:not([data-mode="light"]) rect.c-coral, :root:not([data-mode="light"]) circle.c-coral, :root:not([data-mode="light"]) ellipse.c-coral { fill: #712B13; stroke: #F0997B; }
+  :root:not([data-mode="light"]) .c-coral > .t, :root:not([data-mode="light"]) .c-coral > .th { fill: #F5C4B3; }
+  :root:not([data-mode="light"]) .c-coral > .ts { fill: #F0997B; }
+  :root:not([data-mode="light"]) .c-pink > rect, :root:not([data-mode="light"]) .c-pink > circle, :root:not([data-mode="light"]) .c-pink > ellipse, :root:not([data-mode="light"]) .c-pink > polygon, :root:not([data-mode="light"]) rect.c-pink, :root:not([data-mode="light"]) circle.c-pink, :root:not([data-mode="light"]) ellipse.c-pink { fill: #72243E; stroke: #ED93B1; }
+  :root:not([data-mode="light"]) .c-pink > .t, :root:not([data-mode="light"]) .c-pink > .th { fill: #F4C0D1; }
+  :root:not([data-mode="light"]) .c-pink > .ts { fill: #ED93B1; }
+  :root:not([data-mode="light"]) .c-gray > rect, :root:not([data-mode="light"]) .c-gray > circle, :root:not([data-mode="light"]) .c-gray > ellipse, :root:not([data-mode="light"]) .c-gray > polygon, :root:not([data-mode="light"]) rect.c-gray, :root:not([data-mode="light"]) circle.c-gray, :root:not([data-mode="light"]) ellipse.c-gray { fill: #444441; stroke: #B4B2A9; }
+  :root:not([data-mode="light"]) .c-gray > .t, :root:not([data-mode="light"]) .c-gray > .th { fill: #D3D1C7; }
+  :root:not([data-mode="light"]) .c-gray > .ts { fill: #B4B2A9; }
+  :root:not([data-mode="light"]) .c-blue > rect, :root:not([data-mode="light"]) .c-blue > circle, :root:not([data-mode="light"]) .c-blue > ellipse, :root:not([data-mode="light"]) .c-blue > polygon, :root:not([data-mode="light"]) rect.c-blue, :root:not([data-mode="light"]) circle.c-blue, :root:not([data-mode="light"]) ellipse.c-blue { fill: #0C447C; stroke: #85B7EB; }
+  :root:not([data-mode="light"]) .c-blue > .t, :root:not([data-mode="light"]) .c-blue > .th { fill: #B5D4F4; }
+  :root:not([data-mode="light"]) .c-blue > .ts { fill: #85B7EB; }
+  :root:not([data-mode="light"]) .c-green > rect, :root:not([data-mode="light"]) .c-green > circle, :root:not([data-mode="light"]) .c-green > ellipse, :root:not([data-mode="light"]) .c-green > polygon, :root:not([data-mode="light"]) rect.c-green, :root:not([data-mode="light"]) circle.c-green, :root:not([data-mode="light"]) ellipse.c-green { fill: #27500A; stroke: #97C459; }
+  :root:not([data-mode="light"]) .c-green > .t, :root:not([data-mode="light"]) .c-green > .th { fill: #C0DD97; }
+  :root:not([data-mode="light"]) .c-green > .ts { fill: #97C459; }
+  :root:not([data-mode="light"]) .c-amber > rect, :root:not([data-mode="light"]) .c-amber > circle, :root:not([data-mode="light"]) .c-amber > ellipse, :root:not([data-mode="light"]) .c-amber > polygon, :root:not([data-mode="light"]) rect.c-amber, :root:not([data-mode="light"]) circle.c-amber, :root:not([data-mode="light"]) ellipse.c-amber { fill: #633806; stroke: #EF9F27; }
+  :root:not([data-mode="light"]) .c-amber > .t, :root:not([data-mode="light"]) .c-amber > .th { fill: #FAC775; }
+  :root:not([data-mode="light"]) .c-amber > .ts { fill: #EF9F27; }
+  :root:not([data-mode="light"]) .c-red > rect, :root:not([data-mode="light"]) .c-red > circle, :root:not([data-mode="light"]) .c-red > ellipse, :root:not([data-mode="light"]) .c-red > polygon, :root:not([data-mode="light"]) rect.c-red, :root:not([data-mode="light"]) circle.c-red, :root:not([data-mode="light"]) ellipse.c-red { fill: #791F1F; stroke: #F09595; }
+  :root:not([data-mode="light"]) .c-red > .t, :root:not([data-mode="light"]) .c-red > .th { fill: #F7C1C1; }
+  :root:not([data-mode="light"]) .c-red > .ts { fill: #F09595; }
+}
+:root[data-mode="dark"] .c-purple > rect, :root[data-mode="dark"] .c-purple > circle, :root[data-mode="dark"] .c-purple > ellipse, :root[data-mode="dark"] .c-purple > polygon, :root[data-mode="dark"] rect.c-purple, :root[data-mode="dark"] circle.c-purple, :root[data-mode="dark"] ellipse.c-purple { fill: #3C3489; stroke: #AFA9EC; }
+:root[data-mode="dark"] .c-purple > .t, :root[data-mode="dark"] .c-purple > .th { fill: #CECBF6; }
+:root[data-mode="dark"] .c-purple > .ts { fill: #AFA9EC; }
+:root[data-mode="dark"] .c-teal > rect, :root[data-mode="dark"] .c-teal > circle, :root[data-mode="dark"] .c-teal > ellipse, :root[data-mode="dark"] .c-teal > polygon, :root[data-mode="dark"] rect.c-teal, :root[data-mode="dark"] circle.c-teal, :root[data-mode="dark"] ellipse.c-teal { fill: #085041; stroke: #5DCAA5; }
+:root[data-mode="dark"] .c-teal > .t, :root[data-mode="dark"] .c-teal > .th { fill: #9FE1CB; }
+:root[data-mode="dark"] .c-teal > .ts { fill: #5DCAA5; }
+:root[data-mode="dark"] .c-coral > rect, :root[data-mode="dark"] .c-coral > circle, :root[data-mode="dark"] .c-coral > ellipse, :root[data-mode="dark"] .c-coral > polygon, :root[data-mode="dark"] rect.c-coral, :root[data-mode="dark"] circle.c-coral, :root[data-mode="dark"] ellipse.c-coral { fill: #712B13; stroke: #F0997B; }
+:root[data-mode="dark"] .c-coral > .t, :root[data-mode="dark"] .c-coral > .th { fill: #F5C4B3; }
+:root[data-mode="dark"] .c-coral > .ts { fill: #F0997B; }
+:root[data-mode="dark"] .c-pink > rect, :root[data-mode="dark"] .c-pink > circle, :root[data-mode="dark"] .c-pink > ellipse, :root[data-mode="dark"] .c-pink > polygon, :root[data-mode="dark"] rect.c-pink, :root[data-mode="dark"] circle.c-pink, :root[data-mode="dark"] ellipse.c-pink { fill: #72243E; stroke: #ED93B1; }
+:root[data-mode="dark"] .c-pink > .t, :root[data-mode="dark"] .c-pink > .th { fill: #F4C0D1; }
+:root[data-mode="dark"] .c-pink > .ts { fill: #ED93B1; }
+:root[data-mode="dark"] .c-gray > rect, :root[data-mode="dark"] .c-gray > circle, :root[data-mode="dark"] .c-gray > ellipse, :root[data-mode="dark"] .c-gray > polygon, :root[data-mode="dark"] rect.c-gray, :root[data-mode="dark"] circle.c-gray, :root[data-mode="dark"] ellipse.c-gray { fill: #444441; stroke: #B4B2A9; }
+:root[data-mode="dark"] .c-gray > .t, :root[data-mode="dark"] .c-gray > .th { fill: #D3D1C7; }
+:root[data-mode="dark"] .c-gray > .ts { fill: #B4B2A9; }
+:root[data-mode="dark"] .c-blue > rect, :root[data-mode="dark"] .c-blue > circle, :root[data-mode="dark"] .c-blue > ellipse, :root[data-mode="dark"] .c-blue > polygon, :root[data-mode="dark"] rect.c-blue, :root[data-mode="dark"] circle.c-blue, :root[data-mode="dark"] ellipse.c-blue { fill: #0C447C; stroke: #85B7EB; }
+:root[data-mode="dark"] .c-blue > .t, :root[data-mode="dark"] .c-blue > .th { fill: #B5D4F4; }
+:root[data-mode="dark"] .c-blue > .ts { fill: #85B7EB; }
+:root[data-mode="dark"] .c-green > rect, :root[data-mode="dark"] .c-green > circle, :root[data-mode="dark"] .c-green > ellipse, :root[data-mode="dark"] .c-green > polygon, :root[data-mode="dark"] rect.c-green, :root[data-mode="dark"] circle.c-green, :root[data-mode="dark"] ellipse.c-green { fill: #27500A; stroke: #97C459; }
+:root[data-mode="dark"] .c-green > .t, :root[data-mode="dark"] .c-green > .th { fill: #C0DD97; }
+:root[data-mode="dark"] .c-green > .ts { fill: #97C459; }
+:root[data-mode="dark"] .c-amber > rect, :root[data-mode="dark"] .c-amber > circle, :root[data-mode="dark"] .c-amber > ellipse, :root[data-mode="dark"] .c-amber > polygon, :root[data-mode="dark"] rect.c-amber, :root[data-mode="dark"] circle.c-amber, :root[data-mode="dark"] ellipse.c-amber { fill: #633806; stroke: #EF9F27; }
+:root[data-mode="dark"] .c-amber > .t, :root[data-mode="dark"] .c-amber > .th { fill: #FAC775; }
+:root[data-mode="dark"] .c-amber > .ts { fill: #EF9F27; }
+:root[data-mode="dark"] .c-red > rect, :root[data-mode="dark"] .c-red > circle, :root[data-mode="dark"] .c-red > ellipse, :root[data-mode="dark"] .c-red > polygon, :root[data-mode="dark"] rect.c-red, :root[data-mode="dark"] circle.c-red, :root[data-mode="dark"] ellipse.c-red { fill: #791F1F; stroke: #F09595; }
+:root[data-mode="dark"] .c-red > .t, :root[data-mode="dark"] .c-red > .th { fill: #F7C1C1; }
+:root[data-mode="dark"] .c-red > .ts { fill: #F09595; }
+html { background: var(--surface-0, #f5f4ef); color: var(--text-primary, #0b0b0b); }
+body { margin: 0 auto; padding: 16px; max-width: 712px; font-family: var(--font-sans, system-ui, sans-serif); font-size: 16px; line-height: 1.7; color: var(--text-primary, #0b0b0b); }
+h1 { font-size: 22px; font-weight: 500; } h2 { font-size: 18px; font-weight: 500; } h3 { font-size: 16px; font-weight: 500; }
+a { color: var(--text-accent, #185FA5); }
+button { font: inherit; font-size: 14px; color: var(--text-primary, #0b0b0b); background: transparent; border: 0.5px solid var(--border-strong, rgba(11, 11, 11, 0.2)); border-radius: var(--radius, 8px); padding: 6px 12px; cursor: pointer; }
+button:hover { background: var(--surface-1, #fcfcfb); } button:active { transform: scale(0.98); }
+input[type="text"], input[type="number"], select, textarea { font: inherit; font-size: 14px; color: var(--text-primary, #0b0b0b); background: var(--surface-2, #fff); border: 0.5px solid var(--border-strong, rgba(11, 11, 11, 0.2)); border-radius: var(--radius, 8px); padding: 6px 10px; }
+input[type="text"], input[type="number"], select { height: 36px; box-sizing: border-box; }
+input[type="range"] { accent-color: var(--text-accent, #185FA5); }
