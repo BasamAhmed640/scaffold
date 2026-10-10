@@ -226,7 +226,7 @@ describe('card text (ANK-08) and resets (ANK-04)', () => {
     expect(v.mock.cards.get(c.card)).toMatchObject({ type: 0, queue: 0 });
     const reviews = await v.mock
       .client()
-      .invoke<Record<string, unknown[]>>('getReviewsOfCards', { cards: [String(c.card)] });
+      .invoke<Record<string, unknown[]>>('getReviewsOfCards', { cards: [c.card] });
     expect(reviews[String(c.card)]).toHaveLength(2);
   });
 

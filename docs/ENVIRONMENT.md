@@ -19,7 +19,7 @@ Recorded on the owner's PC on 2026-10-09. Re-run the probes in `scripts/probes/`
 | Claude Desktop: local MCP "hello" tool, uploaded skill and inline visual in one chat | needs the owner; see "Manual checks" below | **pending (owner)** |
 | Claude Code | 2.1.295, bundled with Claude Desktop at `%APPDATA%\Claude\claude-code\2.1.295\…\claude.exe` (not on `PATH`) | pass |
 | Claude Code headless | `claude -p` (print mode), `--resume <session-id>`, `--continue`, `--output-format stream-json`, `--mcp-config` all listed in `--help` | pass (flags present) |
-| Claude Code login (standalone CLI) | `claude auth status`, run in a clean environment on 2026-10-10 → `loggedIn: false`. The Desktop Code tab is authenticated by the Desktop app, but the CLI on its own is not. Owner action: run `claude auth login` once in a terminal and sign in with the Claude Pro account (D-78). | **pending (owner)** |
+| Claude Code login (standalone CLI) | It was not logged in at first: the Desktop Code tab uses the app's own login. On 2026-10-10 `scripts/setup/claude-login.ps1` ran `claude auth login --claudeai` from a normal terminal, and the owner clicked Authorize. `claude auth status` now reports `loggedIn: true`, `authMethod: claude.ai`, subscription `pro` (D-78, D-89). | pass |
 | Codex CLI | codex-cli 0.160.1 at `%LOCALAPPDATA%\OpenAI\Codex\bin\…\codex.exe` (not on `PATH`), `codex login status` → "Logged in using ChatGPT" | pass |
 | Codex headless | `codex exec`, `codex exec resume [SESSION_ID] [PROMPT]` / `--last`, `--json` | pass (flags present) |
 | Codex MCP | `codex mcp add <name> -- <command>` | pass (command present) |
@@ -32,9 +32,9 @@ Recorded on the owner's PC on 2026-10-09. Re-run the probes in `scripts/probes/`
 |---|---|---|
 | Obsidian | installed; main vault `C:\Users\basam\Desktop\Basam's_Vault` (chosen for real use once V-VAULT passes) | pass |
 | Anki | installed (`%LOCALAPPDATA%\Programs\Anki`), profile "User 1" | pass |
-| AnkiConnect | **not installed** (`addons21` is empty; `127.0.0.1:8765` does not answer) | **FAIL → owner action** |
+| AnkiConnect | Installed 2026-10-10 from AnkiWeb (add-on 2055492159, build of 2025-11-06, for Anki 26.9.3, point version 260903) into `%APPDATA%\Anki2\addons21\2055492159` with `scripts/setup/install-ankiconnect.ps1`. It listens on `127.0.0.1:8765` and reports API version 6. | pass |
 
-AnkiConnect is a primary M0 item. It is only needed from M6 on, so M1–M5 proceed while the owner installs it (DECISIONS.md D-02). To install: Anki → Tools → Add-ons → Get Add-ons… → code `2055492159` → restart Anki. Then `scaffold doctor` checks the API version (expect 6).
+AnkiConnect was missing at M0 (D-02) and was installed on 2026-10-10. The disposable **Scaffold Smoke** profile (sync off, no AnkiWeb key) was added for the live tests by `scripts/setup/anki-smoke-profile.ps1`, which backs up `prefs21.db` first. The owner's own profile was not opened or changed by these tests.
 
 ## Libraries (pinned exact versions)
 
@@ -54,7 +54,7 @@ AnkiConnect is a primary M0 item. It is only needed from M6 on, so M1–M5 proce
 
 ## Manual checks (owner)
 
-1. **AnkiConnect**: install as above; then run `scaffold doctor`. Then the V-ANKI live smoke test (M6): in Anki, File → Switch Profile → Add a disposable profile named **Scaffold Smoke**, open it, and run `npx tsx scripts/anki-smoke.ts` (it refuses any other profile). It adds 3 notes through the proposal/approval path, reviews them, syncs, and checks that an anchor lapse produces an event and a status change; raw AnkiConnect responses go to `local/anki-smoke/` to confirm D-53, D-54 and D-66. Also: close Anki, run three operations (e.g. `scaffold subject add`, `scaffold anki flag`, an approved action), reopen Anki, `scaffold anki sync`, and check each was applied once (ANK-09).
+1. **AnkiConnect**: **pass, 2026-10-10** (VERIFICATION.md, V-ANKI live). Steps: install as above; then run `scaffold doctor`. Then the V-ANKI live smoke test (M6): in Anki, File → Switch Profile → Add a disposable profile named **Scaffold Smoke**, open it, and run `npx tsx scripts/anki-smoke.ts` (it refuses any other profile). It adds 3 notes through the proposal/approval path, reviews them, syncs, and checks that an anchor lapse produces an event and a status change; raw AnkiConnect responses go to `local/anki-smoke/` to confirm D-53, D-54 and D-66. Also: close Anki, run three operations (e.g. `scaffold subject add`, `scaffold anki flag`, an approved action), reopen Anki, `scaffold anki sync`, and check each was applied once (ANK-09).
 2. **Claude Desktop, same chat**: (a) add the hello server from `scripts/probes/hello-mcp.mjs` (or the Scaffold `.mcpb` after M4), (b) upload the skill ZIP after M5 (Customize → Skills; Code execution on), (c) ask for an inline visual. Record pass/fail here with a screenshot.
 3. **Inline visual through the theme shim (V-VIS, VIS-04)**:
    - In Claude Desktop, ask for an inline diagram that uses the visualizer classes (`.c-<ramp>`, `.t`, `.ts`), and save its SVG.

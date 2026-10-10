@@ -96,6 +96,33 @@ describe('scripted learner', () => {
     ).toMatch(/^The rise time/);
   });
 
+  it('answers the "why" questions of the Claude pilot (claude-pilot-2026-10-10) with the cause', () => {
+    const ask = (q: string): string => {
+      const l = new Learner({ opening: 'hi', turns: 9, rules: [] });
+      l.opening();
+      return l.reply(q).text;
+    };
+    for (const q of [
+      'Before I grade it, one follow-up, because your answer gives the number but not the reason. **In one sentence: what about this setup causes a reflection at all?** In other words, under what condition would Γ be zero?',
+      '**Your turn, from memory:** In one or two sentences, **why** does a reflection happen, and **why** is there none when Z_L = 50 Ω?',
+      '> **Why** does the 1 V edge reflect when it reaches the 75 Ω load, and **why** is there no reflection when the load is 50 Ω?',
+    ])
+      expect(ask(q), q).toMatch(/^Because the load is not 50 Ω/);
+    expect(
+      ask(
+        'If you only want to answer the first part (does it reflect, yes or no?) and guess the rest, that’s fine.',
+      ),
+    ).toMatch(/^A, some comes back/);
+  });
+
+  it('never re-sends an answer it already gave, even two turns later', () => {
+    const l = new Learner({ opening: 'hi', turns: 9, rules: [] });
+    l.opening();
+    expect(l.reply('What is Z0?').text).toMatch(/^Z0 is the V\/I ratio/);
+    expect(l.reply('A 75 Ω load on a 50 Ω line: how much comes back?').text).toMatch(/^A, some comes back/);
+    expect(l.reply('So, once more: what does Z0 describe?').text).not.toMatch(/^Z0 is the V\/I ratio/);
+  });
+
   it('never pastes the same answer twice in a row; asks to rephrase instead of looping', () => {
     const l = new Learner({ opening: 'hi', turns: 9, rules: [] });
     l.opening();

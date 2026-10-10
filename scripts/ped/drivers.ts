@@ -210,9 +210,17 @@ export function findExecutable(name: 'claude' | 'codex'): string | null {
   const hit = which.status === 0 ? which.stdout.split(/\r?\n/).find((l) => l.trim()) : undefined;
   if (hit && existsSync(hit.trim())) return hit.trim();
   if (process.platform !== 'win32') return null;
+  // Claude Desktop is an MSIX app: %APPDATA%\Claude exists only inside its package; from a plain
+  // terminal the files live under %LOCALAPPDATA%\Packages\Claude_*\LocalCache\Roaming\Claude.
+  const packages = path.join(process.env.LOCALAPPDATA ?? '', 'Packages');
+  const packaged = existsSync(packages)
+    ? readdirSync(packages)
+        .filter((d) => d.startsWith('Claude_'))
+        .map((d) => path.join(packages, d, 'LocalCache', 'Roaming', 'Claude', 'claude-code'))
+    : [];
   const roots =
     name === 'claude'
-      ? [path.join(process.env.APPDATA ?? '', 'Claude', 'claude-code')]
+      ? [path.join(process.env.APPDATA ?? '', 'Claude', 'claude-code'), ...packaged]
       : [path.join(process.env.LOCALAPPDATA ?? '', 'OpenAI', 'Codex', 'bin')];
   const exe = `${name}.exe`;
   const found: string[] = [];

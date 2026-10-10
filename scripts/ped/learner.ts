@@ -57,6 +57,14 @@ export const SHARED_RULES: Rule[] = [
     answer: true,
   },
   {
+    id: 'why-reflect',
+    // the cause, not the number: "why does it reflect at 75 Ω, and why not at 50 Ω?" (Claude pilot)
+    when: /\bwhy\b[^?]*\breflect|\bwhat\b[^?]*\bcauses? (a |the )?reflection|\bunder what condition\b|\bwhy is there (none|no reflection)/i,
+    reply:
+      'Because the load is not 50 Ω: the arriving wave has V/I = Z0, but the load forces V/I = ZL, and the mismatch is sent back as a reflection. With a 50 Ω load the two already agree, so nothing reflects. Confidence 3.',
+    answer: true,
+  },
+  {
     id: 'gamma-75',
     when: /\b75\b.*(Γ|\bgamma|\breflect)|(Γ|\bgamma\b|\breflect\w*).*\b75\b/i,
     reply: 'Γ = (75 − 50)/(75 + 50) = 0.2, so about 20 % comes back. Confidence 3.',
@@ -72,7 +80,7 @@ export const SHARED_RULES: Rule[] = [
   {
     id: 'some-back',
     // "does some of the signal travel back toward the source?", "A: some comes back / B: none"
-    when: /\b(comes?|travels?|goes|bounces?|reflects?|sent) back\b|\bback toward(s)? the (source|driver)\b/i,
+    when: /\b(comes?|travels?|goes|bounces?|reflects?|sent) back\b|\bback toward(s)? the (source|driver)\b|\bdoes (it|the \w+|any\w*|some\w*) (\w+ )?reflect\b/i,
     reply:
       'A, some comes back: 75 Ω is not 50 Ω, so Γ = (75 − 50)/(75 + 50) = 0.2, about 20 %. Confidence 3.',
     answer: true,
@@ -176,6 +184,8 @@ export class Learner {
   private wrapped = false;
   private afterWrap = 0;
   private last = '';
+  /** Answers already given: a learner does not re-send an earlier answer verbatim (V-PED pilots). */
+  private given = new Set<string>();
   constructor(private readonly script: LearnerScript) {}
 
   get done(): boolean {
@@ -237,9 +247,9 @@ export class Learner {
       for (const r of rules) {
         if (r.once && this.used.has(r.id)) continue;
         if (!r.when.test(target)) continue;
-        // A learner who just gave this answer does not paste it again; the next rule, or a request
-        // to rephrase, keeps a misread question from looping (seen in the 2026-10-10 Codex pilot).
-        if (r.answer && r.reply === this.last) continue;
+        // A learner does not paste an answer they already gave; the next rule, or a request to
+        // rephrase, keeps a misread question from looping (seen in both 2026-10-10 pilots).
+        if (r.answer && this.given.has(r.reply)) continue;
         this.used.add(r.id);
         return this.say({
           text: r.reply,
@@ -252,8 +262,9 @@ export class Learner {
     return this.say(asks ? { text: FALLBACK, answer: true } : { text: 'OK, go on.' });
   }
 
-  private say<T extends { text: string }>(r: T): T {
+  private say<T extends { text: string; answer?: boolean }>(r: T): T {
     this.last = r.text;
+    if (r.answer && r.text !== FALLBACK) this.given.add(r.text);
     return r;
   }
 }

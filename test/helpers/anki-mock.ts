@@ -261,8 +261,14 @@ export class MockAnki {
             cards: [...this.cards.values()].filter((c) => c.note === id).map((c) => c.id),
           };
         });
-      case 'getReviewsOfCards':
-        return Object.fromEntries(ids('cards').map((id) => [String(id), [...(this.revlog.get(id) ?? [])]]));
+      case 'getReviewsOfCards': {
+        // Like the real add-on: ids match in SQL, but the result is looked up by the value passed,
+        // so string ids get no reviews (seen live on 2026-10-10, D-86).
+        const given = (p.cards as unknown[] | undefined) ?? [];
+        return Object.fromEntries(
+          given.map((c) => [String(c), typeof c === 'number' ? [...(this.revlog.get(c) ?? [])] : []]),
+        );
+      }
       case 'addNotes': {
         const notes = p.notes as {
           deckName: string;

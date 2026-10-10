@@ -27,6 +27,38 @@ const proposeGamma = (v: AnkiVault, over: Record<string, unknown> = {}) =>
     ],
   });
 
+describe('a fresh collection (found by the live smoke test, D-85)', () => {
+  it('approving a card before any sync creates the note types and decks first (ANK-01)', async () => {
+    v = await ankiVault({ structure: false });
+    expect(v.mock.models.size).toBe(0);
+    const p = await proposeGamma(v);
+    const ids = (p.data.proposals as { action_id: string }[]).map((x) => x.action_id);
+    const r = await v.call('apply_card_actions', {
+      action_ids: ids,
+      approval: { learner_quote: 'yes, add it' },
+    });
+    expect(r.data.results[0]).toMatchObject({ result: 'applied' });
+    expect([...v.mock.models.keys()].sort()).toEqual(['Scaffold Basic', 'Scaffold Cloze']);
+    expect(v.mock.decks.has('Scaffold::SI/PI')).toBe(true);
+    expect(v.mock.notes.size).toBe(1);
+  });
+
+  it('an add queued while Anki was closed replays after the structure is created', async () => {
+    v = await ankiVault({ structure: false, online: false });
+    const p = await proposeGamma(v);
+    const ids = (p.data.proposals as { action_id: string }[]).map((x) => x.action_id);
+    const queued = await v.call('apply_card_actions', {
+      action_ids: ids,
+      approval: { learner_quote: 'yes' },
+    });
+    expect(queued.data.results[0]).toMatchObject({ result: 'queued' });
+    await v.mock.restart();
+    const sync = await v.call('anki_sync');
+    expect(sync.data.replayed).toMatchObject({ applied: 1, failed: 0 });
+    expect(v.mock.notes.size).toBe(1);
+  });
+});
+
 describe('card lifecycle', () => {
   it('the learner edits a proposed card before approving it', async () => {
     v = await ankiVault();

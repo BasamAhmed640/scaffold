@@ -689,12 +689,68 @@ Transcripts: C:\Users\basam\src\scaffold\local\ped\verification-stub
 
 <!-- suite:V-ANKI:end -->
 
+## V-ANKI live (recorded by hand, 2026-10-10)
+
+The test ran on Anki 26.9.3 with AnkiConnect (API 6) on the disposable **Scaffold Smoke** profile. The active profile was checked before each step, and the owner's "User 1" profile was never opened. Raw AnkiConnect responses are in `local/anki-smoke/` (gitignored).
+
+**First attempts: failures that found bugs.**
+
+- `npx tsx scripts/anki-smoke.ts`: exit 2. The output was `answerCards: 'cardId'` (no card ids were found to answer). `applied.json` showed every add aborted: `Anki rejected it: addNotes: ['model was not found: Scaffold Basic']`. Fixed in D-85.
+- After that fix: exit 1. The output was `AnkiConnect 6; reviews imported: 0; anchor lapse event: false; kc-smoke-1 status: fragile` and `FAIL: see the raw responses.` The cause was `getReviewsOfCards` called with string ids. Fixed in D-86.
+
+**After the fixes.**
+
+`npx tsx scripts/anki-smoke.ts`: exit 0.
+
+```text
+AnkiConnect 6; reviews imported: 12; anchor lapse event: true; kc-smoke-1 status: forgotten
+Raw responses: C:\Users\basam\src\scaffold\local\anki-smoke
+PASS: lapses produce events and status changes.
+```
+
+`npx tsx scripts/anki-smoke.ts --queue`: exit 0. It closed Anki, then queued the changes while Anki was offline.
+
+```text
+Anki closed; queued while offline: {"subject":"queued","flag":"queued","apply":"queued","queued_files":4}
+Queued. Reopen Anki on "Scaffold Smoke", then run: npx tsx scripts/anki-smoke.ts --replay
+```
+
+Anki was then reopened on "Scaffold Smoke" with `.tmp/anki-open.ps1`.
+
+`npx tsx scripts/anki-smoke.ts --replay`: exit 0.
+
+```text
+{
+  "replayed_first_sync": {
+    "applied": 4,
+    "failed": 0,
+    "still_queued": 0
+  },
+  "replayed_second_sync": {
+    "applied": 0,
+    "failed": 0,
+    "still_queued": 0
+  },
+  "deck_created": true,
+  "flag_tag": true,
+  "retired_tag": true,
+  "retired_suspended": true,
+  "action_recorded_applied": true
+}
+PASS: each queued change applied exactly once (ANK-09).
+```
+
+Confirmed live:
+
+- **D-53:** a lapse is ease 1 on a revlog type-1 entry. The revlog fields are `id`, `usn`, `ease`, `ivl`, `lastIvl`, `factor`, `time` and `type`.
+- **ANK-01:** note types and subdecks are created, and the Link field holds an `obsidian://open` URL.
+
 ## Pending checks (recorded by hand when done)
 
 | Check | Status | What is needed |
 |---|---|---|
-| V-ANKI live smoke test (3 notes, reviews, sync, lapse → event and status) | **pending** | AnkiConnect is not installed yet (D-02). Run `npx tsx scripts/anki-smoke.ts` on a disposable "Scaffold Smoke" profile (docs/ENVIRONMENT.md, manual check 1). |
-| V-ANKI live offline queue (close Anki, 3 operations, reopen, sync, each applied once) | **pending** | Same; the mocked version passes above. |
+| V-ANKI live smoke test (3 notes, reviews, sync, lapse → event and status) | **pass (2026-10-10)** | See "V-ANKI live" below. It found two bugs first (D-85, D-86). |
+| V-ANKI live offline queue (close Anki, 3 operations, reopen, sync, each applied once) | **pass (2026-10-10)** | See "V-ANKI live" below. |
 | V-PED on Claude Code and Codex | **pilot done (Codex); full run pending** | The Codex pilot (s01, approved on 2026-10-10) proved the driver after D-78/D-79/D-80; see V-PED-PILOT. The Claude pilot needs the owner to run `claude auth login` once (D-78). The full run (11 scenarios × 2 providers) needs the owner's approval. |
 | V-GRADE: owner labels 40 real answers; κ ≥ 0.70 per provider, confident-wrong recall ≥ 0.90 | **pending (owner)** | Needs real tutoring sessions on both providers. Then: `scaffold grade sample`, label the sheet in Obsidian, `scaffold grade score <sheet>`. Repeat monthly. |
 | V-QQ: monthly spot check of 10 questions (≥ 9 acceptable) | **pending (owner)** | `scaffold q spotcheck`, mark the sheet, `scaffold q spotcheck --score <sheet>`. |

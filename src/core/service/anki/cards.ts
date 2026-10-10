@@ -22,6 +22,7 @@ import { conceptRel } from '../../vault/vault.js';
 import { loadBank } from '../bank.js';
 import type { EventDraft, Scaffold } from '../scaffold.js';
 import { allocIds, clientFor, loadFor, queueFor, readMirror } from './context.js';
+import { ensureStructure } from './structure.js';
 
 // TP-14 / ANK-03 proposals, TP-17 / ANK-04 card actions and flags. Every state change is a
 // proposal; nothing reaches Anki without the learner's approval, quoted in the event. Notes are
@@ -341,10 +342,17 @@ export async function execute(
   const q = queueFor(sc);
   const results: unknown[] = [];
   let offline = false;
+  // Note types and decks must exist before an add (D-85); done once, and queued work replays after
+  // the sync's own structure step.
+  let structured = !steps.some((s) => s.action === 'addNotes');
   for (let i = 0; i < steps.length; i++) {
     const s = steps[i]!;
     if (!offline) {
       try {
+        if (!structured) {
+          await ensureStructure(sc, client);
+          structured = true;
+        }
         results.push(
           s.action === GUARDED_UPDATE
             ? await guardedUpdate(client, s.params)

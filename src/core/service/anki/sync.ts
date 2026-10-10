@@ -1,15 +1,6 @@
 import { AnkiActionError, AnkiOffline, type AnkiClient } from '../../anki/client.js';
 import type { AnkiMirror, MirrorCard } from '../../anki/mirror.js';
-import {
-  hasTag,
-  kcsOfTags,
-  NOTE_TYPES,
-  plainText,
-  ROOT_DECK,
-  subjectOfTags,
-  TAG,
-  CARD_CSS,
-} from '../../anki/notes.js';
+import { hasTag, kcsOfTags, plainText, ROOT_DECK, subjectOfTags, TAG } from '../../anki/notes.js';
 import type { Warnings } from '../../envelope.js';
 import type { EventDraft, Scaffold } from '../scaffold.js';
 import type { QueuedOp } from '../../anki/queue.js';
@@ -17,6 +8,7 @@ import { EditedInAnki, GUARDED_UPDATE, guardedUpdate } from './cards.js';
 import { clientFor, queueFor, readMirror, writeMirror } from './context.js';
 import { budgetPass } from './ops.js';
 import { reviewByFlags } from './stale.js';
+import { ensureStructure } from './structure.js';
 
 // ANK-08 sync and ANK-09 replay. Order: version check → replay queued operations once each →
 // note types and subject decks → pull cards and notes into the mirror → import new reviews as
@@ -76,7 +68,12 @@ const chunks = <T>(xs: T[], n: number): T[][] =>
 /** A queued addNotes that Anki now rejects as a duplicate was applied before: done, not failed. */
 const isDuplicate = (e: unknown): boolean => e instanceof AnkiActionError && /duplicate/i.test(e.message);
 
-async function replayQueue(sc: Scaffold, client: AnkiClient, w: Warnings): Promise<SyncReport['replayed']> {
+async function replayQueue(
+  sc: Scaffold,
+  client: AnkiClient,
+  w: Warnings,
+  structured: Set<string>,
+): Promise<SyncReport['replayed']> {
   const q = queueFor(sc);
   const out = { applied: 0, failed: 0, still_queued: 0 };
   const drafts: EventDraft[] = [];
@@ -100,6 +97,13 @@ async function replayQueue(sc: Scaffold, client: AnkiClient, w: Warnings): Promi
   };
   // Each file is renamed to .done (or .failed) right after Anki answers, so an operation runs once.
   for (const { file, op } of q.pending()) {
+    // The structure step that runs before the replay may already have made this deck (D-85).
+    if (op.action === 'createDeck' && typeof op.params.deck === 'string' && structured.has(op.params.deck)) {
+      q.markDone(file);
+      out.applied++;
+      record(op, 'applied', 'deck already created by the sync');
+      continue;
+    }
     try {
       const result =
         op.action === GUARDED_UPDATE
@@ -133,30 +137,6 @@ async function replayQueue(sc: Scaffold, client: AnkiClient, w: Warnings): Promi
   }
   sc.emit(drafts);
   return out;
-}
-
-async function ensureStructure(sc: Scaffold, client: AnkiClient): Promise<SyncReport['created']> {
-  const created = { decks: [] as string[], note_types: [] as string[] };
-  const models = await client.invoke<string[]>('modelNames');
-  for (const t of Object.values(NOTE_TYPES)) {
-    if (models.includes(t.modelName)) continue;
-    await client.invoke('createModel', {
-      modelName: t.modelName,
-      inOrderFields: [...t.inOrderFields],
-      css: CARD_CSS,
-      isCloze: t.isCloze,
-      cardTemplates: t.cardTemplates.map((c) => ({ ...c })),
-    });
-    created.note_types.push(t.modelName);
-  }
-  const decks = new Set(await client.invoke<string[]>('deckNames'));
-  for (const deck of [ROOT_DECK, ...sc.subjects().map((s) => s.anki_deck ?? `${ROOT_DECK}::${s.title}`)]) {
-    if (decks.has(deck)) continue;
-    await client.invoke('createDeck', { deck });
-    decks.add(deck);
-    created.decks.push(deck);
-  }
-  return created;
 }
 
 function homeDeck(info: CardInfo, subject: string | null, deckOf: Map<string, string>): string {
@@ -222,9 +202,9 @@ async function pull(
       if (n?.noteId) notes.set(n.noteId, n);
   const revlog = new Map<number, RevlogEntry[]>();
   for (const part of chunks(ids, 500)) {
-    const r = await client.invoke<Record<string, RevlogEntry[]>>('getReviewsOfCards', {
-      cards: part.map(String),
-    });
+    // Numeric ids: AnkiConnect keys its result by the value passed, so string ids (as in its docs)
+    // come back with no reviews at all (found by the live smoke test, D-86).
+    const r = await client.invoke<Record<string, RevlogEntry[]>>('getReviewsOfCards', { cards: part });
     for (const [k, v] of Object.entries(r ?? {})) revlog.set(Number(k), v ?? []);
   }
   const monthAgo = sc.now().getTime() - 30 * 86_400_000;
@@ -284,8 +264,9 @@ export async function ankiSync(sc: Scaffold, w: Warnings): Promise<SyncReport> {
     );
   // Flag first, so the queued `scaffold::check` tags go out in this sync's replay.
   const reviewBy = reviewByFlags(sc, w);
-  const replayed = await replayQueue(sc, client, w);
+  // Structure before the replay: a queued addNotes needs the note types and decks (D-85).
   const created = await ensureStructure(sc, client);
+  const replayed = await replayQueue(sc, client, w, new Set(created.decks_present));
   const prev = readMirror(sc);
   const { mirror, revlog } = await pull(sc, client, version);
   writeMirror(sc, mirror);
@@ -341,7 +322,7 @@ export async function ankiSync(sc: Scaffold, w: Warnings): Promise<SyncReport> {
     online: true,
     api_version: version,
     replayed,
-    created,
+    created: { decks: created.decks, note_types: created.note_types },
     cards: mirror.cards.length,
     reviews_imported: reviews.length,
     lapses,
