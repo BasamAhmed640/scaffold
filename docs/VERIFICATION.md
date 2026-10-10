@@ -169,13 +169,13 @@ Lines        : 100% ( 416/416 )
 <!-- suite:STATIC:begin -->
 ### Static checks: typecheck, lint, adapters
 
-`npx tsc --noEmit` — exit 0 — 2026-10-10T00:25:31.288Z — win32 node v22.23.2
+`npx tsc --noEmit` — exit 0 — 2026-10-10T00:26:43.103Z — win32 node v22.23.2
 
 ```text
 (no output)
 ```
 
-`npx eslint .` — exit 0 — 2026-10-10T00:25:31.288Z — win32 node v22.23.2
+`npx eslint .` — exit 0 — 2026-10-10T00:26:43.103Z — win32 node v22.23.2
 
 ```text
 (no output)
@@ -230,84 +230,31 @@ Lines        : 100% ( 416/416 )
 <!-- suite:V-CLI:begin -->
 ### V-CLI: CLI keeps its contracts
 
-`npx vitest run test/cli --reporter=verbose` — exit 1 — 2026-10-10T00:25:21.956Z — win32 node v22.23.2
+`npx vitest run test/cli --reporter=verbose` — exit 0 — 2026-10-10T00:26:32.627Z — win32 node v22.23.2
 
 ```text
 
  RUN  v5.0.3 C:/Users/basam/src/scaffold
 
- ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > init 23ms
- ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > doctor 23ms
+ ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > init 24ms
+ ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > doctor 24ms
  ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > subject list / get / dashboard 161ms
- ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > kc get / list 20ms
- ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > briefing / plan, including a focus that does not exist and a paused one 146ms
+ ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > kc get / list 21ms
+ ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > briefing / plan, including a focus that does not exist and a paused one 135ms
  ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > mc list 5ms
- ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > a full session: start → next → hint → key → record → taught → teach-back → end 472ms
- ✓ test/cli/bin.test.ts > scaffold binary > --version, doctor --json, and exit code 1 on failure 1983ms
- ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > q add / get / lint / review (cross-model) / pending 132ms
- × test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > numeric answers are graded by code (REL-02) 60ms
-   → expected 'partial' to be 'correct' // Object.is equality
- × test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > attempt override, mc open, validate, rebuild, report weekly, call 380ms
-   → Snapshot `V-CLI golden JSON (IF-01, IF-02) > attempt override, mc open, validate, rebuild, report weekly, call 5` mismatched
- ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > subject add / kc add / kc update 389ms
- ✓ test/cli/cli.test.ts > human output > prints readable text by default and one line + next step on failure (REL-03) 90ms
+ ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > a full session: start → next → hint → key → record → taught → teach-back → end 539ms
+ ✓ test/cli/bin.test.ts > scaffold binary > --version, doctor --json, and exit code 1 on failure 2148ms
+ ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > q add / get / lint / review (cross-model) / pending 239ms
+ ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > numeric answers are graded by code (REL-02) 117ms
+ ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > attempt override, mc open, validate, rebuild, report weekly, call 572ms
+ ✓ test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > subject add / kc add / kc update 404ms
+ ✓ test/cli/cli.test.ts > human output > prints readable text by default and one line + next step on failure (REL-03) 138ms
  ✓ test/cli/cli.test.ts > human output > a missing vault fails with a next step, never a hang 2ms
 
-  Snapshots  1 failed
- Test Files  1 failed | 1 passed (2)
-      Tests  2 failed | 12 passed (14)
-   Start at  20:25:24
-   Duration  3.87s (tests 66%, import 21%, transform 13%)
-
-
-⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
-
- FAIL  test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > numeric answers are graded by code (REL-02)
-AssertionError: expected 'partial' to be 'correct' // Object.is equality
-
-Expected: "correct"
-Received: "partial"
-
- ❯ test/cli/cli.test.ts:217:74
-    215|     ]);
-    216|     expect(r.json!.ok).toBe(true);
-    217|     expect((r.json!.data as { grade: string; graded_by: string }).grad…
-       |                                                                          ^
-    218|     expect(r.json!.warnings.join(' ')).toMatch(/REL-02/);
-    219|   });
-
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
-
- FAIL  test/cli/cli.test.ts > V-CLI golden JSON (IF-01, IF-02) > attempt override, mc open, validate, rebuild, report weekly, call
-Error: Snapshot `V-CLI golden JSON (IF-01, IF-02) > attempt override, mc open, validate, rebuild, report weekly, call 5` mismatched
-
-- Expected
-+ Received
-
-@@ -1,11 +1,11 @@
-  {
-    "ok": true,
-    "data": {
-      "note": "Scaffold/Learner/Weekly/2026-10-09.md",
-      "chart": "Scaffold/Learner/Weekly/2026-10-09-calibration.svg",
--     "brier": 0.0325
-+     "brier": 0.1325
-    },
-    "warnings": [
-      "Weekly report written: Scaffold/Learner/Weekly/2026-10-09.md"
-    ],
-    "errors": []
-
- ❯ g test/cli/cli.test.ts:20:3
-     18|   expect(r.json, `${name}: not JSON: ${r.out}`).not.toBeNull();
-     19|   expect(Object.keys(r.json!).sort()).toEqual(['data', 'errors', 'ok',…
-     20|   await expect(JSON.stringify(normalize(r.json, vault), null, 2)).toMa…
-       |   ^
-     21|   return r;
-     22| }
- ❯ test/cli/cli.test.ts:250:5
-
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+ Test Files  2 passed (2)
+      Tests  14 passed (14)
+   Start at  20:26:35
+   Duration  4.51s (tests 66%, import 22%, transform 12%)
 ```
 
 <!-- suite:V-CLI:end -->
@@ -315,69 +262,33 @@ Error: Snapshot `V-CLI golden JSON (IF-01, IF-02) > attempt override, mc open, v
 <!-- suite:V-QQ:begin -->
 ### V-QQ: questions are good (lint)
 
-`npx vitest run test/qq --reporter=verbose` — exit 1 — 2026-10-10T00:25:28.433Z — win32 node v22.23.2
+`npx vitest run test/qq --reporter=verbose` — exit 0 — 2026-10-10T00:26:40.306Z — win32 node v22.23.2
 
 ```text
 
  RUN  v5.0.3 C:/Users/basam/src/scaffold
 
- ✓ test/qq/grade.test.ts > REL-02 numeric grading > symbol: "50 Ω" → correct 4ms
- ✓ test/qq/grade.test.ts > REL-02 numeric grading > spelled out: "50 ohms" → correct 1ms
+ ✓ test/qq/grade.test.ts > REL-02 numeric grading > symbol: "50 Ω" → correct 2ms
+ ✓ test/qq/grade.test.ts > REL-02 numeric grading > no-break space: "50 Ω" → correct 0ms
+ ✓ test/qq/grade.test.ts > REL-02 numeric grading > spelled out: "50 ohms" → correct 0ms
  ✓ test/qq/grade.test.ts > REL-02 numeric grading > within tolerance: "about 50.5Ω" → correct 0ms
- ✓ test/qq/grade.test.ts > REL-02 numeric grading > prefix conversion: "0.05 kΩ" → correct 1ms
+ ✓ test/qq/grade.test.ts > REL-02 numeric grading > prefix conversion: "0.05 kΩ" → correct 0ms
  ✓ test/qq/grade.test.ts > REL-02 numeric grading > after an equals sign: "Z0 = 50 ohm" → correct 0ms
  ✓ test/qq/grade.test.ts > REL-02 numeric grading > unit missing: "50" → partial 0ms
  ✓ test/qq/grade.test.ts > REL-02 numeric grading > outside tolerance: "75 Ω" → incorrect 0ms
- ✓ test/qq/grade.test.ts > REL-02 numeric grading > wrong unit: "50 V" → incorrect 0ms
+ ✓ test/qq/grade.test.ts > REL-02 numeric grading > wrong unit: "50 V" → incorrect 1ms
  ✓ test/qq/grade.test.ts > REL-02 numeric grading > I don’t know (LM-07): "no idea" → unanswered 0ms
  ✓ test/qq/grade.test.ts > REL-02 numeric grading > no number: "fifty" → incorrect 0ms
- × test/qq/grade.test.ts > REL-02 numeric grading > relative tolerance and compound units 5ms
-   → expected 'partial' to be 'correct' // Object.is equality
- × test/qq/grade.test.ts > REL-02 numeric grading > dimensionless keys (Γ = −0.33) and scientific notation 1ms
-   → expected 'partial' to be 'correct' // Object.is equality
+ ✓ test/qq/grade.test.ts > REL-02 numeric grading > relative tolerance and compound units 0ms
+ ✓ test/qq/grade.test.ts > REL-02 numeric grading > dimensionless keys (Γ = −0.33) and scientific notation 0ms
  ✓ test/qq/grade.test.ts > REL-02 numeric grading > parses units 1ms
  ✓ test/qq/grade.test.ts > REL-02 multiple-choice grading > accepts a letter, a letter with words, or the option text 1ms
  ✓ test/qq/grade.test.ts > REL-02 multiple-choice grading > recognizes "I don't know" variants (LM-07) 0ms
 
- Test Files  1 failed (1)
-      Tests  2 failed | 13 passed (15)
-   Start at  20:25:30
-   Duration  425ms (import 54%, transform 37%, tests 7%, worker 2%)
-
-
-⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
-
- FAIL  test/qq/grade.test.ts > REL-02 numeric grading > relative tolerance and compound units
-AssertionError: expected 'partial' to be 'correct' // Object.is equality
-
-Expected: "correct"
-Received: "partial"
-
- ❯ test/qq/grade.test.ts:27:46
-     25|   it('relative tolerance and compound units', () => {
-     26|     const v = { value: 6, unit: 'in/ns', tolerance: '5%' };
-     27|     expect(gradeNumeric('6 in/ns', v).grade).toBe('correct');
-       |                                              ^
-     28|     expect(gradeNumeric('5.8 inches per ns', v).grade).toBe('correct');
-     29|     expect(gradeNumeric('0.1524 m/ns', v).grade).toBe('correct');
-
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
-
- FAIL  test/qq/grade.test.ts > REL-02 numeric grading > dimensionless keys (Γ = −0.33) and scientific notation
-AssertionError: expected 'partial' to be 'correct' // Object.is equality
-
-Expected: "correct"
-Received: "partial"
-
- ❯ test/qq/grade.test.ts:40:47
-     38|     expect(gradeNumeric('0.33', g).grade).toBe('incorrect');
-     39|     const t = { value: 1.5e-9, unit: 's', tolerance: '2%' };
-     40|     expect(gradeNumeric('1.5e-9 s', t).grade).toBe('correct');
-       |                                               ^
-     41|     expect(gradeNumeric('1.5 ns', t).grade).toBe('correct');
-     42|     expect(gradeNumeric('1500 ps', t).grade).toBe('correct');
-
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+ Test Files  1 passed (1)
+      Tests  16 passed (16)
+   Start at  20:26:42
+   Duration  506ms (import 59%, transform 31%, worker 5%, tests 4%)
 ```
 
 <!-- suite:V-QQ:end -->

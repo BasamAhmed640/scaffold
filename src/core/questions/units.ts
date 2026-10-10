@@ -139,7 +139,7 @@ function toNumber(raw: string): number {
 
 /** Extracts the answer quantity: the number after the last "=", else the first number. */
 export function parseQuantity(answer: string): ParsedQuantity | null {
-  const text = answer.replace(/s/g, ' '); // s also matches a no-break space
+  const text = answer.split(String.fromCharCode(160)).join(' '); // no-break space → space
   const eq = text.lastIndexOf('=');
   const scope = eq >= 0 ? text.slice(eq + 1) : text;
   NUMBER.lastIndex = 0;

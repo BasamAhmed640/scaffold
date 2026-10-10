@@ -8,6 +8,7 @@ describe('REL-02 numeric grading', () => {
   const z0 = { value: 50, unit: 'Ω', tolerance: 1 };
   const table: [string, string, string][] = [
     ['50 Ω', 'correct', 'symbol'],
+    ['50'+String.fromCharCode(160)+'Ω', 'correct', 'no-break space'],
     ['50 ohms', 'correct', 'spelled out'],
     ['about 50.5Ω', 'correct', 'within tolerance'],
     ['0.05 kΩ', 'correct', 'prefix conversion'],
