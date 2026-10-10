@@ -4,11 +4,9 @@ By default ChatGPT/Codex does batch work and Claude does live tutoring; either c
 
 ## 1. Cross-review questions (QB-04)
 
-```bash
-scaffold --json q review --pending
-```
+`list_pending_reviews {}` (or `scaffold --json q review --pending` in a shell) lists the queue.
 
-For each row whose `reviewer_family` is your model family: `review_question {question_id}`, check QB-01 item by item, solve it yourself from the stem, then `review_question {question_id, verdict, by, notes}`. Never review your own family's questions.
+For each row whose `reviewer_family` is your model family: `review_question {question_id}`, check QB-01 item by item, solve it yourself from the stem, then `review_question {question_id, verdict, by, notes}`. Never review your own family's questions. The owner can run this job headless with `npx tsx scripts/jobs/cross-review.ts --provider codex|claude` (it calls the model only when your family has questions waiting).
 
 ## 2. Draft bank questions
 

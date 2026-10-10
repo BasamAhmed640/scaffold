@@ -80,6 +80,7 @@ const EXPECTED_TOOLS = [
   'register_visual',
   'check_visual',
   'get_visual',
+  'list_pending_reviews',
 ];
 
 /** Every tool name called through a real client in this file (V-MCP: all of them). */
@@ -91,6 +92,8 @@ describe('V-MCP tool list', () => {
     const names = tools.map((t) => t.name);
     for (const n of EXPECTED_TOOLS) expect(names).toContain(n);
     expect(names).not.toContain('rebuild'); // CLI-only
+    for (const n of ['grade_sample', 'grade_score', 'qq_audit', 'qq_spotcheck', 'qq_spotcheck_score'])
+      expect(names, `${n} shows keys: CLI-only (TP-08)`).not.toContain(n);
     const ajv = new Ajv({ strict: false });
     for (const t of tools) {
       expect(t.inputSchema.type, t.name).toBe('object');
@@ -232,6 +235,12 @@ describe('V-MCP every tool through a real client', () => {
       grade: 'partial',
       reason: 'owner relabel (V-GRADE)',
     });
+  });
+
+  it('the cross-review queue for batch jobs: list_pending_reviews (QB-04)', async () => {
+    const env = await g('list_pending_reviews', 'list_pending_reviews');
+    const rows = (env.data as { pending: { id: string; reviewer_family: string }[] }).pending;
+    for (const r of rows) expect(['claude', 'openai']).toContain(r.reviewer_family);
   });
 
   it('visuals: register_visual (needs_fix, then the fix attempt), get_visual, check_visual (VIS-03, VIS-05)', async () => {

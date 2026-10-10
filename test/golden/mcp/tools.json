@@ -130,5 +130,9 @@
   {
     "name": "get_visual",
     "readOnly": true
+  },
+  {
+    "name": "list_pending_reviews",
+    "readOnly": true
   }
 ]

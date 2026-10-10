@@ -6,6 +6,8 @@ export interface ToolCall {
   name: string; // without the mcp__scaffold__ prefix
   input: Record<string, unknown>;
   ok?: boolean;
+  /** Why the call failed: the front-end's error, or the first envelope error (code: message). */
+  error?: string;
 }
 
 export interface Turn {

@@ -1,0 +1,11 @@
+{
+  "ok": false,
+  "data": null,
+  "warnings": [],
+  "errors": [
+    {
+      "code": "no_marks",
+      "message": "No question is marked `acceptable:: yes` or `acceptable:: no`."
+    }
+  ]
+}

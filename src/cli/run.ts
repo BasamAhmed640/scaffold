@@ -13,6 +13,7 @@ import { resolveVault } from '../core/vault/paths.js';
 import { formatHuman } from './format.js';
 import { ankiCommands } from './anki.js';
 import { visualCommands } from './visual.js';
+import { auditCommands } from './audit.js';
 
 // The `scaffold` CLI (IF-01): the same functions as the MCP server. Human output by default,
 // `--json` for agents. Never prompts; every failure is one line plus a next step (REL-03).
@@ -511,6 +512,7 @@ export async function runCli(argv: string[], io: CliIO): Promise<number> {
 
   ankiCommands(program, ctx);
   visualCommands(program, ctx);
+  auditCommands(program, ctx);
 
   try {
     await program.parseAsync(argv, { from: 'user' });

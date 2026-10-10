@@ -341,6 +341,24 @@ describe('V-CLI golden JSON (IF-01, IF-02)', () => {
     expect(scope.json!.warnings.join(' ')).toContain('needs_check');
   });
 
+  it('grade sample / q audit / q spotcheck (+ --score) (M8: V-GRADE, V-QQ)', async () => {
+    // the fixture's answers are graded by "test" (no tutor family); the session test above adds one
+    // Claude-graded free-text answer, so the sheet has exactly that one item
+    const sample = await g('grade-sample', ['grade', 'sample']);
+    expect(sample.json!.data).toMatchObject({ items: 1, by_family: { claude: 1 } });
+    const unlabelled = await g('grade-score-unlabelled', [
+      'grade',
+      'score',
+      (sample.json!.data as { sheet: string }).sheet,
+    ]);
+    expect(unlabelled.code).toBe(1);
+    await g('q-audit', ['q', 'audit']);
+    const sheet = await g('q-spotcheck', ['q', 'spotcheck', '--n', '3', '--seed', 'golden']);
+    const rel = (sheet.json!.data as { sheet: string }).sheet;
+    const scored = await g('q-spotcheck-score-unmarked', ['q', 'spotcheck', '--score', rel]);
+    expect(scored.code).toBe(1);
+  });
+
   it('visual plot / add (file and --plot) / get / open, check with nothing to check (D5 rows)', async () => {
     const spec = path.join(vault, 'plot-spec.json');
     writeFileSync(spec, readFileSync('visual-kit/templates/plot.json'));

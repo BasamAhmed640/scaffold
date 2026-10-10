@@ -60,6 +60,51 @@ describe('scripted learner', () => {
     expect(l.reply('Thanks. And your confidence, 1–4?').text).toBe('3');
   });
 
+  it('picks the right reply for the questions a real tutor asked in the 2026-10-10 Codex pilot', () => {
+    const ask = (q: string): string => {
+      const l = new Learner({ opening: 'hi', turns: 9, rules: [] });
+      l.opening();
+      return l.reply(q).text;
+    };
+    // a prerequisite check that only mentions reflections is a travel-time question
+    expect(
+      ask(
+        'To check a prerequisite for reflections: when a signal enters a wire or circuit-board trace, does it reach the far end instantly, or take some time to travel?',
+      ),
+    ).toContain('It takes time');
+    for (const q of [
+      'Let’s take one small step: if **ZL equals Z0**, what does your formula give for Γ, and what would that mean about the returning signal?',
+      'If ZL = Z0, the top of your fraction becomes **Z0 − Z0**. What does that subtraction give?',
+      '**When the load impedance equals the line’s characteristic impedance, does any voltage wave reflect back?**',
+      '**If ZL = Z0, is Γ zero or nonzero?**',
+      'Using your formula, the numerator is **50 − 50**. What value does that give for **Γ**, and does any voltage reflect back?',
+    ])
+      expect(ask(q), q).toContain('Γ = 0 when the load equals Z0');
+    // the definition is still answered with the formula
+    expect(ask('What is the reflection coefficient Γ?')).toContain('Γ = (ZL − Z0)/(ZL + Z0)');
+    // second pilot (pilot-2026-10-10b): mismatch predictions, A/B choices, the exit ticket
+    for (const q of [
+      '**Do you think some of the arriving signal travels back toward the source? Why?**',
+      'For the new question: **when the signal reaches the change from a 50 Ω trace to a 75 Ω load, do you predict any signal comes back?**',
+      'Got your confidence: **3, fairly sure**. Which prediction is it: **A, some signal comes back**, or **B, no signal comes back**?',
+    ])
+      expect(ask(q), q).toMatch(/^A, some comes back/);
+    expect(
+      ask(
+        'One short exit question: **what would you compare with a trace’s travel delay to decide whether that delay matters for a changing signal?** Include confidence **1–4**, or say “skip.”',
+      ),
+    ).toMatch(/^The rise time/);
+  });
+
+  it('never pastes the same answer twice in a row; asks to rephrase instead of looping', () => {
+    const l = new Learner({ opening: 'hi', turns: 9, rules: [] });
+    l.opening();
+    const q = 'Does a signal reach the far end instantly, or take time to travel?';
+    expect(l.reply(q).text).toContain('It takes time');
+    expect(l.reply(q).text).toMatch(/^Not sure/); // the same question again: no copy of the answer
+    expect(l.reply('Which colour do you prefer?').text).toMatch(/^Sorry, I am not sure what you are asking/);
+  });
+
   it('does not mark replies to non-questions as answers', () => {
     const l = new Learner({ opening: 'hi', turns: 5, rules: [] });
     l.opening();
@@ -183,10 +228,33 @@ describe('front-end output normalizers', () => {
       text: 'Right. Why?',
       tools: [
         { name: 'get_grading_key', input: { question_id: 'Q-0002', answer_verbatim: '+1, 3' }, ok: true },
-        { name: 'record_attempt', input: { answer_verbatim: 'x' }, ok: false },
+        { name: 'record_attempt', input: { answer_verbatim: 'x' }, ok: false, error: 'bad' },
       ],
       session: 'th-1',
     });
+    // a Scaffold envelope with ok:false inside a completed call (the error is kept for the report)
+    const env = JSON.stringify({
+      ok: false,
+      data: null,
+      warnings: [],
+      errors: [{ code: 'no_session', message: 'No open session.' }],
+    });
+    const failed = parseCodexJson(
+      JSON.stringify({
+        type: 'item.completed',
+        item: {
+          type: 'mcp_tool_call',
+          server: 'scaffold',
+          tool: 'end_session',
+          arguments: {},
+          status: 'completed',
+          result: { content: [{ type: 'text', text: env }] },
+        },
+      }),
+    );
+    expect(failed.tools).toEqual([
+      { name: 'end_session', input: {}, ok: false, error: 'no_session: No open session.' },
+    ]);
     expect(
       parseCodexJson(JSON.stringify({ type: 'turn.failed', error: { message: 'usage limit' } })).error,
     ).toBe('codex: usage limit');
@@ -228,6 +296,7 @@ describe('working directories and command lines', () => {
     expect(args.slice(0, 2)).toEqual(['exec', '--json']);
     expect(args).toContain('--ignore-user-config');
     expect(args).toContain('sandbox_mode="read-only"');
+    expect(args).toContain('mcp_servers.scaffold.default_tools_approval_mode="approve"');
     const mcpArgs = args.find((a) => a.startsWith('mcp_servers.scaffold.args='))!;
     expect(JSON.parse(mcpArgs.slice('mcp_servers.scaffold.args='.length)).slice(1)).toEqual([
       '--vault',

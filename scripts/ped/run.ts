@@ -103,14 +103,23 @@ export async function runScenario(
   return { transcript, checks: checkTranscript(transcript, s.checks), ...(error ? { error } : {}) };
 }
 
+/** Failed Scaffold tool calls in a transcript, for the report (a refused or failing tool explains most misses). */
+export function toolErrors(t: Transcript): string[] {
+  return t.turns.flatMap((turn, i) =>
+    turn.tools.filter((c) => c.ok === false).map((c) => `turn ${i}: ${c.name} → ${c.error ?? 'failed'}`),
+  );
+}
+
 export function report(
   provider: string,
-  runs: { scenario: string; checks: CheckResult[]; error?: string }[],
+  runs: { scenario: string; checks: CheckResult[]; error?: string; tool_errors?: string[] }[],
 ): { text: string; summary: Summary[] } {
   const summary = summarize(runs);
   const lines = [summaryTable(provider, summary), ''];
   const errors = runs.filter((r) => r.error);
   if (errors.length) lines.push('Errors:', ...errors.map((r) => `- [${r.scenario}] ${r.error}`), '');
+  const tools = runs.flatMap((r) => (r.tool_errors ?? []).map((e) => `- [${r.scenario}] ${e}`));
+  if (tools.length) lines.push('Tool errors:', ...tools, '');
   const failing = summary.filter((s) => !s.pass);
   for (const s of failing) lines.push(`Failures for ${s.id}:`, ...s.details.map((d) => `- ${d}`), '');
   lines.push(
@@ -128,11 +137,18 @@ async function main(argv: string[]): Promise<number> {
   const scoreDir = arg(argv, '--score');
   if (scoreDir) {
     const files = readdirSync(scoreDir).filter((f) => f.endsWith('.transcript.json'));
-    const byProvider = new Map<string, { scenario: string; checks: CheckResult[] }[]>();
+    const byProvider = new Map<
+      string,
+      { scenario: string; checks: CheckResult[]; tool_errors: string[] }[]
+    >();
     for (const f of files) {
       const t = JSON.parse(readFileSync(path.join(scoreDir, f), 'utf8')) as Transcript;
       const list = byProvider.get(t.provider) ?? [];
-      list.push({ scenario: t.scenario, checks: checkTranscript(t, scenarioById(t.scenario).checks) });
+      list.push({
+        scenario: t.scenario,
+        checks: checkTranscript(t, scenarioById(t.scenario).checks),
+        tool_errors: toolErrors(t),
+      });
       byProvider.set(t.provider, list);
     }
     let failed = false;
@@ -165,7 +181,7 @@ async function main(argv: string[]): Promise<number> {
     return 0;
   }
   mkdirSync(outDir, { recursive: true });
-  const runs: { scenario: string; checks: CheckResult[]; error?: string }[] = [];
+  const runs: { scenario: string; checks: CheckResult[]; error?: string; tool_errors: string[] }[] = [];
   for (const s of scenarios) {
     console.log(`${provider} ${s.id}: ${s.title}`);
     const r = await runScenario(s, provider, workRoot, (l) => console.log(l));
@@ -173,7 +189,12 @@ async function main(argv: string[]): Promise<number> {
       path.join(outDir, `${provider}-${s.id}.transcript.json`),
       JSON.stringify(r.transcript, null, 2),
     );
-    runs.push({ scenario: s.id, checks: r.checks, ...(r.error ? { error: r.error } : {}) });
+    runs.push({
+      scenario: s.id,
+      checks: r.checks,
+      tool_errors: toolErrors(r.transcript),
+      ...(r.error ? { error: r.error } : {}),
+    });
   }
   const r = report(provider, runs);
   writeFileSync(path.join(outDir, `${provider}-report.md`), `${r.text}\n`);

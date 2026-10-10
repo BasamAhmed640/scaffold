@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "n": {
+      "default": 40,
+      "type": "integer",
+      "minimum": 4,
+      "maximum": 200
+    },
+    "seed": {
+      "type": "string",
+      "maxLength": 60
+    }
+  }
+}

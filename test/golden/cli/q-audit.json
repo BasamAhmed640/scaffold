@@ -1,0 +1,12 @@
+{
+  "ok": true,
+  "data": {
+    "served_questions": 6,
+    "lint_pass_pct": 100,
+    "ok_when_served_pct": 100,
+    "pass": true,
+    "violations": []
+  },
+  "warnings": [],
+  "errors": []
+}

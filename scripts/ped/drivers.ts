@@ -43,6 +43,32 @@ function jsonLines(out: string): Obj[] {
   return rows;
 }
 
+/** The first `{code, message}` of a failed Scaffold envelope inside a tool result, if any. */
+export function envelopeError(result: unknown): string | undefined {
+  const texts: string[] = [];
+  const walk = (v: unknown): void => {
+    if (typeof v === 'string') texts.push(v);
+    else if (Array.isArray(v)) v.forEach(walk);
+    else if (v && typeof v === 'object') Object.values(v).forEach(walk);
+  };
+  walk(result);
+  for (const t of texts) {
+    let env: unknown;
+    try {
+      env = JSON.parse(t);
+    } catch {
+      continue;
+    }
+    const e = obj(env);
+    if (e.ok !== false) continue;
+    const first = list(e.errors)[0];
+    return first
+      ? `${str(first.code) ?? 'error'}: ${(str(first.message) ?? '').slice(0, 160)}`
+      : 'failed envelope';
+  }
+  return undefined;
+}
+
 /** Normalizes Claude Code `--output-format stream-json --verbose` output (one JSON object per line). */
 export function parseClaudeStream(out: string): TurnResult {
   const texts: string[] = [];
@@ -73,7 +99,11 @@ export function parseClaudeStream(out: string): TurnResult {
     if (m.type === 'user')
       for (const c of content) {
         const call = c.type === 'tool_result' ? byId.get(str(c.tool_use_id) ?? '') : undefined;
-        if (call) call.ok = !c.is_error && !/"ok":\s*false/.test(JSON.stringify(c.content ?? ''));
+        if (call) {
+          const env = envelopeError(c.content);
+          call.ok = !c.is_error && !env;
+          if (!call.ok) call.error = env ?? JSON.stringify(c.content ?? '').slice(0, 200);
+        }
       }
     if (m.type === 'result') {
       result = str(m.result) ?? result;
@@ -111,10 +141,15 @@ export function parseCodexJson(out: string): TurnResult {
           input = {};
         }
       }
-      const failed =
-        item.status === 'failed' || !!item.error || /"ok":\s*false/.test(JSON.stringify(item.result ?? ''));
+      const failedStatus = item.status === 'failed';
+      const why =
+        str(obj(item.error).message) ??
+        envelopeError(item.result) ??
+        // a failed call without a message: its first text (often the input-validation error)
+        (failedStatus ? str(list(obj(item.result).content)[0]?.text)?.slice(0, 200) : undefined);
+      const failed = failedStatus || !!why;
       const name = (str(item.tool) ?? str(item.name) ?? '').replace(PREFIX, '');
-      tools.push({ name, input: obj(input), ok: !failed });
+      tools.push({ name, input: obj(input), ok: !failed, ...(failed ? { error: why ?? 'failed' } : {}) });
     }
   }
   return { text: texts.join('\n\n'), tools, session, ...(error ? { error } : {}) };
@@ -302,6 +337,9 @@ export class CodexProvider implements Provider {
       'mcp_servers.scaffold.args': toml(this.wd.server.args),
       'mcp_servers.scaffold.startup_timeout_sec': '30',
       'mcp_servers.scaffold.tool_timeout_sec': '60',
+      // Codex asks before MCP tools that write, and approval_policy "never" turns that into a refusal
+      // ("MCP tool call requires approval"). Pre-approve this one server; nothing else (D-79).
+      'mcp_servers.scaffold.default_tools_approval_mode': toml('approve'),
       sandbox_mode: toml('read-only'),
       approval_policy: toml('never'),
     };

@@ -48,6 +48,15 @@ const SUITES: Suite[] = [
     ],
   },
   {
+    id: 'V-PED-PILOT',
+    title:
+      'V-PED pilot (s01, Codex, 2026-10-10): the saved transcripts re-scored by the current checker. Run a failed every write (Codex refused MCP writes under approval_policy "never", D-79); run b is after the fix',
+    commands: [
+      'npx tsx scripts/ped/run.ts --score local/ped/pilot-2026-10-10',
+      'npx tsx scripts/ped/run.ts --score local/ped/pilot-2026-10-10b',
+    ],
+  },
+  {
     id: 'V-ANKI',
     title: 'V-ANKI: the memory layer stays correct and bounded (mocked)',
     commands: ['npx vitest run test/anki --reporter=verbose'],
@@ -64,7 +73,8 @@ const SUITES: Suite[] = [
   },
   {
     id: 'V-QQ',
-    title: 'V-QQ: questions are good (lint)',
+    title:
+      'V-QQ and V-GRADE tooling: lint, served-question audit, spot check, grade audit (κ, confident-wrong recall), cross-review job (no model calls)',
     commands: ['npx vitest run test/qq --reporter=verbose'],
   },
   {

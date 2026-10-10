@@ -28,6 +28,7 @@ export interface LearnerScript {
 }
 
 export const WRAP_UP = 'I need to stop in a couple of minutes, can we wrap up?';
+const REPHRASE = 'Sorry, I am not sure what you are asking me for. Could you put it another way?';
 const FALLBACK =
   'Not sure. My best guess is that it depends on what is at the far end of the line. Confidence 2.';
 
@@ -63,8 +64,25 @@ export const SHARED_RULES: Rule[] = [
   },
   {
     id: 'matched',
-    when: /\bmatch(ed)?\b|\bterminat\w+ (in|with|into) (a )?(50|z0)/i,
+    // "matched", "ZL = Z0", "the load impedance equals the line's characteristic impedance", "50 − 50"
+    when: /\bmatch(ed)?\b|\bterminat\w+ (in|with|into) (a )?(50|z0)|\bZ\s*L\s*(=|equals?|is equal to)\s*Z\s*0|\bload(?: impedance)? (equals?|is equal to)\b|equals? (the )?(line.s )?characteristic impedance|\bZ0\s*[−-]\s*Z0\b|\b50\s*[−-]\s*50\b/i,
     reply: 'Γ = 0 when the load equals Z0, so nothing reflects. Confidence 4.',
+    answer: true,
+  },
+  {
+    id: 'some-back',
+    // "does some of the signal travel back toward the source?", "A: some comes back / B: none"
+    when: /\b(comes?|travels?|goes|bounces?|reflects?|sent) back\b|\bback toward(s)? the (source|driver)\b/i,
+    reply:
+      'A, some comes back: 75 Ω is not 50 Ω, so Γ = (75 − 50)/(75 + 50) = 0.2, about 20 %. Confidence 3.',
+    answer: true,
+  },
+  {
+    id: 'long',
+    // before the travel-time rule: "what would you compare with the delay to decide whether it matters?"
+    when: /\belectrically long|rise time\b|\bcompare\b.*\bdelay\b|\bdelay matters\b|\bwhen does (the |a )?(delay|line) matter/i,
+    reply:
+      'The rise time: when it is shorter than about twice the delay, the line acts long and reflections matter. Confidence 2.',
     answer: true,
   },
   {
@@ -74,8 +92,16 @@ export const SHARED_RULES: Rule[] = [
     answer: true,
   },
   {
+    id: 'td',
+    // before the generic Γ rule: "does it reach the far end instantly, or take time to travel?"
+    when: /\b(propagation delay|TD|how long does .* take|travel time|take (some )?time|instantly|εr|ns)\b/i,
+    reply: 'It takes time: v = c/√εr = 15 cm/ns on FR-4, so 30 cm takes 2 ns. Confidence 3.',
+    answer: true,
+  },
+  {
     id: 'gamma',
-    when: /Γ|\b(gamma|reflection coefficient|reflect\w*)\b/i,
+    // the definition only; a sentence that merely mentions reflections is not a Γ question
+    when: /Γ|\b(gamma|reflection coefficient)\b|\bhow much (of the \w+ )?(\w+ )?(reflects|comes back)\b/i,
     reply: 'Γ = (ZL − Z0)/(ZL + Z0), the fraction of the incident voltage that comes back. Confidence 3.',
     answer: true,
   },
@@ -84,12 +110,6 @@ export const SHARED_RULES: Rule[] = [
     when: /Z₀|\b(Z0|characteristic impedance|ohmmeter)\b/i,
     reply:
       'Z0 is the V/I ratio of a wave travelling on the line, set by L and C per length, not a DC resistance. Confidence 3.',
-    answer: true,
-  },
-  {
-    id: 'td',
-    when: /\b(propagation delay|TD|how long does .* take|travel time|εr|ns)\b/i,
-    reply: 'v = c/√εr = 15 cm/ns, so 30 cm takes 2 ns. Confidence 3.',
     answer: true,
   },
   {
@@ -117,13 +137,6 @@ export const SHARED_RULES: Rule[] = [
     when: /\bterminat\w*\b/i,
     reply:
       'A resistor equal to Z0 at the far end, or a series resistor at the source so the source plus resistor equals Z0. Confidence 3.',
-    answer: true,
-  },
-  {
-    id: 'long',
-    when: /\belectrically long|rise time\b/i,
-    reply:
-      'When the rise time is shorter than about twice the delay, the line acts long and reflections matter. Confidence 2.',
     answer: true,
   },
   {
@@ -162,6 +175,7 @@ export class Learner {
   private used = new Set<string>();
   private wrapped = false;
   private afterWrap = 0;
+  private last = '';
   constructor(private readonly script: LearnerScript) {}
 
   get done(): boolean {
@@ -223,14 +237,23 @@ export class Learner {
       for (const r of rules) {
         if (r.once && this.used.has(r.id)) continue;
         if (!r.when.test(target)) continue;
+        // A learner who just gave this answer does not paste it again; the next rule, or a request
+        // to rephrase, keeps a misread question from looping (seen in the 2026-10-10 Codex pilot).
+        if (r.answer && r.reply === this.last) continue;
         this.used.add(r.id);
-        return {
+        return this.say({
           text: r.reply,
           ...(r.answer && asks ? { answer: true } : {}),
           ...(r.switch_to ? { switch_to: r.switch_to } : {}),
-        };
+        });
       }
     }
-    return asks ? { text: FALLBACK, answer: true } : { text: 'OK, go on.' };
+    if (asks && this.last === FALLBACK) return this.say({ text: REPHRASE });
+    return this.say(asks ? { text: FALLBACK, answer: true } : { text: 'OK, go on.' });
+  }
+
+  private say<T extends { text: string }>(r: T): T {
+    this.last = r.text;
+    return r;
   }
 }

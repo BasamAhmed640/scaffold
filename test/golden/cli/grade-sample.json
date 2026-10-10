@@ -1,0 +1,16 @@
+{
+  "ok": true,
+  "data": {
+    "sheet": "Scaffold/_system/audits/grade-2026-10-09.md",
+    "items": 1,
+    "by_family": {
+      "claude": 1
+    },
+    "next_step": "Label every answer in Scaffold/_system/audits/grade-2026-10-09.md, then run `scaffold grade score Scaffold/_system/audits/grade-2026-10-09.md`."
+  },
+  "warnings": [
+    "Only 1 answer is available (asked for 40).",
+    "No openai answers to sample: κ for that provider cannot be computed yet."
+  ],
+  "errors": []
+}

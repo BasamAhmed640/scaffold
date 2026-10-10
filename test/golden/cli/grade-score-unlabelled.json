@@ -1,0 +1,13 @@
+{
+  "ok": false,
+  "data": null,
+  "warnings": [
+    "Not labelled (left out): G-01."
+  ],
+  "errors": [
+    {
+      "code": "no_labels",
+      "message": "No item has a label (correct, partial or incorrect)."
+    }
+  ]
+}

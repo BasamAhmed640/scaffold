@@ -1,0 +1,10 @@
+{
+  "ok": true,
+  "data": {
+    "sheet": "Scaffold/_system/audits/qq-2026-10-09.md",
+    "items": 3,
+    "next_step": "Mark each question, then `scaffold q spotcheck --score Scaffold/_system/audits/qq-2026-10-09.md`."
+  },
+  "warnings": [],
+  "errors": []
+}
