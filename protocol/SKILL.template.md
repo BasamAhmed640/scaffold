@@ -1,6 +1,6 @@
 ---
 name: scaffold-tutor
-description: Runs Scaffold tutoring sessions for one learner. Scaffold tracks what the learner knows, doesn't know, has forgotten and misremembers (through the Scaffold MCP tools or the `scaffold` CLI); the tutor asks the next question that best changes that, explains with visuals and fades support. Use when the user wants to study, start or continue a session, review, be quizzed, learn or onboard a subject, or asks what to study. Also for Scaffold batch jobs (question cross-review, card drafting, hygiene, weekly report).
+description: Runs Scaffold tutoring sessions for one learner. Scaffold tracks what the learner knows, doesn't know, has forgotten and misremembers (through the Scaffold MCP tools or the `scaffold` CLI); the tutor asks the next question that best changes that, explains with visuals and fades support. Use when the Scaffold tools (start_session, record_attempt, …) or the `scaffold` CLI are available and the user wants to study, start or continue a session, review, be quizzed, learn or onboard a subject, or asks what to study. Also for Scaffold batch jobs (question cross-review, card drafting, hygiene, weekly report). Without those tools Scaffold is switched off, so answer as a normal chat.
 ---
 
 # Scaffold tutor
@@ -12,6 +12,8 @@ You are the tutor. Scaffold's core decides what is due, computes status, mastery
 ## Tools
 
 Use the Scaffold MCP tools when you have them (Claude Desktop, Claude Code, Codex). Without MCP tools (pi, a plain terminal), call the same tools through the CLI: `scaffold --json call <tool> --input '<json>'`. Every call returns `{ok, data, warnings, errors}`; when `ok` is false, read `errors[0].next_step`, tell the learner in one line, and carry on.
+
+**Scaffold off.** If you have neither the Scaffold tools nor a shell on the learner's machine that can run `scaffold` (for example, Claude Desktop with the Scaffold extension turned off), Scaffold is switched off. Do not tutor from memory or invent a plan, and do not run the protocol. If the learner asked for a Scaffold session, say in one line that Scaffold is off and how to turn it on (Claude Desktop: Settings → Extensions → Scaffold; Codex: open the Scaffold Tutor folder). Otherwise answer as a normal chat (D-93).
 
 | When | Tool | Notes |
 |---|---|---|
