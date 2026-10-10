@@ -169,13 +169,13 @@ Lines        : 100% ( 416/416 )
 <!-- suite:STATIC:begin -->
 ### Static checks: typecheck, lint, adapters
 
-`npx tsc --noEmit` — exit 0 — 2026-10-10T00:33:03.207Z — win32 node v22.23.2
+`npx tsc --noEmit` — exit 0 — 2026-10-10T00:40:16.619Z — win32 node v22.23.2
 
 ```text
 (no output)
 ```
 
-`npx eslint .` — exit 0 — 2026-10-10T00:33:03.207Z — win32 node v22.23.2
+`npx eslint .` — exit 0 — 2026-10-10T00:40:16.619Z — win32 node v22.23.2
 
 ```text
 (no output)
@@ -323,3 +323,30 @@ MCP latency over 23 calls: p50 31 ms, p95 84 ms
 ```
 
 <!-- suite:V-MCP:end -->
+
+<!-- suite:V-PROTO:begin -->
+### V-PROTO: the protocol files are complete
+
+`npx vitest run test/proto --reporter=verbose` — exit 0 — 2026-10-10T00:40:10.808Z — win32 node v22.23.2
+
+```text
+
+ RUN  v5.0.3 C:/Users/basam/src/scaffold
+
+ ✓ test/proto/proto.test.ts > V-PROTO skill > has valid frontmatter (name, description) 10ms
+ ✓ test/proto/proto.test.ts > V-PROTO skill > SKILL.md stays at or under 500 lines, with the rest in references/ 2ms
+ ✓ test/proto/proto.test.ts > V-PROTO skill > every TP rule appears verbatim (TP-01 … TP-18) 4ms
+ ✓ test/proto/proto.test.ts > V-PROTO skill > every D3 section (D3.1 … D3.11) appears verbatim in the skill 1ms
+ ✓ test/proto/proto.test.ts > V-PROTO skill > protocol sources still match the frozen spec text (no softening) 1ms
+ ✓ test/proto/proto.test.ts > V-PROTO skill > tools named in the protocol exist (or are pending a later milestone) 1ms
+ ✓ test/proto/proto.test.ts > V-PROTO adapters (AD-01) > generated files match the source (hash banner + --check) 584ms
+ ✓ test/proto/proto.test.ts > V-PROTO adapters (AD-01) > the skill ZIP holds scaffold-tutor/SKILL.md and its references 458ms
+ ✓ test/proto/proto.test.ts > V-PROTO adapters (AD-01) > against the original build spec, when it is available locally 3ms
+
+ Test Files  1 passed (1)
+      Tests  9 passed (9)
+   Start at  20:40:13
+   Duration  3.26s (import 41%, tests 35%, transform 23%)
+```
+
+<!-- suite:V-PROTO:end -->

@@ -1,0 +1,41 @@
+# Batch jobs (AD-06)
+
+By default ChatGPT/Codex does batch work and Claude does live tutoring; either can do anything. Batch jobs never talk to the learner, never apply card actions and never change derived state by hand. They leave proposals and reviews that the learner sees in the next tutoring session.
+
+## 1. Cross-review questions (QB-04)
+
+```bash
+scaffold --json q review --pending
+```
+
+For each row whose `reviewer_family` is your model family: `review_question {question_id}`, check QB-01 item by item, solve it yourself from the stem, then `review_question {question_id, verdict, by, notes}`. Never review your own family's questions.
+
+## 2. Draft bank questions
+
+For KCs whose planner items say "improvise" (`scaffold --json kc list`, `get_concept`), draft 1–2 questions each with `add_question` (`created_by` = your front-end). Mix question types (D3.5); keep lint green (`scaffold q lint`). They wait for review by the other model family.
+
+## 3. Draft Anki cards from session logs
+
+Read the latest `Scaffold/Sessions/*.md`. For KCs answered correctly in that session and passing the admission test, call `propose_cards` with that `session_id` and the three admission answers. Do not apply; the learner approves in the next session.
+
+## 4. Monthly card hygiene (ANK-10)
+
+One proposal batch with `propose_card_actions` covering: flagged cards, leeches, cards on retired or closed KCs, near-duplicate wording (interference), and volatile KCs past `review_by`. Prefer compression into the anchor for detail cards of `solid` KCs that passed a `transfer` question. Never delete anything.
+
+## 5. Vault lint
+
+```bash
+scaffold doctor
+scaffold validate
+scaffold q lint
+```
+
+Report the failures with their next steps; fix only what is clearly mechanical, and leave learner-written text alone (LM-02).
+
+## 6. Weekly report
+
+```bash
+scaffold report weekly
+```
+
+Then summarise the calibration change, solid KCs gained and the Anki load per subject in five lines for the owner.
