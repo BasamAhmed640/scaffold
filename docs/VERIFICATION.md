@@ -1074,3 +1074,117 @@ Overall: FAIL (11 scenario(s))
 ```
 
 <!-- suite:V-SETUP:end -->
+
+## ChatGPT setup baseline (D-98, D-99; 2026-10-11)
+
+These are the captured local gate outputs before the D-100 schema compatibility work. They verify the code, protocol and package changes at that point, not completed ChatGPT installation or readiness. The original logs remain under ignored `local/chatgpt/`. Historical pedagogy failures above remain unchanged.
+
+`npm.cmd test` — captured in `local/chatgpt/check-test.log`:
+
+```text
+> scaffold-tutor@0.1.0 test
+> vitest run
+
+
+ RUN  v5.0.3 C:/Users/basam/src/scaffold
+
+
+ Test Files  31 passed (31)
+      Tests  383 passed (383)
+   Start at  00:36:17
+   Duration  25.14s (tests 77%, import 14%, transform 9%)
+```
+
+`npm.cmd run typecheck` — captured in `local/chatgpt/check-typecheck.log`:
+
+```text
+> scaffold-tutor@0.1.0 typecheck
+> tsc --noEmit
+```
+
+`npm.cmd run build` — captured in `local/chatgpt/check-build.log`:
+
+```text
+> scaffold-tutor@0.1.0 build
+> tsc -p tsconfig.build.json
+```
+
+`npm.cmd run check:adapters` — captured in `local/chatgpt/check-adapters.log`:
+
+```text
+> scaffold-tutor@0.1.0 check:adapters
+> tsx scripts/build-adapters.ts --check
+
+adapters are current
+```
+
+The captured initial lint run failed because ESLint included ignored local setup scripts. `eslint.config.js` now excludes `local/**`; a successful final lint run must be recorded separately rather than treating this log as a pass.
+
+`npm.cmd run lint` — failed baseline, captured in `local/chatgpt/check-lint.log`:
+
+```text
+> scaffold-tutor@0.1.0 lint
+> eslint .
+
+
+C:\Users\basam\src\scaffold\local\chatgpt\readiness-probe.mjs
+   7:12  error  'process' is not defined  no-undef
+  18:3   error  'console' is not defined  no-undef
+  19:23  error  'process' is not defined  no-undef
+
+C:\Users\basam\src\scaffold\local\setup\add-vault.mjs
+   6:22  error  'process' is not defined  no-undef
+  16:1   error  'console' is not defined  no-undef
+
+✖ 5 problems (5 errors, 0 warnings)
+```
+
+## Final ChatGPT implementation gates (D-98–D-100; 2026-10-11)
+
+All automated gates below passed after the MCP annotations and discovery-schema normalization. Actual terminal outputs are saved under ignored `local/chatgpt/final-*.log`; learner data and credentials are not committed. This is the final automated result for these changes; the historical pedagogy results above remain unchanged.
+
+| Command | Result | Captured output |
+|---|---|---|
+| `npm.cmd test` | Exit 0; 31 files, 386 tests passed in 19.34 s | `local/chatgpt/final-test.log` |
+| `npm.cmd run typecheck` | Exit 0 | `local/chatgpt/final-typecheck.log` |
+| `npm.cmd run lint` | Exit 0; includes the `local/**` ignore fix | `local/chatgpt/final-lint.log` |
+| `npm.cmd run build` | Exit 0 | `local/chatgpt/final-build.log` |
+| `npm.cmd run build:mcpb` | Exit 0; manifest validation passes, 394.01 KB package | `local/chatgpt/final-mcpb.log` |
+| `npm.cmd run check:adapters` | Exit 0; adapters are current | `local/chatgpt/final-adapters.log` |
+
+The full suite includes the real-client MCP checks in `test/mcp/mcp.test.ts`:
+
+- `V-MCP / D-99 declares all required safety hints and distinguishes overwrites from additions`.
+- `D-100 / V-MCP advertises equivalent maps and fixed-length numeric plot points`.
+- `D-100 / V-MCP preserves constrained keys and heterogeneous tuples`.
+- `D-100 / V-MCP retains tuple, map and refinement validation behind normalized discovery`.
+
+It also includes the two `AD-01/C7 ChatGPT plugin package` checks in `test/setup/chatgpt.test.ts`: preserving generated protocol bytes while mapping the registered app and excluding local owner files, and rejecting URLs, empty IDs and unrelated plugin IDs before packaging.
+
+Full-suite output:
+
+```text
+> scaffold-tutor@0.1.0 test
+> vitest run
+
+
+ RUN  v5.0.3 C:/Users/basam/src/scaffold
+
+
+ Test Files  31 passed (31)
+      Tests  386 passed (386)
+   Start at  00:55:46
+   Duration  19.34s (tests 79%, import 15%, transform 6%)
+```
+
+The bundled server was additionally inspected through a real stdio MCP client without opening a vault: all 34 tools and their three required boolean annotations were present. Semantic comparison against the unnormalized schemas found changes only in `propose_card_actions`, `apply_card_actions` and `register_visual`. The normalizations remove redundant key-type constraints and retain the numeric point's exact length of two; original call validation and approval checks still run.
+
+### Installed ChatGPT Tutor verification (2026-10-11)
+
+- A fresh private registration of the normalized full 34-tool catalog succeeded. The registered connection was linked into the packaged Scaffold Tutor plugin; the installed plugin page showed Apps 1, Skills 1, version 0.1.0 and Connected.
+- A new ChatGPT Work conversation read the installed Scaffold tutor skill and called `doctor`. It reported the intended learner vault, success with no warnings or errors, AnkiConnect API 6, valid config/event schema, enabled CSS snippet and an empty Anki queue. It reported zero events and concepts and did not start a session or change learner data.
+- The same conversation confirmed `register_visual`, `propose_card_actions` and `apply_card_actions` were available. These write tools were not called during setup verification; their validation and approval behavior is covered by the real MCP client tests above.
+- FSRS remains a separate Anki UI check: the AnkiConnect response does not expose enough scheduler state for `doctor` to confirm it. This API limitation is not a successful FSRS verification.
+- The owner-local startup helper was exercised after stopping the managed runtime. Its sanitized connect/status log reported process_running, healthy and ready, all true. A per-user Startup shortcut was installed to launch it hidden at sign-in. The key, profile, local install record, startup helper and generated archive remain outside Git.
+- The computer and private runtime must remain running for ChatGPT access, and Anki must be open for immediate card synchronization. This was a setup health check, not a new pedagogical session evaluation; historical V-PED results above remain unchanged.
+- Separate read-only Anki UI verification in User 1 confirmed Scaffold's Default preset (used by 2 decks), FSRS enabled and Desired retention 90%. New/Learn/Due counts were all zero. The unchanged options were closed with Escape. This establishes the setting that the AnkiConnect doctor API cannot detect.

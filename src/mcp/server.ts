@@ -1,4 +1,6 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { ListToolsRequestSchema, type Tool } from '@modelcontextprotocol/sdk/types.js';
+import { z } from 'zod';
 import { allTools, callTool } from '../core/api/tools.js';
 import { fail, ScaffoldError, type Envelope } from '../core/envelope.js';
 import { Scaffold } from '../core/service/scaffold.js';
@@ -14,6 +16,22 @@ export const SERVER_VERSION = '0.1.0';
 /** Oversized inputs are rejected before parsing (V-MCP). Visuals are the largest legitimate input. */
 export const MAX_INPUT_BYTES = 1_200_000;
 
+// V-MCP / D-99: ChatGPT requires explicit read-only, destructive and open-world hints.
+// Classify by the most destructive supported operation, even when history permits recovery.
+// Appending session/evidence/proposal events and adding flags/tags is additive; refreshing
+// their derived projections does not replace learner-authored content.
+const DESTRUCTIVE_TOOLS = new Set([
+  'upsert_subject', // Can replace existing subject fields.
+  'upsert_concept', // Can replace existing concept fields.
+  'review_question', // Can replace a question's review verdict and notes.
+  'save_teach_back', // Replaces the learner's stored "In my words" text.
+  'override_grade', // Replaces an existing attempt's effective grade.
+  'set_subject_scope', // Replaces the subject's active/paused/closed scope.
+  'register_visual', // Can replace an existing visual's source and spec.
+  'apply_card_actions', // Approved actions can overwrite Anki fields or reset scheduling.
+  'anki_sync', // Can replay those already-approved Anki mutations from the queue.
+]);
+
 export interface ServerOptions {
   vault?: string | undefined;
   env?: NodeJS.ProcessEnv;
@@ -28,6 +46,36 @@ export const INSTRUCTIONS = [
   'Never reveal an answer before the learner attempts it; call get_grading_key only after the answer and get_hint only on request or after a wrong attempt.',
   'Record every assessed answer with record_attempt (verbatim answer, confidence 1–4, evidence quotes). Close with an exit ticket and end_session.',
 ].join(' ');
+
+/** D-100 / V-MCP: equivalent discovery schemas for clients with a narrower schema grammar. */
+export function mcpInputSchema(input: z.ZodObject): Tool['inputSchema'] {
+  const schema = z.toJSONSchema(input, {
+    target: 'draft-7',
+    io: 'input', // Match the MCP SDK's conversion, including optional fields and defaults.
+    override: ({ jsonSchema }) => {
+      const names = jsonSchema.propertyNames;
+      // JSON object keys are already strings; preserve every actual key constraint.
+      if (names && typeof names === 'object' && Object.keys(names).length === 1 && names.type === 'string')
+        delete jsonSchema.propertyNames;
+      const items = jsonSchema.items;
+      // A closed homogeneous tuple accepts precisely the same values as a fixed-length array.
+      if (
+        Array.isArray(items) &&
+        items.length > 0 &&
+        jsonSchema.additionalItems === false &&
+        jsonSchema.minItems === items.length &&
+        jsonSchema.maxItems === items.length &&
+        items.every((item) => JSON.stringify(item) === JSON.stringify(items[0]))
+      ) {
+        jsonSchema.items = items[0];
+        delete jsonSchema.additionalItems;
+      }
+    },
+  });
+  // Zod's general JSON Schema type also permits boolean property schemas; these tool
+  // object schemas use the object-valued properties required by the MCP descriptor type.
+  return { ...schema, type: 'object' } as Tool['inputSchema'];
+}
 
 export function createServer(opts: ServerOptions = {}): { server: McpServer; open: () => Scaffold } {
   const env = opts.env ?? process.env;
@@ -47,14 +95,27 @@ export function createServer(opts: ServerOptions = {}): { server: McpServer; ope
     { name: SERVER_NAME, version: SERVER_VERSION },
     { instructions: INSTRUCTIONS },
   );
+  const catalog: Tool[] = [];
   for (const tool of allTools().filter((t) => !t.cliOnly)) {
+    const annotations = {
+      readOnlyHint: !!tool.readOnly,
+      destructiveHint: DESTRUCTIVE_TOOLS.has(tool.name),
+      openWorldHint: false,
+    };
+    catalog.push({
+      name: tool.name,
+      title: tool.title,
+      description: tool.description,
+      inputSchema: mcpInputSchema(tool.input),
+      annotations,
+    });
     server.registerTool(
       tool.name,
       {
         title: tool.title,
         description: tool.description,
         inputSchema: tool.input,
-        annotations: { readOnlyHint: !!tool.readOnly, openWorldHint: false },
+        annotations,
       },
       async (args: unknown) => {
         let env: Envelope<unknown>;
@@ -86,6 +147,9 @@ export function createServer(opts: ServerOptions = {}): { server: McpServer; ope
       },
     );
   }
+  // Change only discovery serialization. The SDK still validates calls against the original
+  // Zod inputs, and callTool retains the core's validation and all approval/escrow checks.
+  server.server.setRequestHandler(ListToolsRequestSchema, () => ({ tools: catalog }));
   return { server, open };
 }
 

@@ -2,6 +2,8 @@
 
 By default ChatGPT/Codex does batch work and Claude does live tutoring; either can do anything. Batch jobs never talk to the learner, never apply card actions and never change derived state by hand. They leave proposals and reviews that the learner sees in the next tutoring session.
 
+In cloud ChatGPT, use the MCP variants below. Cloud file and shell tools cannot read the learner's local session logs or run the local CLI. When a job requires vault files or a CLI operation that the connected tools do not expose, say that it needs Codex in the Scaffold Tutor folder. Do not invent file contents or claim that a local job ran.
+
 ## 1. Cross-review questions (QB-04)
 
 `list_pending_reviews {}` (or `scaffold --json q review --pending` in a shell) lists the queue.

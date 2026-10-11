@@ -35,6 +35,7 @@
     "build:adapters": "tsx scripts/build-adapters.ts",
     "check:adapters": "tsx scripts/build-adapters.ts --check",
     "build:mcpb": "tsx scripts/build-mcpb.ts",
+    "build:chatgpt": "tsx scripts/build-chatgpt.ts",
     "schemas": "tsx scripts/export-schemas.ts",
     "build:theme": "tsx scripts/build-theme.ts",
     "check:theme": "tsx scripts/build-theme.ts --check"

@@ -6,9 +6,10 @@ Scaffold keeps a model of what you know, have forgotten and misremember. It live
 |---|---|---|
 | **Claude Desktop** (a normal chat) | Claude Pro | Everyday tutoring. It draws visuals inline and handles teach-backs. |
 | **Codex** (app or CLI, signed in with ChatGPT) | ChatGPT Plus | Backup tutor when Claude's limits are reached, and batch jobs. |
+| **ChatGPT** with the private Scaffold Tutor plugin | ChatGPT account with custom MCP access, plus OpenAI tunnel access | Tutoring through the same local vault and Anki tools. See [ChatGPT setup](CHATGPT-SETUP.md). |
 | Claude Code (optional) | Claude Pro | The same tutoring from a terminal. |
 
-The ChatGPT website and app cannot reach programs on your computer, so your ChatGPT plan reaches Scaffold through Codex. All front-ends share one vault, so whichever one you open picks up where the last one stopped.
+Codex connects to Scaffold directly on your computer. ChatGPT can connect through OpenAI's Secure MCP Tunnel when the account and workspace allow custom MCP servers. The ChatGPT connection and packaged skill have a separate setup; `Update Scaffold.cmd` does not register that connection. All front-ends share one vault, so whichever one you open picks up where the last one stopped.
 
 ## Set up (once)
 
@@ -43,6 +44,7 @@ Use `Update Scaffold.cmd` or a normal terminal rather than an AI app's built-in 
 
 - **Claude Desktop:** Settings → Extensions → **Scaffold tutor** is the switch. When it is off, your chats are ordinary chats. The skill stays installed but keeps out of the way (D-93).
 - **Codex:** Scaffold exists only inside the Scaffold Tutor folder. Your other projects never see it.
+- **ChatGPT:** enable the Scaffold Tutor plugin in the chat where you want tutoring. The local MCP tunnel must be running. A chat without the connected tools remains an ordinary chat.
 
 ## After a change
 
@@ -50,6 +52,7 @@ Double-click `Update Scaffold.cmd` again (or run `npm.cmd run update`). If a tes
 
 - Reinstall the Claude Desktop extension, if the server changed.
 - Re-upload the skill, if the skill changed.
+- If you use ChatGPT, rebuild its plugin archive with the same registered MCP connection ID and replace the installed archive when the skill changes. See [ChatGPT setup](CHATGPT-SETUP.md#after-a-change).
 
 **Where to make changes:**
 

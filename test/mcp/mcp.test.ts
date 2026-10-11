@@ -1,10 +1,12 @@
 import { readFileSync } from 'node:fs';
 import { Ajv } from 'ajv';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { z } from 'zod';
 import { Warnings } from '../../src/core/envelope.js';
 import { loadBank } from '../../src/core/service/bank.js';
 import { rebuildVault } from '../../src/core/service/ops/maintenance.js';
 import type { Scaffold } from '../../src/core/service/scaffold.js';
+import { mcpInputSchema } from '../../src/mcp/server.js';
 import { normalize } from '../helpers/cli.js';
 import { MockAnki } from '../helpers/anki-mock.js';
 import { ADMISSION, ankiLog, seedCard } from '../helpers/anki-vault.js';
@@ -20,6 +22,25 @@ let mcp: McpHandle;
 let vault = '';
 let sc: Scaffold;
 const latencies: number[] = [];
+
+function plotInput(point: unknown = [0, 1]) {
+  return {
+    kc_ids: ['kc-si-reflection-coefficient'],
+    kind: 'plot',
+    title: 'Wire schema test plot',
+    purpose: 'Check fixed-length numeric points.',
+    notice: 'The point is at x = 0 and y = 1.',
+    alt: 'One numeric point on two labelled axes.',
+    plot: {
+      title: 'Wire schema test plot',
+      desc: 'One numeric point on two labelled axes.',
+      x: { label: 'x', unit: '', min: 0, max: 2 },
+      y: { label: 'y', unit: '', min: 0, max: 2 },
+      params: { gain: 1 },
+      series: [{ label: 'A', points: [point] }],
+    },
+  };
+}
 
 async function g(name: string, tool: string, args: Record<string, unknown> = {}) {
   const r = await mcp.call(tool, args);
@@ -87,6 +108,95 @@ const EXPECTED_TOOLS = [
 const called = new Set<string>();
 
 describe('V-MCP tool list', () => {
+  it('D-100 / V-MCP advertises equivalent maps and fixed-length numeric plot points', async () => {
+    const { tools } = await mcp.client.listTools();
+    const ajv = new Ajv({ strict: false });
+    const visual = tools.find((tool) => tool.name === 'register_visual')!;
+    expect(visual.inputSchema).toMatchObject({
+      properties: {
+        plot: {
+          properties: {
+            params: { type: 'object', additionalProperties: { type: 'number' } },
+            series: {
+              items: {
+                properties: {
+                  points: {
+                    items: { type: 'array', items: { type: 'number' }, minItems: 2, maxItems: 2 },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+    const validate = ajv.compile(visual.inputSchema);
+    expect(validate(plotInput()), JSON.stringify(validate.errors)).toBe(true);
+    for (const point of [[0], [0, 1, 2], [0, '1']]) expect(validate(plotInput(point))).toBe(false);
+    const badParams = plotInput();
+    expect(validate({ ...badParams, plot: { ...badParams.plot, params: { gain: 'one' } } })).toBe(false);
+    for (const name of ['register_visual', 'propose_card_actions', 'apply_card_actions']) {
+      const schema = tools.find((tool) => tool.name === name)!.inputSchema;
+      expect(JSON.stringify(schema), name).not.toContain('"propertyNames"');
+    }
+    const actions = ajv.compile(tools.find((tool) => tool.name === 'propose_card_actions')!.inputSchema);
+    const action = { kind: 'rewrite', note_ids: [1], reason: 'Fix the answer', fields: { Back: 'Answer' } };
+    expect(actions({ actions: [action] })).toBe(true);
+    expect(actions({ actions: [{ ...action, fields: { Back: 42 } }] })).toBe(false);
+  });
+
+  it('D-100 / V-MCP preserves constrained keys and heterogeneous tuples', () => {
+    const input = z.object({
+      fields: z.record(z.string().regex(/^Field/), z.string()),
+      pair: z.tuple([z.string(), z.number()]),
+    });
+    const schema = mcpInputSchema(input);
+    expect(schema).toMatchObject({
+      properties: {
+        fields: { propertyNames: { type: 'string', pattern: '^Field' } },
+        pair: { items: [{ type: 'string' }, { type: 'number' }] },
+      },
+    });
+    const validate = new Ajv({ strict: false }).compile(schema);
+    expect(validate({ fields: { FieldA: 'value' }, pair: ['label', 1] })).toBe(true);
+    expect(validate({ fields: { Other: 'value' }, pair: ['label', 1] })).toBe(false);
+    expect(validate({ fields: { FieldA: 'value' }, pair: [1, 'label'] })).toBe(false);
+  });
+
+  it('V-MCP / D-99 declares all required safety hints and distinguishes overwrites from additions', async () => {
+    const { tools } = await mcp.client.listTools();
+    for (const tool of tools) {
+      for (const hint of ['readOnlyHint', 'destructiveHint', 'openWorldHint'] as const)
+        expect(typeof tool.annotations?.[hint], `${tool.name}.${hint}`).toBe('boolean');
+      expect(tool.annotations?.openWorldHint, `${tool.name} is bounded to the learner workspace`).toBe(false);
+      if (tool.annotations?.readOnlyHint)
+        expect(tool.annotations.destructiveHint, `${tool.name} only reads`).toBe(false);
+    }
+    // Assert the wire contract for replacements, including queued Anki rewrites/resets.
+    expect(
+      tools
+        .filter((tool) => tool.annotations?.destructiveHint)
+        .map((tool) => tool.name)
+        .sort(),
+    ).toEqual([
+      'anki_sync',
+      'apply_card_actions',
+      'override_grade',
+      'register_visual',
+      'review_question',
+      'save_teach_back',
+      'set_subject_scope',
+      'upsert_concept',
+      'upsert_subject',
+    ]);
+    // A proposal does not apply its rewrite/reset; flag_card only adds evidence and a tag.
+    for (const name of ['propose_cards', 'propose_card_actions', 'flag_card', 'record_attempt']) {
+      const tool = tools.find((tool) => tool.name === name)!;
+      expect(tool.annotations?.readOnlyHint, name).toBe(false);
+      expect(tool.annotations?.destructiveHint, name).toBe(false);
+    }
+  });
+
   it('lists the tools with valid JSON Schemas', async () => {
     const { tools } = await mcp.client.listTools();
     const names = tools.map((t) => t.name);
@@ -269,6 +379,40 @@ describe('V-MCP every tool through a real client', () => {
 });
 
 describe('V-MCP rejections (IF-03)', () => {
+  it('D-100 / V-MCP retains tuple, map and refinement validation behind normalized discovery', async () => {
+    for (const point of [[0], [0, 1, 2], [0, '1']]) {
+      const result = await mcp.call('register_visual', plotInput(point));
+      expect(result.isError, JSON.stringify(point)).toBe(true);
+      expect(result.env.ok).toBe(false);
+    }
+    const result = await mcp.call('register_visual', {
+      ...plotInput(),
+      source: '<svg></svg>',
+      format: 'svg',
+    });
+    expect(result.isError).toBe(true);
+    expect(result.env.errors[0]!.message).toContain('pass either source or plot');
+    for (const [tool, args] of [
+      [
+        'propose_card_actions',
+        { actions: [{ kind: 'rewrite', note_ids: [1], reason: 'Fix the answer', fields: { Back: 42 } }] },
+      ],
+      [
+        'apply_card_actions',
+        {
+          action_ids: ['CA-0001'],
+          approval: { learner_quote: 'Test fixture approval' },
+          edits: { 'CA-0001': { front: 42 } },
+        },
+      ],
+    ] as const) {
+      const invalid = await mcp.call(tool, args);
+      expect(invalid.isError, tool).toBe(true);
+      expect(invalid.env.ok).toBe(false);
+      expect(invalid.env.errors[0]!.code).toBe('invalid_input');
+    }
+  });
+
   it('path traversal in ids is rejected', async () => {
     for (const [tool, args] of [
       ['get_concept', { kc_id: '../../Windows/win.ini' }],

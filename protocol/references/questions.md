@@ -11,15 +11,15 @@ The bank lives in `Scaffold/Questions/Q-0001.md`. The rules below are the build 
 3. `answer_key`: the answer itself (for `mc`, the option letter or exact text). `rubric`: 1–4 propositions, each one checkable in the learner's words.
 4. `hints`: exactly four, in ladder order: H1 orient, H2 principle, H3 a partial step, H4 the full worked answer.
 5. Keep the stem self-contained and answerable in one message; never put the key, the key number or reasoning inside the stem or options; keep options similar in length.
-6. `created_by`: your front-end (`claude-desktop`, `claude-code`, `codex`, `pi`).
+6. `created_by`: your front-end (`claude-desktop`, `claude-code`, `codex`, `chatgpt`, `pi`).
 
 `add_question` returns the lint result (QB-03). A failing question is kept but never served; fix it in the note (Obsidian) and run `scaffold q lint`.
 
 ## Cross-model review (QB-04)
 
-A question written in Claude is reviewed in ChatGPT (Codex), and the other way round. The planner serves only questions with verdict `ok`.
+A question written in Claude is reviewed in ChatGPT or Codex, and the other way round. The planner serves only questions with verdict `ok`.
 
-1. Outside a tutoring session, list the queue: `scaffold --json q review --pending` (each row says which model family must review it).
+1. Outside a tutoring session, list the queue with `list_pending_reviews {}` (or `scaffold --json q review --pending` in a local shell). Each row says which model family must review it.
 2. For each question you may review: `review_question {question_id}` returns the question, its lint result and the QB-01 checklist.
 3. Check every item of QB-01, and solve the question yourself from the stem alone: if your answer differs from the key, the verdict is `fix` (or `reject`) with a note saying why.
 4. Record: `review_question {question_id, verdict: "ok" | "fix" | "reject", by: "<your front-end>", notes}`. A reviewer from the author's model family is refused. Changing a key later resets the verdict to pending.
