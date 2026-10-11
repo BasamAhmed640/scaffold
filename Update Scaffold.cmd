@@ -6,7 +6,7 @@ if not exist node_modules (
   echo Installing Scaffold's dependencies first...
   call npm install --no-audit --no-fund || goto :end
 )
-call npm run update
+call npm run update -- %*
 :end
 echo.
 pause

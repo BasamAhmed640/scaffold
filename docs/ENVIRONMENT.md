@@ -30,7 +30,7 @@ Recorded on the owner's PC on 2026-10-09. Re-run the probes in `scripts/probes/`
 
 | Item | Value | Result |
 |---|---|---|
-| Obsidian | installed; main vault `C:\Users\basam\Desktop\Basam's_Vault` (chosen for real use once V-VAULT passes) | pass |
+| Obsidian | installed; Scaffold uses its own vault `C:\Users\basam\Desktop\Scaffold Vault` (D-96); the main vault `Basam's_Vault` is not used by Scaffold | pass |
 | Anki | installed (`%LOCALAPPDATA%\Programs\Anki`), profile "User 1" | pass |
 | AnkiConnect | Installed 2026-10-10 from AnkiWeb (add-on 2055492159, build of 2025-11-06, for Anki 26.9.3, point version 260903) into `%APPDATA%\Anki2\addons21\2055492159` with `scripts/setup/install-ankiconnect.ps1`. It listens on `127.0.0.1:8765` and reports API version 6. | pass |
 
