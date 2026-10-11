@@ -4,7 +4,7 @@
 //   npm run update                        after any change, and the first time (it asks for your vault)
 //   npm run update -- --vault "<path>"    to use or switch to another vault
 // Options: --folder <path> (where the Scaffold Tutor folder lives), --skip-tests, --no-wait (don't pause
-// for the Claude Desktop steps). If the build or a test fails, it stops before Codex or Claude change.
+// for the Claude Desktop steps), --skill-uploaded (record the skill upload without a prompt). If the build or a test fails, it stops before Codex or Claude change.
 import { spawnSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
@@ -39,11 +39,13 @@ export interface UpdateArgs {
   folder?: string;
   skipTests: boolean;
   wait: boolean;
+  /** The current skill zip is uploaded to Claude (for scripted setup, where nobody presses Enter). */
+  skillUploaded: boolean;
   help: boolean;
 }
 
 export function parseArgs(argv: string[]): UpdateArgs {
-  const a: UpdateArgs = { skipTests: false, wait: true, help: false };
+  const a: UpdateArgs = { skipTests: false, wait: true, skillUploaded: false, help: false };
   for (let i = 0; i < argv.length; i++) {
     const k = argv[i];
     if (k === '--vault' || k === '--folder') {
@@ -52,6 +54,7 @@ export function parseArgs(argv: string[]): UpdateArgs {
       a[k === '--vault' ? 'vault' : 'folder'] = v;
     } else if (k === '--skip-tests') a.skipTests = true;
     else if (k === '--no-wait') a.wait = false;
+    else if (k === '--skill-uploaded') a.skillUploaded = true;
     else if (k === '--help' || k === '-h') a.help = true;
     else throw new Error(`Unknown option ${k}. Try: npm run update -- --help`);
   }
@@ -67,7 +70,8 @@ Rebuilds Scaffold, runs the tests, and brings your vault, Codex and Claude Deskt
   --vault <path>    your Obsidian vault (asked the first time, then remembered)
   --folder <path>   the Scaffold Tutor folder (default: "Scaffold Tutor" in your user folder)
   --skip-tests      skip the tests (faster; not after code changes)
-  --no-wait         don't pause for the Claude Desktop steps`;
+  --no-wait         don't pause for the Claude Desktop steps
+  --skill-uploaded  you have uploaded the current skill zip to Claude (no need to press Enter)`;
 
 const say = (s = ''): void => void process.stdout.write(s + '\n');
 const ok = (s: string): void => say(`  ✓ ${s}`);
@@ -203,7 +207,10 @@ async function main(): Promise<void> {
   // 4. Claude Desktop extension: the installed copy must match this build
   step('Claude Desktop extension');
   const roots = claudeDataRoots();
-  if (!roots.length) warn(`Claude Desktop not found. Once it is installed, double-click ${MCPB}.`);
+  // Installed from Claude's own Settings page: the Microsoft Store app does not register .mcpb files,
+  // so double-clicking one does nothing on Windows (D-97).
+  const howToInstall = 'Claude Desktop → Settings → Extensions → Advanced settings → Install Extension…';
+  if (!roots.length) warn(`Claude Desktop not found. Once it is installed: ${howToInstall}, file ${MCPB}`);
   else {
     const want = sha256Of(serverPath(repo));
     const current = () => installedExtensions(roots).find((e) => e.server_sha256 === want);
@@ -211,14 +218,12 @@ async function main(): Promise<void> {
     if (ext) ok('Installed and up to date.');
     else {
       const update = installedExtensions(roots).length > 0;
-      openFile(MCPB);
-      yours(
-        update
-          ? 'A new version is ready. Claude Desktop is showing it: click Install (or Update).'
-          : 'Claude Desktop is showing the installer: click Install, and choose your vault folder when asked.',
-      );
-      more(`If nothing opened, double-click ${MCPB}`);
-      if (await confirmed(args, 'once you have clicked Install')) {
+      openFile(MCPB, { reveal: true });
+      yours(update ? 'A new version is ready. Install it over the old one:' : 'Install the extension:');
+      more(howToInstall);
+      more(`File: ${MCPB} (shown in your file manager)`);
+      if (!update) more(`When it asks for Obsidian vault, choose ${vault}`);
+      if (await confirmed(args, 'once it is installed')) {
         // Claude may take a moment to unpack it; look twice at most (REL-04)
         ext = current();
         if (!ext) {
@@ -244,7 +249,10 @@ async function main(): Promise<void> {
   const skillSha = sha256Of(path.join(repo, 'skills', SKILL));
   const state = readState(repo);
   if (state.skill_sha256 === skillSha) ok('Up to date.');
-  else {
+  else if (args.skillUploaded) {
+    writeState(repo, { ...state, skill_sha256: skillSha, skill_uploaded_at: new Date().toISOString() });
+    ok('Recorded as uploaded (--skill-uploaded).');
+  } else {
     openFile(SKILL_ZIP, { reveal: true });
     yours(state.skill_sha256 ? 'The skill changed. Upload the new one:' : 'Upload the skill (once):');
     more(

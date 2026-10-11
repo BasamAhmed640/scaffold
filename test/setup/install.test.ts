@@ -168,13 +168,15 @@ describe('D-94 Claude Desktop extension check', () => {
 });
 
 describe('D-94 npm run update options', () => {
-  it('reads --vault, --folder, --skip-tests and --no-wait; rejects the rest', () => {
+  it('reads --vault, --folder, --skip-tests, --no-wait and --skill-uploaded; rejects the rest', () => {
     expect(parseArgs(['--vault', 'V', '--skip-tests', '--no-wait'])).toEqual({
       vault: 'V',
       skipTests: true,
       wait: false,
+      skillUploaded: false,
       help: false,
     });
+    expect(parseArgs(['--skill-uploaded']).skillUploaded).toBe(true);
     expect(() => parseArgs(['--vault'])).toThrow(/needs a folder path/);
     expect(() => parseArgs(['--fast'])).toThrow(/Unknown option --fast/);
   });

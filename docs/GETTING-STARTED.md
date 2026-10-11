@@ -22,10 +22,10 @@ The ChatGPT website and app cannot reach programs on your computer, so your Chat
    - builds Scaffold and runs its tests;
    - adds a `Scaffold/` folder to your vault (your own notes are not touched) and checks its health;
    - creates a **Scaffold Tutor** folder for Codex and marks it trusted in Codex (it keeps a backup of your Codex settings);
-   - opens Claude Desktop's installer for the Scaffold extension, shows you the skill file, and waits while you do the next step.
+   - shows you the extension and skill files and waits while you do the next step.
 
 3. **In Claude Desktop** (two clicks only you can make):
-   - **Extension:** click **Install**, and choose your vault folder when it asks for **Obsidian vault**.
+   - **Extension:** in Settings → Extensions → Advanced settings, choose **Install Extension…** and pick `scaffold-mcp.mcpb` (the update window shows you where it is). Double-clicking the file does nothing on Windows, because the Microsoft Store version of Claude does not open `.mcpb` files. Click **Install**, and choose your vault folder when it asks for **Obsidian vault**.
    - **Skill:** in Settings → Capabilities, turn on code execution. Then under Skills, choose Upload skill and pick `scaffold-tutor-skill.zip` (the update window shows you where it is).
 
    Press Enter in the update window after each one.
